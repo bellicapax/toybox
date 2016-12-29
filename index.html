@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Toybox v0.1</title>
+    <script src="phaserV2/build/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var cursors;
+var playerXSize;
+
+
+function preload() {
+	game.load.spritesheet("greenie", "assets/sprites/greenAlienSheet.png", 16, 20);
+}
+
+function create() {
+	createPlayer("greenie", game.world.centerX, game.world.centerY);
+	playerXSize = 5;
+}
+
+function createPlayer(spritesheetName, startingX, startingY)
+{
+	var player = game.add.sprite(startingX, startingY, spritesheetName, 1);
+	player.anchor.setTo(0.5, 0.5);
+	addAnimationsToPlayer(player);
+	addInputToPlayer(player);
+	return player;
+}
+
+function addAnimationsToPlayer(player) {
+	player.animations.add("walk", [9, 10], 8, true);
+	player.animations.play("walk");
+}
+
+function addInputToPlayer(player) {
+	ensureCursorsAreCreated();
+	game.keyboard.addCallbacks(game, tryMovePlayer);
+}
+
+function ensureCursorsAreCreated(){
+	if(cursors === null || cursors === undefined)
+	{
+		cursors = game.keyboard.createCursorKeys();
+	}
+}
+
+function tryMovePlayer() {
+
+}
+
+function update() {
+}
+
+</script>
+
+</body>
+</html>
