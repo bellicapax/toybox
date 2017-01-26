@@ -1,20 +1,20 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var toybox;
 var cursors;
 var playerXSize;
 
 function preload() {
-	game.load.spritesheet("greenie", "assets/sprites/greenAlienSheet.png", 16, 20);
-
+	toybox = new Toybox(game);
+	toybox.preload();
 }
 
 function create() {
-	createPlayer("greenie", game.world.centerX, game.world.centerY);
-	playerXSize = 5;
-	var toybox = new Toybox(game);
-	toybox.logSuzy();
+	toybox.create();
+	toybox.createPlayer("greenAlien", 50, 50);
+	toybox.createPlayer("blueFly", 150, 50);
 }
 
 
-
 function update() {
+	toybox.update();
 }
