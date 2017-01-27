@@ -1,13 +1,17 @@
 var player;
-var speed = 1;
+var speed = 50;
 var cursors;
+var spacebar;
 
 class Toybox {
     constructor(game) {
         console.log("Toybox constructed");
         this._game = game;
+        this._game.physics.startSystem(Phaser.Physics.ARCADE);
+        this._game.physics.arcade.gravity.y = 98;
         this.currentGameObjects = [];
         cursors = this._game.input.keyboard.createCursorKeys();
+        spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
         this.animationFPS = 8;
         this._add = new ToyboxGameObjectFactory(this);
     }

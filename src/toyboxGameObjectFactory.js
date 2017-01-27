@@ -11,6 +11,8 @@ class ToyboxGameObjectFactory {
         }
         playerGO = this.toybox.game.add.sprite(startingX, startingY, spritesheetName, 1);
         playerGO.anchor.setTo(0.5, 0.5);
+        this.toybox.game.physics.enable(playerGO);
+        playerGO.body.collideWorldBounds = true;
         this.addAnimationsToPlayer(playerGO);
         playerGO.toybox = this.toybox;
         playerGO.update = this.playerPlatformerUpdate;
@@ -19,11 +21,33 @@ class ToyboxGameObjectFactory {
     }
 
     playerPlatformerUpdate() {
-
+        // Get cursor status
+        // Compare to last frame
+        // If different, do something
         if (cursors.right.isDown) {
-            this.x += speed;
+            this.body.velocity.x = speed;
+            if (this.scale.x < 0) {
+                this.scale.x *= -1;
+            }
+            if (this.animations.name !== "run") {
+                this.animations.play("run");
+            }
         } else if (cursors.left.isDown) {
-            this.x -= speed;
+            this.body.velocity.x = -speed;
+            if (this.scale.x > 0) {
+                this.scale.x *= -1;
+            }
+            if (this.animations.play("run")) {
+                this.animations.play("run");
+            }
+        } else {
+            // Not moving
+            this.body.velocity.x = 0;
+            this.animations.play("idle");
+        }
+
+        if (spacebar.isDown) {
+            this.body.velocity.y = -100;
         }
         // checkForJump
     }
@@ -44,7 +68,7 @@ class ToyboxGameObjectFactory {
     addAnimationsToPlayer(player) {
         var fps = this.toybox.animationFPS;
         player.animations.add("idle", [1]);
-        player.animations.add("walk", [9, 10], fps, true);
+        player.animations.add("run", [9, 10], fps, true);
         player.animations.add("jump", [7, 8], fps, true);
     }
 }
