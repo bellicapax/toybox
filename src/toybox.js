@@ -1,18 +1,14 @@
-var player;
-var speed = 50;
-var cursors;
-var spacebar;
-
 class Toybox {
     constructor(game) {
         console.log("Toybox constructed");
         this._game = game;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
-        this._game.physics.arcade.gravity.y = 98;
+        this._game.physics.arcade.gravity.y = gravity;
         this.currentGameObjects = [];
+        this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         cursors = this._game.input.keyboard.createCursorKeys();
         spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-        this.animationFPS = 8;
+        this.animationFPS = 12;
         this._add = new ToyboxGameObjectFactory(this);
     }
 
@@ -30,11 +26,17 @@ class Toybox {
         }
     }
 
+    addCollectible(go) {
+        this.addGameObject(go);
+        this.collectibles.add(go);
+    }
+
     preload() {
         this._game.load.spritesheet("greenAlien", "assets/sprites/greenAlienSheet.png", 16, 20);
         this._game.load.spritesheet("blueAlien", "assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "assets/sprites/pinkAlienSheet.png", 16, 20);
-
+        this._game.load.image("purpleMushroom", "assets/sprites/purpleMushroom.png")
+        this._game.load.image("crate1", "assets/sprites/crate1.png");;
         this.preloadMobs();
     }
 
@@ -65,40 +67,7 @@ class Toybox {
         this.currentGameObjects.forEach(function (gameObject) {
             gameObject.update();
         });
-
-    }
-
-    addAnimationsToPlayer(player) {
-        // player.animations.add("walk", [9, 10], 8, true);
-        // player.animations.play("walk");
-    }
-
-    createPlayer(spritesheetName, startingX, startingY) {
-        if (player != null) {
-            player.destroy();
-        }
-        player = this._game.add.sprite(startingX, startingY, spritesheetName, 1);
-        player.anchor.setTo(0.5, 0.5);
-        this.addAnimationsToPlayer(player);
-        player.toybox = this;
-        player.update = function () {
-            if (cursors.up.isDown) {
-                this.y -= speed;
-            } else if (cursors.down.isDown) {
-                this.y += speed;
-            }
-            if (cursors.right.isDown) {
-                this.x += speed;
-            } else if (cursors.left.isDown) {
-                this.x -= speed;
-            }
-
-            if (this.x > this.toybox._game.world.width) {
-                this.x = 0;
-            }
-        };
-        this.currentGameObjects.push(player);
-        return player;
+        this._game.physics.arcade.collide(this.currentGameObjects, this.currentGameObjects);
     }
 
 }
