@@ -13,7 +13,6 @@ class ToyboxGameObjectFactory {
         playerGO.name = "player1";
         playerGO.anchor.setTo(0.5, 0.5);
         this.toybox.game.physics.enable(playerGO);
-        // TEST
         playerGO.body.collideWorldBounds = true;
         this.addAnimationsToPlayer(playerGO);
         playerGO.toybox = this.toybox;
@@ -23,9 +22,6 @@ class ToyboxGameObjectFactory {
     }
 
     playerPlatformerUpdate() {
-        // Get cursor status
-        // Compare to last frame
-        // If different, do something
         if (cursors.right.isDown) {
             this.body.velocity.x = speed;
             if (this.scale.x < 0) {
@@ -110,11 +106,68 @@ class ToyboxGameObjectFactory {
         blockGO.name = "block";
         blockGO.toybox = this.toybox;
         blockGO.update = function () {};
-        //blockGO.body.onCollide = new Phaser.Signal();
-        //blockGO.body.onCollide.add(this.doAThing, blockGO);
         this.toybox.addCollectible(blockGO);
         return blockGO;
     }
 
+    coin(startingIndex, startingX, startingY) {
+        if (this.toybox.currencyDisplay === null) {
+            this.currencyDisplay();
+        }
+        var coinGO = this.toybox.game.add.sprite(startingX, startingY, "coins", startingIndex);
+        coinGO.anchor.setTo(0.5, 0.5);
+        this.toybox.game.physics.enable(coinGO);
+        coinGO.body.collideWorldBounds = true;
+        coinGO.name = "coin";
+        coinGO.update = function () {};
+        coinGO.currencyValue = this.currencyValueForIndex(startingIndex);
+        coinGO.body.onCollide = new Phaser.Signal();
+        coinGO.body.onCollide.add(this.tryIncreaseCurrency, this);
+        this.toybox.addCollectible(coinGO);
+    }
 
+    currencyValueForIndex(startingIndex) {
+        if (startingIndex == 0) {
+            return 1;
+        } else if (startingIndex == 1) {
+            return 10;
+        } else if (startingIndex == 2) {
+            return 100;
+        }
+    }
+
+    bronzeCoin(startingX, startingY) {
+        return this.coin(0, startingX, startingY);
+    }
+
+    silverCoin(startingX, startingY) {
+        return this.coin(1, startingX, startingY);
+    }
+
+    goldCoin(startingX, startingY) {
+        return this.coin(2, startingX, startingY);
+    }
+
+    tryIncreaseCurrency(coin, collidedSprite) {
+        if (this.spriteIsPlayer(collidedSprite)) {
+            var numCurrency = Number(collidedSprite.toybox.currencyDisplay.text);
+            numCurrency += coin.currencyValue;
+            collidedSprite.toybox.currencyDisplay.text = String(numCurrency);
+            coin.destroy();
+        }
+    }
+
+    spriteIsPlayer(sprite) {
+        return sprite !== null && sprite.name === "player1";
+    }
+
+    currencyDisplay() {
+        var style = {
+            font: "16px New Courier",
+            fill: "#ff0044",
+            align: "left"
+        };
+        var textGO = game.add.text(10, 10, "0", style);
+        this.toybox.currencyDisplay = textGO;
+    }
 }
