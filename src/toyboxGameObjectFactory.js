@@ -91,6 +91,18 @@ class ToyboxGameObjectFactory {
         var spriteName;
         var collisionFunc;
         switch (color){
+            case "yellow":
+                spriteName = "yellowMushroom";
+                collisionFunc = "trySpeedUpPlayer";
+            break;
+            case "red":
+                spriteName = "redMushroom";
+                collisionFunc = "trySlowPlayer";
+            break;
+            case "blue":
+                spriteName = "blueMushroom";
+                collisionFunc = "tryShrinkPlayer";
+            break;
             default:
                 spriteName = "purpleMushroom";
                 collisionFunc = "tryGrowPlayer";
@@ -103,8 +115,30 @@ class ToyboxGameObjectFactory {
 
     tryGrowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            sprite2.scale.x *= 1.05;
-            sprite2.scale.y *= 1.05;
+            sprite2.scale.x *= 1.25;
+            sprite2.scale.y *= 1.25;
+            sprite1.destroy();
+        }
+    }
+
+    tryShrinkPlayer(sprite1, sprite2) {
+        if (sprite2 !== null && sprite2.name === "player1") {
+            sprite2.scale.x *= 0.5;
+            sprite2.scale.y *= 0.5;
+            sprite1.destroy();
+        }
+    }
+
+    trySpeedUpPlayer(sprite1, sprite2) {
+        if (sprite2 !== null && sprite2.name === "player1") {
+            speed *= 1.25;
+            sprite1.destroy();
+        }
+    }
+
+    trySlowPlayer(sprite1, sprite2) {
+        if (sprite2 !== null && sprite2.name === "player1") {
+            speed *= 0.5;
             sprite1.destroy();
         }
     }

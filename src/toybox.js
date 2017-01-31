@@ -53,8 +53,11 @@ class Toybox {
         this._game.load.spritesheet("blueAlien", "assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "assets/sprites/pinkAlienSheet.png", 16, 20);
         
-        this._game.load.image("purpleMushroom", "assets/sprites/single-images/purpleMushroom.png")
-        this._game.load.image("crate1", "assets/sprites/single-images/crate1.png");;
+        this._game.load.image("purpleMushroom", "assets/sprites/single-images/purpleMushroom.png");
+        this._game.load.image("blueMushroom", "assets/sprites/single-images/blueMushroom.png");
+        this._game.load.image("redMushroom", "assets/sprites/single-images/redMushroom.png");
+        this._game.load.image("yellowMushroom", "assets/sprites/single-images/yellowMushroom.png");
+        this._game.load.image("crate1", "assets/sprites/single-images/crate1.png");
         this.preloadMobs();
     }
 
