@@ -31,7 +31,11 @@ class Toybox {
     }
 
     addGameObject(go) {
+<<<<<<< HEAD
         if (this.currentGameObjects.indexOf(go) === -1) {
+=======
+        if (this.currentGameObjects.indexOf(go) == -1) {
+>>>>>>> MultipleMushrooms
             this.currentGameObjects.push(go);
         }
     }
@@ -42,12 +46,22 @@ class Toybox {
     }
 
     preload() {
+<<<<<<< HEAD
         this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
         this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
         this._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
         this._game.load.image("purpleMushroom", "../../assets/sprites/purpleMushroom.png");
         this._game.load.image("crate1", "../../assets/sprites/crate1.png");
+=======
+        this._game.load.spritesheet("greenAlien", "assets/sprites/greenAlienSheet.png", 16, 20);
+        this._game.load.spritesheet("blueAlien", "assets/sprites/blueAlienSheet.png", 16, 20);
+        this._game.load.spritesheet("pinkAlien", "assets/sprites/pinkAlienSheet.png", 16, 20);
+        this._game.load.spritesheet("smallMushrooms", "assets/sprites/smallMushroomsSheet.png", 16, 16);
+
+        this._game.load.image("purpleMushroom", "assets/sprites/single-images/purpleMushroom.png")
+        this._game.load.image("crate1", "assets/sprites/single-images/crate1.png");;
+>>>>>>> MultipleMushrooms
         this.preloadMobs();
     }
 

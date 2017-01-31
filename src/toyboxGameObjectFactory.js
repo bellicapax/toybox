@@ -79,13 +79,26 @@ class ToyboxGameObjectFactory {
         this.toybox.game.physics.enable(collectibleGO);
         collectibleGO.body.collideWorldBounds = true;
         collectibleGO.body.bounce.set(0.4);
-        collectibleGO.name = "mushroom";
+        collectibleGO.name = spriteName;
         collectibleGO.toybox = this.toybox;
         collectibleGO.update = function () {};
         collectibleGO.body.onCollide = new Phaser.Signal();
-        collectibleGO.body.onCollide.add(this.tryGrowPlayer, collectibleGO);
         this.toybox.addCollectible(collectibleGO);
         return collectibleGO;
+    }
+
+    mushroom(color, startingX, startingY){
+        var spriteName;
+        var collisionFunc;
+        switch (color){
+            default:
+                spriteName = "purpleMushroom";
+                collisionFunc = "tryGrowPlayer";
+            break;
+        }
+        var mushroomGO = this.toybox.add.collectible(spriteName, startingX, startingY);
+        mushroomGO.body.onCollide.add(this[collisionFunc], mushroomGO);
+        return mushroomGO;
     }
 
     tryGrowPlayer(sprite1, sprite2) {
