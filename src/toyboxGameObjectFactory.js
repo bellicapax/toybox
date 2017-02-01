@@ -17,6 +17,8 @@ class ToyboxGameObjectFactory {
         this.addAnimationsToPlayer(playerGO);
         playerGO.toybox = this.toybox;
         playerGO.update = this.playerPlatformerUpdate;
+        playerGO.scale.x = size;
+        playerGO.scale.y = size;
         this.toybox.addGameObject(playerGO);
         return playerGO;
     }
@@ -115,30 +117,44 @@ class ToyboxGameObjectFactory {
 
     tryGrowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            sprite2.scale.x *= 1.25;
-            sprite2.scale.y *= 1.25;
+            if (size <= 3.0){
+                var newSize = size + 0.25;
+                var scaleBy = (newSize / size);
+                size = newSize;
+                sprite2.scale.x *= scaleBy;
+                sprite2.scale.y *= scaleBy;
+            }
             sprite1.destroy();
         }
     }
 
     tryShrinkPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            sprite2.scale.x *= 0.5;
-            sprite2.scale.y *= 0.5;
+            if (size >= 0.5){
+                var newSize = size - 0.25;
+                var scaleBy = (newSize / size);
+                size = newSize;
+                sprite2.scale.x *= scaleBy;
+                sprite2.scale.y *= scaleBy;
+            }
             sprite1.destroy();
         }
     }
 
     trySpeedUpPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            speed *= 1.25;
+            if (speed <= 300){
+                speed += 50;
+            }
             sprite1.destroy();
         }
     }
 
     trySlowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            speed *= 0.5;
+            if (speed >= 100){
+                speed -= 50;
+            }
             sprite1.destroy();
         }
     }
