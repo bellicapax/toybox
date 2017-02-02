@@ -1,14 +1,18 @@
+var player;
+var color = "blue" // valid colors: "green" "blue" "pink"
+var speed = 100;
+var size = 2;
+var cursors;
+var spacebar;
+var gravity = 980;
+var jumpForce = 900;
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
     preload: preload,
     create: create,
     update: update
 });
 var toybox;
-var cursors;
-var playerXSize;
-var myPlayer;
-var myShroom;
-var gos = []
 
 function preload() {
     toybox = new Toybox(game);
@@ -16,7 +20,6 @@ function preload() {
 }
 
 function create() {
-    //toybox.create();
     var spriteName = color + "Alien";
     myPlayer = toybox.add.player(spriteName, 100, 100);
 }
