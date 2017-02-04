@@ -8,7 +8,7 @@ class Toybox {
         this._game = game;
         this._game.stage.smoothed = false;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
-        this._game.physics.arcade.gravity.y = gravity;
+        this._game.physics.arcade.gravity.y = gravity || 980;
         this.currentGameObjects = [];
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         cursors = this._game.input.keyboard.createCursorKeys();
@@ -56,7 +56,7 @@ class Toybox {
         this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
         this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
-        
+
         this._game.load.image("purpleMushroom", "../../assets/sprites/single-images/purpleMushroom.png");
         this._game.load.image("blueMushroom", "../../assets/sprites/single-images/blueMushroom.png");
         this._game.load.image("redMushroom", "../../assets/sprites/single-images/redMushroom.png");
