@@ -64,7 +64,7 @@ var aNiceString = "The convention in JavaScript is to name variables using no sp
 
 // ---- END OF LESSON MATERIAL ---
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
+var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
     create: create,
     update: update
