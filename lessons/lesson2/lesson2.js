@@ -93,7 +93,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 });
 var toybox;
 var gravity;
-var tweenSpeedInMs = 100;
+var tweenSpeedInMs = 500;
 
 function preload() {
     toybox = new Toybox(game);
