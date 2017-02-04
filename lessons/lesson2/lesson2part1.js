@@ -1,9 +1,19 @@
-// Assign banana to any number you like - 5, 22, 19.5, -78, etc..
-var banana = true;
-// Assign smartCar to any number you like
-var smartCar = "166";
+// Now we are going to go a little deeper into the types that Javascript variables can hold
+// Javascript has 5 basic primitive types: Boolean, Number, String, Null, and Undefined
+
+// Say hello to our two variables for this lesson - banana and smartCar
+var banana;
+var smartCar;
 
 
+
+
+
+
+
+
+
+// ---- END OF LESSON MATERIAL ---
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
@@ -41,7 +51,7 @@ function createTextAnimation() {
 
 
 function createBananaText() {
-    var bananaText = game.add.text(-50, game.world.height * 0.5, "banana", {
+    var bananaText = game.add.text(-50, game.world.height * 0.5, String(banana), {
         fill: "#ffffff",
         align: "right"
     });
@@ -58,7 +68,7 @@ function createBananaTween(bananaText) {
 }
 
 function createSmartCarText() {
-    var smartCarText = game.add.text(game.world.width + 50, game.world.height * 0.5, "smartCar", {
+    var smartCarText = game.add.text(game.world.width + 50, game.world.height * 0.5, String(smartCar), {
         fill: "#ffffff",
         align: "left"
     });
