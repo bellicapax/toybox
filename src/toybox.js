@@ -2,6 +2,8 @@ var cursors;
 var spacebar;
 // TODO: Refactor - These should NOT be global variables
 
+// Test change
+
 class Toybox {
     constructor(game) {
         console.log("Toybox constructed");
