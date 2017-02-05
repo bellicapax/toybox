@@ -6,26 +6,26 @@
 // This just means that javascript now knows that variable name (after the space) stores some kind of data.
 
 var player;
-var size;
+var playerSize;
 
 // A single equals sign is used to assign a variable.
 // Assigning a variable saves the value on the right side of the equals sign to the variable name on the left.
 // Note that I don't need to use var to assign 'size' to 2, because I already declared 'size' as a variable above.
 
-size = 2;
+playerSize = 2;
 
 // For brevity, you can also declare and assign your variable in the same line using var.
 
-var speed = 100;
+var playerSpeed = 100;
 var gravity = 980;
-var jumpForce = 300;
+var playerJumpForce = 300;
 
 // So far, all of the data we've assign for our variables has been numbers.
 // But there are other types of data we can assign to variables.
 
 // Variables can store Strings. A string is a string of text characters: this is how you would store words.
 // Strings are noted by enclosing the character data in either single or double quotes. We're using double quotes here.
-var playerColor = "blue";
+var playerColor = "green";
 
 // Variables can store Arrays. An array is an ordered list of data. This array contains three strings.
 // Arrays are notated using square brackets, and with commas separating the entries in the array.
@@ -70,9 +70,10 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     update: update
 });
 var toybox;
+var settings = {gravity: gravity};
 
 function preload() {
-    toybox = new Toybox(game);
+    toybox = new Toybox(game,settings);
     toybox.preload();
 }
 
@@ -80,10 +81,18 @@ function create() {
     if (!validColors.indexOf(playerColor)) {
         playerColor = "green";
     }
-    var spriteName = playerColor + "Alien";
+
+    var playerOptions = {
+        startingX : 100,
+        startingY: 100,
+        color: playerColor,
+        jumpForce: playerJumpForce,
+        speed: playerSpeed,
+        scale: playerSize
+    }
 
     if (shouldThereBeAPlayerObject) {
-        player = toybox.add.player(spriteName, 100, 100);
+        player = toybox.add.player(playerOptions);
     }
 }
 

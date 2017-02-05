@@ -2,19 +2,22 @@ var cursors;
 var spacebar;
 // TODO: Refactor - These should NOT be global variables
 
-// Test change
-
 class Toybox {
-    constructor(game) {
+    constructor(game, gameOptions) {
+
+        gameOptions.gravity = gameOptions.gravity || 980;
+
         console.log("Toybox constructed");
         this._game = game;
         this._game.stage.smoothed = false;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
-        this._game.physics.arcade.gravity.y = gravity || 980;
+        this._game.physics.arcade.gravity.y = settings.gravity;
         this.currentGameObjects = [];
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
+
         cursors = this._game.input.keyboard.createCursorKeys();
         spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
         this.animationFPS = 12;
         this._currencyDisplay = null;
         this._add = new ToyboxGameObjectFactory(this);

@@ -1,15 +1,27 @@
+
 class ToyboxGameObjectFactory {
     constructor(toybox) {
         this.toybox = toybox;
         this.playerGO = null;
     }
 
-    player(spritesheetName, startingX, startingY) {
+    // var playerOptions = {
+    //     startingX : 0,
+    //     startingY: 0,
+    //     color: "green"
+    //     spritesheetName: this.color + "Alien",
+    //     jumpForce: 300,
+    //     speed: 100,
+    //     scale: 1
+    // }
+
+    player(playerOptions) {
         var playerGO = this.playerGO;
         if (playerGO != null) {
             playerGO.destroy();
         }
-        playerGO = this.toybox.game.add.sprite(startingX, startingY, spritesheetName, 1);
+        var spritesheetName = playerOptions.color + "Alien";
+        playerGO = this.toybox.game.add.sprite(playerOptions.startingX, playerOptions.startingY, "greenAlien", 1);
         playerGO.name = "player1";
         playerGO.anchor.setTo(0.5, 0.5);
         this.toybox.game.physics.enable(playerGO);
@@ -17,15 +29,17 @@ class ToyboxGameObjectFactory {
         this.addAnimationsToPlayer(playerGO);
         playerGO.toybox = this.toybox;
         playerGO.update = this.playerPlatformerUpdate;
-        playerGO.scale.x = size;
-        playerGO.scale.y = size;
+        playerGO.scale.x = playerOptions.scale;
+        playerGO.scale.y = playerOptions.scale;
+        playerGO.speed = playerOptions.speed;
+        playerGO.jumpForce = playerOptions.jumpForce;
         this.toybox.addGameObject(playerGO);
         return playerGO;
     }
 
     playerPlatformerUpdate() {
         if (cursors.right.isDown) {
-            this.body.velocity.x = speed;
+            this.body.velocity.x = this.speed;
             if (this.scale.x < 0) {
                 this.scale.x *= -1;
             }
@@ -33,7 +47,7 @@ class ToyboxGameObjectFactory {
                 this.animations.play("run");
             }
         } else if (cursors.left.isDown) {
-            this.body.velocity.x = -speed;
+            this.body.velocity.x = -this.speed;
             if (this.scale.x > 0) {
                 this.scale.x *= -1;
             }
@@ -48,23 +62,10 @@ class ToyboxGameObjectFactory {
 
         // checkForJump
         if (spacebar.isDown && (this.body.onFloor() || this.body.touching.down)) {
-            this.body.velocity.y = -jumpForce;
+            this.body.velocity.y = -this.jumpForce;
             if (this.animations.name !== "jump") {
                 this.animations.play("jump");
             }
-        }
-    }
-
-    playerOrthagonalUpdate() {
-        if (cursors.up.isDown) {
-            this.y -= speed;
-        } else if (cursors.down.isDown) {
-            this.y += speed;
-        }
-        if (cursors.right.isDown) {
-            this.x += speed;
-        } else if (cursors.left.isDown) {
-            this.x -= speed;
         }
     }
 
