@@ -76,50 +76,63 @@ class ToyboxGameObjectFactory {
         player.animations.add("jump", [7, 8], fps, true);
     }
 
-    collectible(spriteName, startingX, startingY) {
-        var collectibleGO = this.toybox.game.add.sprite(startingX, startingY, spriteName);
+    // var collectibleOptions = {
+    //     spriteName: "spriteSheet",
+    //     spriteIndex: 0,
+    //     startingX: 0,
+    //     startingY: 0,
+    //     bounce: 0,
+    //     update: function(){},
+    //     collide: function(){}
+    // };
+
+    collectible(collectibleOptions) {
+        collectibleOptions.spriteIndex = collectibleOptions.spriteIndex || 0;
+        collectibleOptions.bounce = collectibleOptions.bounce || 0;
+        var collectibleGO = this.toybox.game.add.sprite(collectibleOptions.startingX, collectibleOptions.startingY, collectibleOptions.spriteName, collectibleOptions.spriteIndex);
         collectibleGO.anchor.setTo(0.5, 0.5);
         this.toybox.game.physics.enable(collectibleGO);
         collectibleGO.body.collideWorldBounds = true;
-        collectibleGO.body.bounce.set(0.4);
-        collectibleGO.name = spriteName;
+        collectibleGO.body.bounce.set(collectibleOptions.bounce);
+        collectibleGO.name = collectibleOptions.spriteName;
+        collectibleGO.update = (typeof(collectibleOptions.update) == "function") ? collectibleOptions.update : function(){};
+        if (typeof(collectibleOptions.collide) == "function"){
+            collectibleGO.body.onCollide = new Phaser.Signal();
+            collectibleGO.body.onCollide.add(collectibleOptions.collide, toybox);
+        }
         collectibleGO.toybox = this.toybox;
-        collectibleGO.update = function () {};
-        collectibleGO.body.onCollide = new Phaser.Signal();
         this.toybox.addCollectible(collectibleGO);
         return collectibleGO;
     }
 
-    mushroom(color, startingX, startingY){
-        var spriteName;
-        var collisionFunc;
-        switch (color){
+    mushroom(mushroomOptions){
+        switch (mushroomOptions.color){
             case "yellow":
-                spriteName = "yellowMushroom";
-                collisionFunc = "trySpeedUpPlayer";
+                mushroomOptions.spriteName = "yellowMushroom";
+                mushroomOptions.collide = this.trySpeedUpPlayer;
             break;
             case "red":
-                spriteName = "redMushroom";
-                collisionFunc = "trySlowPlayer";
+                mushroomOptions.spriteName = "redMushroom";
+                mushroomOptions.collide = this.trySlowPlayer;
             break;
             case "blue":
-                spriteName = "blueMushroom";
-                collisionFunc = "tryShrinkPlayer";
+                mushroomOptions.spriteName = "blueMushroom";
+                mushroomOptions.collide = this.tryShrinkPlayer;
             break;
             default:
-                spriteName = "purpleMushroom";
-                collisionFunc = "tryGrowPlayer";
+                mushroomOptions.spriteName = "purpleMushroom";
+                mushroomOptions.collide = this.tryGrowPlayer;
             break;
         }
-        var mushroomGO = this.toybox.add.collectible(spriteName, startingX, startingY);
-        mushroomGO.body.onCollide.add(this[collisionFunc], mushroomGO);
+        var mushroomGO = this.toybox.add.collectible(mushroomOptions);
         return mushroomGO;
     }
 
     tryGrowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            if (size <= 3.0){
-                var newSize = size + 0.25;
+            var playerGO = sprite2
+            if (playerGO.scale <= 3.0){
+                var newSize = playerGO.scale + 0.25;
                 var scaleBy = (newSize / size);
                 size = newSize;
                 sprite2.scale.x *= scaleBy;

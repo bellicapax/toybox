@@ -94,6 +94,12 @@ function create() {
     if (shouldThereBeAPlayerObject) {
         player = toybox.add.player(playerOptions);
     }
+
+    toybox.add.mushroom({
+    	startingX: 50,
+    	startingY: 0,
+    	color: "red"
+    })
 }
 
 function update() {
