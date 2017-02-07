@@ -14,6 +14,7 @@ class Toybox {
         this._game.physics.arcade.gravity.y = settings.gravity;
         this.currentGameObjects = [];
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
+        this.blocks = new Phaser.Group(game, null, 'blocks', true);
 
         cursors = this._game.input.keyboard.createCursorKeys();
         spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -50,14 +51,36 @@ class Toybox {
         this.collectibles.add(go);
     }
 
+    addBlock(go) {
+        this.addGameObject(go);
+        this.blocks.add(go);
+    }
+
+    // helpers
+
+    spriteIsPlayer(spriteGO) {
+        return (spriteGO.name.substring(0,6) == "player");
+    }
+
+    diceRoll(diceSides) {
+        return Math.floor(Math.random() * diceSides) + 1;
+    }
+
+    oneOutOf(howManyTimes) {
+        return (diceRoll(howManyTimes) == howManyTimes);
+    }
+
+    xOutOfYTimes(x,y) {
+        return (diceRoll(y) == (y - (x - 1)));
+    }
+
     preload() {
         this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
         this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
         this._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
         this._game.load.spritesheet("smallMushrooms", "../../assets/sprites/smallMushroomsSheet.png", 16, 16);
-        this._game.load.image("purpleMushroom", "../../assets/sprites/purpleMushroom.png");
-        this._game.load.image("crate1", "../../assets/sprites/crate1.png");
+        this._game.load.spritesheet("cratesAndOre", "../../assets/sprites/cratesAndOreSheet.png", 16, 16);
         this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
         this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);

@@ -89,12 +89,17 @@ class ToyboxGameObjectFactory {
     collectible(collectibleOptions) {
         collectibleOptions.spriteIndex = collectibleOptions.spriteIndex || 0;
         collectibleOptions.bounce = collectibleOptions.bounce || 0;
+        collectibleOptions.scale = collectibleOptions.scale || 1;
+        collectibleOptions.drag = collectibleOptions.drag || 200;
+
         var collectibleGO = this.toybox.game.add.sprite(collectibleOptions.startingX, collectibleOptions.startingY, collectibleOptions.spriteName, collectibleOptions.spriteIndex);
+        collectibleGO.scale.x = collectibleOptions.scale;
+        collectibleGO.scale.y = collectibleOptions.scale;
         collectibleGO.anchor.setTo(0.5, 0.5);
         this.toybox.game.physics.enable(collectibleGO);
         collectibleGO.body.collideWorldBounds = true;
         collectibleGO.body.bounce.set(collectibleOptions.bounce);
-        collectibleGO.name = collectibleOptions.spriteName;
+        collectibleGO.name = collectibleOptions.name;
         collectibleGO.update = (typeof(collectibleOptions.update) == "function") ? collectibleOptions.update : function(){};
         if (typeof(collectibleOptions.collide) == "function"){
             collectibleGO.body.onCollide = new Phaser.Signal();
@@ -109,18 +114,22 @@ class ToyboxGameObjectFactory {
         switch (mushroomOptions.color){
             case "yellow":
                 mushroomOptions.spriteName = "yellowMushroom";
+                mushroomOptions.name = "yellowMushroom";
                 mushroomOptions.collide = this.trySpeedUpPlayer;
             break;
             case "red":
                 mushroomOptions.spriteName = "redMushroom";
+                mushroomOptions.name = "redMushroom";
                 mushroomOptions.collide = this.trySlowPlayer;
             break;
             case "blue":
                 mushroomOptions.spriteName = "blueMushroom";
+                mushroomOptions.name = "blueMushroom";
                 mushroomOptions.collide = this.tryShrinkPlayer;
             break;
             default:
                 mushroomOptions.spriteName = "purpleMushroom";
+                mushroomOptions.name = "purpleMushroom";
                 mushroomOptions.collide = this.tryGrowPlayer;
             break;
         }
@@ -130,13 +139,13 @@ class ToyboxGameObjectFactory {
 
     tryGrowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            var playerGO = sprite2
-            if (playerGO.scale <= 3.0){
-                var newSize = playerGO.scale + 0.25;
-                var scaleBy = (newSize / size);
-                size = newSize;
-                sprite2.scale.x *= scaleBy;
-                sprite2.scale.y *= scaleBy;
+            var playerGO = sprite2;
+            if (playerGO.scale.x <= 3.0){
+                var tempSize = Math.abs(playerGO.scale.x)
+                var newSize = tempSize + 0.25;
+                var scaleBy = (newSize / tempSize);
+                playerGO.scale.x *= scaleBy;
+                playerGO.scale.y *= scaleBy;
             }
             sprite1.destroy();
         }
@@ -144,12 +153,13 @@ class ToyboxGameObjectFactory {
 
     tryShrinkPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            if (size >= 0.5){
-                var newSize = size - 0.25;
-                var scaleBy = (newSize / size);
-                size = newSize;
-                sprite2.scale.x *= scaleBy;
-                sprite2.scale.y *= scaleBy;
+            var playerGO = sprite2;
+            if (playerGO.scale.x <= 3.0){
+                var tempSize = Math.abs(playerGO.scale.x)
+                var newSize = tempSize - 0.25;
+                var scaleBy = (newSize / tempSize);
+                playerGO.scale.x *= scaleBy;
+                playerGO.scale.y *= scaleBy;
             }
             sprite1.destroy();
         }
@@ -157,8 +167,9 @@ class ToyboxGameObjectFactory {
 
     trySpeedUpPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            if (speed <= 300){
-                speed += 50;
+            var playerGO = sprite2;
+            if (playerGO.speed <= 300){
+                playerGO.speed += 50;
             }
             sprite1.destroy();
         }
@@ -166,64 +177,65 @@ class ToyboxGameObjectFactory {
 
     trySlowPlayer(sprite1, sprite2) {
         if (sprite2 !== null && sprite2.name === "player1") {
-            if (speed >= 100){
-                speed -= 50;
+            var playerGO = sprite2;
+            if (playerGO.speed >= 100){
+                playerGO.speed -= 50;
             }
             sprite1.destroy();
         }
     }
 
-    block(spriteName, startingX, startingY) {
-        var blockGO = this.toybox.game.add.sprite(startingX, startingY, spriteName);
-        blockGO.anchor.setTo(0.5, 0.5);
-        this.toybox.game.physics.enable(blockGO);
-        blockGO.body.collideWorldBounds = true;
-        blockGO.body.bounce.set(0.4);
-        blockGO.body.drag.x = 500;
-        blockGO.name = "block";
-        blockGO.toybox = this.toybox;
-        blockGO.update = function () {};
-        this.toybox.addCollectible(blockGO);
-        return blockGO;
-    }
+    // var collectibleOptions = {
+    //     spriteName: "spriteSheet",
+    //     spriteIndex: 0,
+    //     startingX: 0,
+    //     startingY: 0,
+    //     bounce: 0,
+    //     update: function(){},
+    //     collide: function(){}
+    // };
 
-    coin(startingIndex, startingX, startingY) {
+    coin(coinOptions) {
+        coinOptions.spriteName = "coins";
+        coinOptions.color = coinOptions.color || "bronze";
+        coinOptions.name = coinOptions.color + "Coin";
+        coinOptions.collide = this.tryIncreaseCurrency;
         if (this.toybox.currencyDisplay === null) {
             this.currencyDisplay();
         }
-        var coinGO = this.toybox.game.add.sprite(startingX, startingY, "coins", startingIndex);
-        coinGO.anchor.setTo(0.5, 0.5);
-        this.toybox.game.physics.enable(coinGO);
-        coinGO.body.collideWorldBounds = true;
-        coinGO.name = "coin";
-        coinGO.update = function () {};
-        coinGO.currencyValue = this.currencyValueForIndex(startingIndex);
-        coinGO.body.onCollide = new Phaser.Signal();
-        coinGO.body.onCollide.add(this.tryIncreaseCurrency, this);
-        this.toybox.addCollectible(coinGO);
-    }
-
-    currencyValueForIndex(startingIndex) {
-        if (startingIndex == 0) {
-            return 1;
-        } else if (startingIndex == 1) {
-            return 10;
-        } else if (startingIndex == 2) {
-            return 100;
+        switch (coinOptions.color){
+            case "gold":
+                coinOptions.spriteIndex = 2;
+                coinOptions.bounce = 0.75;
+                var currencyValue = 100;
+            break;
+            case "silver":
+                coinOptions.spriteIndex = 1;
+                coinOptions.bounce = 0.5;
+                var currencyValue = 10;
+            break;
+            default:
+                coinOptions.spriteIndex = 0;
+                coinOptions.bounce = 0.25;
+                var currencyValue = 1;
+            break;
         }
+        var coinGO = this.toybox.add.collectible(coinOptions);
+        coinGO.currencyValue = currencyValue;
+        return coinGO;
     }
 
-    bronzeCoin(startingX, startingY) {
-        return this.coin(0, startingX, startingY);
-    }
+    // bronzeCoin(startingX, startingY) {
+    //     return this.coin(0, startingX, startingY);
+    // }
 
-    silverCoin(startingX, startingY) {
-        return this.coin(1, startingX, startingY);
-    }
+    // silverCoin(startingX, startingY) {
+    //     return this.coin(1, startingX, startingY);
+    // }
 
-    goldCoin(startingX, startingY) {
-        return this.coin(2, startingX, startingY);
-    }
+    // goldCoin(startingX, startingY) {
+    //     return this.coin(2, startingX, startingY);
+    // }
 
     tryIncreaseCurrency(coin, collidedSprite) {
         if (this.spriteIsPlayer(collidedSprite)) {
@@ -246,5 +258,39 @@ class ToyboxGameObjectFactory {
         };
         var textGO = game.add.text(10, 10, "0", style);
         this.toybox.currencyDisplay = textGO;
+    }
+
+    block(blockOptions) {
+        blockOptions.spriteIndex = blockOptions.spriteIndex || 0;
+        blockOptions.bounce = blockOptions.bounce || 0;
+        blockOptions.scale = blockOptions.scale || 1;
+        blockOptions.drag = blockOptions.drag || 500;
+
+        var blockGO = this.toybox.game.add.sprite(blockOptions.startingX, blockOptions.startingY, blockOptions.spriteName, blockOptions.spriteIndex);
+        blockGO.scale.x = blockOptions.scale;
+        blockGO.scale.y = blockOptions.scale;
+        blockGO.anchor.setTo(0.5, 0.5);
+        this.toybox.game.physics.enable(blockGO);
+        blockGO.body.collideWorldBounds = true;
+        blockGO.body.bounce.set(blockOptions.bounce);
+        blockGO.body.drag.x = blockOptions.drag;
+        blockGO.name = blockOptions.name || "block";
+        blockGO.update = (typeof(blockGO.update) == "function") ? blockGO.update : function(){};
+        if (typeof(blockOptions.collide) == "function"){
+            blockGO.body.onCollide = new Phaser.Signal();
+            blockGO.body.onCollide.add(blockOptions.collide, toybox);
+        }
+        blockGO.toybox = this.toybox;
+        this.toybox.addBlock(blockGO);
+        return blockGO;
+    }
+
+    crate(crateOptions){
+        crateOptions.spriteName = "cratesAndOre";
+        crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
+        crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(5) - 1;
+        crateOptions.name = "type" + crateOptions.type + "Crate";
+        var crateGO = this.toybox.add.block(crateOptions);
+        return crateGO;
     }
 }
