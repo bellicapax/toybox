@@ -288,7 +288,7 @@ class ToyboxGameObjectFactory {
     crate(crateOptions){
         crateOptions.spriteName = "cratesAndOre";
         crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
-        crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(5) - 1;
+        crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
         crateOptions.name = "type" + crateOptions.type + "Crate";
         var crateGO = this.toybox.add.block(crateOptions);
         return crateGO;
