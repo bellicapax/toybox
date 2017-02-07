@@ -24,34 +24,35 @@ function create() {
 
     player = toybox.add.player(playerOptions);
 
-    toybox.add.mushroom({
-    	startingX: 50,
-    	startingY: 0,
-    	color: "red"
-    });
-
-    toybox.add.coin({
-        startingX: 200,
-        startingY: 0,
-        color: "gold"
-    });
-    toybox.add.coin({
-        startingX: 250,
-        startingY: 0,
-        color: "silver"
-    });
-    toybox.add.coin({
-        startingX: 300,
-        startingY: 0,
-        color: "bronze"
-    });
-
-    toybox.add.crate({
-        startingX: 400,
-        startingY: 0
-    });
 }
 
 function update() {
     toybox.update();
+
+    for (var i = toybox.collectibles.children.length - 1; i >= 0; i--) {
+        if (typeof(toybox.collectibles.children[i].age) == "undefined"){
+            toybox.collectibles.children[i].age = 0;
+        } else {
+            toybox.collectibles.children[i].age++;
+            if (toybox.collectibles.children[i].age >= 300){
+                toybox.collectibles.children[i].destroy();
+            }
+        }
+    }
+
+    if(toybox.oneOutOf(100)){ 
+        toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+    };
+
+    if(toybox.oneOutOf(30)){ 
+        toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+    };
+
+    if(toybox.oneOutOf(400)){ 
+        toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+    };
+
+    if(toybox.blocks.children.length > 30){
+        toybox.blocks.children[0].destroy();
+    };
 }

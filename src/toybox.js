@@ -67,11 +67,11 @@ class Toybox {
     }
 
     oneOutOf(howManyTimes) {
-        return (diceRoll(howManyTimes) == howManyTimes);
+        return (this.diceRoll(howManyTimes) == howManyTimes);
     }
 
     xOutOfYTimes(x,y) {
-        return (diceRoll(y) == (y - (x - 1)));
+        return (this.diceRoll(y) == (y - (x - 1)));
     }
 
     preload() {

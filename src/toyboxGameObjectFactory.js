@@ -93,12 +93,21 @@ class ToyboxGameObjectFactory {
         collectibleOptions.drag = collectibleOptions.drag || 200;
 
         var collectibleGO = this.toybox.game.add.sprite(collectibleOptions.startingX, collectibleOptions.startingY, collectibleOptions.spriteName, collectibleOptions.spriteIndex);
+        
         collectibleGO.scale.x = collectibleOptions.scale;
         collectibleGO.scale.y = collectibleOptions.scale;
         collectibleGO.anchor.setTo(0.5, 0.5);
+
         this.toybox.game.physics.enable(collectibleGO);
+        if (typeof(collectibleOptions.dX) !== "undefined") {
+            collectibleGO.body.velocity.x = collectibleOptions.dX;
+        }
+        if (typeof(collectibleOptions.dy) !== "undefined") {
+            collectibleGO.body.velocity.y = collectibleOptions.dy;
+        }
         collectibleGO.body.collideWorldBounds = true;
         collectibleGO.body.bounce.set(collectibleOptions.bounce);
+        
         collectibleGO.name = collectibleOptions.name;
         collectibleGO.update = (typeof(collectibleOptions.update) == "function") ? collectibleOptions.update : function(){};
         if (typeof(collectibleOptions.collide) == "function"){
@@ -111,6 +120,19 @@ class ToyboxGameObjectFactory {
     }
 
     mushroom(mushroomOptions){
+        var randomizeShroom = function() {
+            var probability = toybox.diceRoll(40);
+            if (probability <= 10) {
+                return "red";
+            } else if (probability <= 20){
+                return "yellow";
+            } else if (probability <= 30){
+                return "blue";
+            } else {
+                return "purple";
+            }
+        }
+        mushroomOptions.color = mushroomOptions.color || randomizeShroom();
         switch (mushroomOptions.color){
             case "yellow":
                 mushroomOptions.spriteName = "yellowMushroom";
@@ -196,8 +218,20 @@ class ToyboxGameObjectFactory {
     // };
 
     coin(coinOptions) {
+
+        var randomizeCoin = function() {
+            var probability = toybox.diceRoll(50);
+            if (probability <= 25) {
+                return "bronze";
+            } else if (probability <= 45){
+                return "silver";
+            } else {
+                return "gold";
+            }
+        }
+
         coinOptions.spriteName = "coins";
-        coinOptions.color = coinOptions.color || "bronze";
+        coinOptions.color = coinOptions.color || randomizeCoin();
         coinOptions.name = coinOptions.color + "Coin";
         coinOptions.collide = this.tryIncreaseCurrency;
         if (this.toybox.currencyDisplay === null) {
@@ -290,6 +324,7 @@ class ToyboxGameObjectFactory {
         crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
         crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
         crateOptions.name = "type" + crateOptions.type + "Crate";
+        crateOptions.drag = (crateOptions.scale ^ 2) * 50;
         var crateGO = this.toybox.add.block(crateOptions);
         return crateGO;
     }
