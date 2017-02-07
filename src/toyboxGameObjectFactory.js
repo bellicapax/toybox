@@ -107,7 +107,7 @@ class ToyboxGameObjectFactory {
         }
         collectibleGO.body.collideWorldBounds = true;
         collectibleGO.body.bounce.set(collectibleOptions.bounce);
-        
+
         collectibleGO.name = collectibleOptions.name;
         collectibleGO.update = (typeof(collectibleOptions.update) == "function") ? collectibleOptions.update : function(){};
         if (typeof(collectibleOptions.collide) == "function"){
@@ -120,6 +120,7 @@ class ToyboxGameObjectFactory {
     }
 
     mushroom(mushroomOptions){
+
         var randomizeShroom = function() {
             var probability = toybox.diceRoll(40);
             if (probability <= 10) {
@@ -132,26 +133,25 @@ class ToyboxGameObjectFactory {
                 return "purple";
             }
         }
+
         mushroomOptions.color = mushroomOptions.color || randomizeShroom();
+        mushroomOptions.spriteName = "smallMushrooms";
+        mushroomOptions.name = mushroomOptions.color + "Mushroom";
         switch (mushroomOptions.color){
             case "yellow":
-                mushroomOptions.spriteName = "yellowMushroom";
-                mushroomOptions.name = "yellowMushroom";
+                mushroomOptions.spriteIndex = 14;
                 mushroomOptions.collide = this.trySpeedUpPlayer;
             break;
             case "red":
-                mushroomOptions.spriteName = "redMushroom";
-                mushroomOptions.name = "redMushroom";
+                mushroomOptions.spriteIndex = 11;
                 mushroomOptions.collide = this.trySlowPlayer;
             break;
             case "blue":
-                mushroomOptions.spriteName = "blueMushroom";
-                mushroomOptions.name = "blueMushroom";
+                mushroomOptions.spriteIndex = 20;
                 mushroomOptions.collide = this.tryShrinkPlayer;
             break;
             default:
-                mushroomOptions.spriteName = "purpleMushroom";
-                mushroomOptions.name = "purpleMushroom";
+                mushroomOptions.spriteIndex = 20;
                 mushroomOptions.collide = this.tryGrowPlayer;
             break;
         }
