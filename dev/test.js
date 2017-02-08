@@ -24,6 +24,12 @@ function create() {
 
     player1 = toybox.add.alienPlayer(playerOptions);
 
+    playerOptions.color = "blue";
+    playerOptions.startingX = 300;
+
+    player2 = toybox.add.alienPlayer(playerOptions);
+
+
 }
 
 function update() {
