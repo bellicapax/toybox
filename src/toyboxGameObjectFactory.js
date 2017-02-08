@@ -5,6 +5,40 @@ class ToyboxGameObjectFactory {
         this.playerGO = null;
     }
 
+    toyboxObject(objectOptions){
+        objectOptions.spriteIndex = objectOptions.spriteIndex || 0;
+        objectOptions.bounce = objectOptions.bounce || 0;
+        objectOptions.scale = objectOptions.scale || 1;
+        objectOptions.drag = objectOptions.drag || 200;
+        objectOptions.allowGravity = objectOptions.allowGravity || true;
+
+        var objectGO = this.toybox.game.add.sprite(objectOptions.startingX, objectOptions.startingY, objectOptions.spriteName, objectOptions.spriteIndex);
+        
+        objectGO.scale.x = objectOptions.scale;
+        objectGO.scale.y = objectOptions.scale;
+        objectGO.anchor.setTo(0.5, 0.5);
+
+        this.toybox.game.physics.enable(objectGO);
+        if (typeof(objectOptions.dX) !== "undefined") {
+            objectGO.body.velocity.x = objectOptions.dX;
+        }
+        if (typeof(objectOptions.dy) !== "undefined") {
+            objectGO.body.velocity.y = objectOptions.dy;
+        }
+        objectGO.body.collideWorldBounds = true;
+        objectGO.body.bounce.set(objectOptions.bounce);
+        objectGO.body.allowGravity = objectOptions.allowGravity;
+
+        objectGO.name = objectOptions.name;
+        objectGO.update = (typeof(objectOptions.update) == "function") ? objectOptions.update : function(){};
+        if (typeof(objectOptions.collide) == "function"){
+            objectGO.body.onCollide = new Phaser.Signal();
+            objectGO.body.onCollide.add(objectOptions.collide, toybox);
+        }
+        objectGO.toybox = this.toybox;
+        return objectGO;
+    }
+
     // var playerOptions = {
     //     startingX : 0,
     //     startingY: 0,
@@ -16,25 +50,33 @@ class ToyboxGameObjectFactory {
     // }
 
     player(playerOptions) {
-        var playerGO = this.playerGO;
-        if (playerGO != null) {
-            playerGO.destroy();
-        }
-        var spritesheetName = playerOptions.color + "Alien";
-        playerGO = this.toybox.game.add.sprite(playerOptions.startingX, playerOptions.startingY, "greenAlien", 1);
-        playerGO.name = "player1";
-        playerGO.anchor.setTo(0.5, 0.5);
-        this.toybox.game.physics.enable(playerGO);
-        playerGO.body.collideWorldBounds = true;
-        this.addAnimationsToPlayer(playerGO);
-        playerGO.toybox = this.toybox;
-        playerGO.update = this.playerPlatformerUpdate;
-        playerGO.scale.x = playerOptions.scale;
-        playerGO.scale.y = playerOptions.scale;
+        playerOptions.name = "player1";
+
+        // var playerGO = this.playerGO;
+        // if (playerGO != null) {
+        //     playerGO.destroy();
+        // }
+
+        playerOptions.spriteName = playerOptions.color + "Alien";
+        var playerGO = this.toybox.add.toyboxObject(playerOptions);
+
         playerGO.speed = playerOptions.speed;
+        playerGO.update = this.playerPlatformerUpdate;
+        this.addAnimationsToPlayer(playerGO);
         playerGO.jumpForce = playerOptions.jumpForce;
-        this.toybox.addGameObject(playerGO);
+        this.toybox.addPlayer(playerGO);
         return playerGO;
+    }
+
+    alienPlayer(alienOptions) {
+        alienOptions.allowGravity = true;
+        var validColors = ["green","blue","pink"];
+        if (typeof(alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1){
+            alienOptions.color = "green";
+        }
+        alienOptions.spriteName = alienOptions.color + "Alien";
+        var alienGO = this.toybox.add.player(alienOptions);
+        return alienGO;
     }
 
     playerPlatformerUpdate() {
@@ -92,29 +134,9 @@ class ToyboxGameObjectFactory {
         collectibleOptions.scale = collectibleOptions.scale || 1;
         collectibleOptions.drag = collectibleOptions.drag || 200;
 
-        var collectibleGO = this.toybox.game.add.sprite(collectibleOptions.startingX, collectibleOptions.startingY, collectibleOptions.spriteName, collectibleOptions.spriteIndex);
+        var collectibleGO = this.toybox.add.toyboxObject(collectibleOptions);
         
-        collectibleGO.scale.x = collectibleOptions.scale;
-        collectibleGO.scale.y = collectibleOptions.scale;
-        collectibleGO.anchor.setTo(0.5, 0.5);
-
-        this.toybox.game.physics.enable(collectibleGO);
-        if (typeof(collectibleOptions.dX) !== "undefined") {
-            collectibleGO.body.velocity.x = collectibleOptions.dX;
-        }
-        if (typeof(collectibleOptions.dy) !== "undefined") {
-            collectibleGO.body.velocity.y = collectibleOptions.dy;
-        }
-        collectibleGO.body.collideWorldBounds = true;
-        collectibleGO.body.bounce.set(collectibleOptions.bounce);
-
-        collectibleGO.name = collectibleOptions.name;
-        collectibleGO.update = (typeof(collectibleOptions.update) == "function") ? collectibleOptions.update : function(){};
-        if (typeof(collectibleOptions.collide) == "function"){
-            collectibleGO.body.onCollide = new Phaser.Signal();
-            collectibleGO.body.onCollide.add(collectibleOptions.collide, toybox);
-        }
-        collectibleGO.toybox = this.toybox;
+        collectibleGO.toyboxType = "collectible";
         this.toybox.addCollectible(collectibleGO);
         return collectibleGO;
     }
@@ -300,21 +322,8 @@ class ToyboxGameObjectFactory {
         blockOptions.scale = blockOptions.scale || 1;
         blockOptions.drag = blockOptions.drag || 500;
 
-        var blockGO = this.toybox.game.add.sprite(blockOptions.startingX, blockOptions.startingY, blockOptions.spriteName, blockOptions.spriteIndex);
-        blockGO.scale.x = blockOptions.scale;
-        blockGO.scale.y = blockOptions.scale;
-        blockGO.anchor.setTo(0.5, 0.5);
-        this.toybox.game.physics.enable(blockGO);
-        blockGO.body.collideWorldBounds = true;
-        blockGO.body.bounce.set(blockOptions.bounce);
-        blockGO.body.drag.x = blockOptions.drag;
-        blockGO.name = blockOptions.name || "block";
-        blockGO.update = (typeof(blockGO.update) == "function") ? blockGO.update : function(){};
-        if (typeof(blockOptions.collide) == "function"){
-            blockGO.body.onCollide = new Phaser.Signal();
-            blockGO.body.onCollide.add(blockOptions.collide, toybox);
-        }
-        blockGO.toybox = this.toybox;
+        var blockGO = this.toybox.add.toyboxObject(blockOptions);
+        blockGO.toyboxType = "block";
         this.toybox.addBlock(blockGO);
         return blockGO;
     }

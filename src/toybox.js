@@ -13,6 +13,7 @@ class Toybox {
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
         this._game.physics.arcade.gravity.y = settings.gravity;
         this.currentGameObjects = [];
+        this.players = new Phaser.Group(game, null, 'players', true);
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         this.blocks = new Phaser.Group(game, null, 'blocks', true);
 
@@ -44,6 +45,11 @@ class Toybox {
         if (this.currentGameObjects.indexOf(go) === -1) {
             this.currentGameObjects.push(go);
         }
+    }
+
+    addPlayer(go){
+        this.addGameObject(go);
+        this.players.add(go);
     }
 
     addCollectible(go) {

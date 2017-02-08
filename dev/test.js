@@ -16,13 +16,13 @@ function create() {
     var playerOptions = {
         startingX : 100,
         startingY: 100,
-        color: "blue",
+        color: "pink",
         jumpForce: 300,
         speed: 100,
         scale: 1
     }
 
-    player = toybox.add.player(playerOptions);
+    player1 = toybox.add.alienPlayer(playerOptions);
 
 }
 
