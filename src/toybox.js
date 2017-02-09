@@ -11,7 +11,7 @@ class Toybox {
         this._game = game;
         this._game.stage.smoothed = false;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
-        this._game.physics.arcade.gravity.y = settings.gravity;
+        this._game.physics.arcade.gravity.y = gameOptions.gravity;
         this.currentGameObjects = [];
         this.players = new Phaser.Group(game, null, 'players', true);
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
@@ -47,7 +47,7 @@ class Toybox {
         }
     }
 
-    addPlayer(go){
+    addPlayer(go) {
         this.addGameObject(go);
         this.players.add(go);
     }
@@ -65,7 +65,7 @@ class Toybox {
     // helpers
 
     spriteIsPlayer(spriteGO) {
-        return (spriteGO.name.substring(0,6) == "player");
+        return (spriteGO.name.substring(0, 6) == "player");
     }
 
     diceRoll(diceSides) {
@@ -76,7 +76,7 @@ class Toybox {
         return (this.diceRoll(howManyTimes) == howManyTimes);
     }
 
-    xOutOfYTimes(x,y) {
+    xOutOfYTimes(x, y) {
         return (this.diceRoll(y) == (y - (x - 1)));
     }
 
