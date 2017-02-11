@@ -3,13 +3,16 @@
 
 //  These are some variables!
 // The command 'var' declares a variable in javascript.
-// This just means that javascript now knows that variable name (after the space) stores some kind of data.
+// This just means that javascript now knows that variable name (after the space) can reference some kind of value.
 
 var player;
 var playerSize;
 
+// The above variable is declared, but it isn't defined (it does not yet reference a specific value)
+
 // A single equals sign is used to assign a variable.
 // Assigning a variable saves the value on the right side of the equals sign to the variable name on the left.
+// Assignment is what defines the variable.
 // Note that I don't need to use var to assign 'size' to 2, because I already declared 'size' as a variable above.
 
 playerSize = 2;
@@ -20,11 +23,16 @@ var playerSpeed = 100;
 var gravity = 980;
 var playerJumpForce = 300;
 
-// So far, all of the data we've assign for our variables has been numbers.
+// So far, all of the data we've assigned for our variables has been numbers.
 // But there are other types of data we can assign to variables.
 
-// Variables can store Strings. A string is a string of text characters: this is how you would store words.
-// Strings are noted by enclosing the character data in either single or double quotes. We're using double quotes here.
+// Variables can store Strings. A string is a sequence of text characters: this is how you would store words 
+// or even longer phrases containing letters, numbers, punctuation  marks, and spaces.
+// Strings are noted by enclosing the character data in either single or double quotes. 
+// We're using double quotes here. Whatever you use, try to stay consistent. 
+// You must use the same type of quote at the beginning and end. 
+// Mixing it up on different strings doesn't break any rules per se, but consistency is a matter of style. 
+// Do future you a favor, and use the same quote marks throughout. Code style makes a big difference in readability.
 var playerColor = "green";
 
 // Variables can store Arrays. An array is an ordered list of data. This array contains three strings.
@@ -41,7 +49,8 @@ var uselessObject = {};
 
 // You can name your variable PRETTY MUCH whatever you want.
 // You can't use characters that Javascript uses for operations, like (),!,'":?
-// You also can't name your variable the same thing as a Javascript command, like 'switch' or 'function'.
+// You cannot start the name with a number.
+// You also can't name your variable the same thing as a Javascript command ("reserved word"), like 'switch' or 'function'.
 // Otherwise you can name your variables how you like.
 
 var Tfdsf$dvFROG = "This is a valid variable name, but don't ever name your variables like this."
