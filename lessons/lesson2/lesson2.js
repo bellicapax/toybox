@@ -13,7 +13,7 @@ var smartCar;
 // when we use the + operator to "add" two variables together.
 // This will teach us some of the ways that Javascript works with primitive types
 // Can you guess what the result of "banana" and "smartCar" is?
-// Go ahead and open lesson2part1.html to see the result!
+// Go ahead and open index.html to see the result!
 banana = "banana";
 smartCar = "smartCar";
 
