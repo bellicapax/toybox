@@ -98,10 +98,30 @@ var tweenSpeedInMs = 500;
 function preload() {
     toybox = new Toybox(game, settings);
     toybox.preload();
+    game.load.image("banana", "../../assets/sprites/banana.png");
+    game.load.image("smartCar", "../../assets/sprites/smartCar.png");
 }
 
 function create() {
     createTextAnimation();
+    createSprites();
+}
+
+function createSprites() {
+  var banana = game.add.sprite(-20, game.world.height * 0.5 - 40, "banana");
+  banana.anchor.setTo(1, 0.5);
+  banana.scale.x = 0.25;
+  banana.scale.y = 0.25;
+  var bananaSpriteTween = game.tweens.create(banana);
+  bananaSpriteTween.to({x: game.world.centerX - 25}, tweenSpeedInMs, Phaser.Easing.Bounce.Out);
+  var smartCar = game.add.sprite(game.world.width + 20, game.world.height * 0.5 - 40, "smartCar");
+  smartCar.anchor.setTo(0, 0.5);
+  smartCar.scale.x = 0.25;
+  smartCar.scale.y = 0.25;
+  var smartCarSpriteTween = game.tweens.create(smartCar);
+  smartCarSpriteTween.to({x: game.world.centerX + 25}, tweenSpeedInMs, Phaser.Easing.Bounce.Out, false, tweenSpeedInMs * 2 + 50);
+  bananaSpriteTween.start();
+  smartCarSpriteTween.start();
 }
 
 function createTextAnimation() {
