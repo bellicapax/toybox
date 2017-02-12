@@ -16,7 +16,8 @@
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
     create: create,
-    update: update
+    update: update,
+    render: render
 });
 
 // ---- COMPONENT 2: Phaser.Js ----
@@ -94,7 +95,7 @@ function create() {
         scale: 1
     }
 
-    toybox.add.alienPlayer(playerOptions);
+    mainPlayer = toybox.add.alienPlayer(playerOptions);
 
     coinOptions = {
         startingX: 320, 
@@ -148,7 +149,7 @@ function create() {
 function update() {
     toybox.update();
 
-    //toybox.add.coin(coinOptions);
+    toybox.add.coin(coinOptions);
 }
 
 // ---- UPDATE ----
@@ -178,3 +179,10 @@ function update() {
 // You might notice that if you let those coins pile up, the game will eventually slow down.
 // That's because each game-object has to run code on it to make sure it acts properly, and the more objects are in the game,
 // the more code has to been run. After a while, you'll start to stress your game engine to it's limits.
+
+// ----- END OF LESSON MATERIAL -----
+
+function render(){
+    var coinScore = mainPlayer.stats.score || 0;
+    game.debug.text(coinScore,10,30)
+}
