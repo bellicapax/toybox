@@ -2,7 +2,7 @@
 class ToyboxGameObjectFactory {
     constructor(toybox) {
         this.toybox = toybox;
-        this.playerGO = null;
+        //this.playerGO = null;
     }
 
     toyboxObject(objectOptions){

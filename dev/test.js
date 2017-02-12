@@ -8,6 +8,7 @@ var settings = {gravity: 980};
 
 function preload() {
     toybox = new Toybox(game,settings);
+    toybox.plugins = ["crate"];
     toybox.preload();
 }
 
