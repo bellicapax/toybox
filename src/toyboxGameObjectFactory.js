@@ -62,6 +62,7 @@ class ToyboxGameObjectFactory {
 
         playerGO.speed = playerOptions.speed;
         playerGO.update = playerOptions.update;
+        playerGO.stats = {};
         this.addAnimationsToPlayer(playerGO);
         playerGO.jumpForce = playerOptions.jumpForce;
         this.playerAttachControls(playerGO,playerOptions.controls);
@@ -273,9 +274,6 @@ class ToyboxGameObjectFactory {
         coinOptions.color = coinOptions.color || randomizeCoin();
         coinOptions.name = coinOptions.color + "Coin";
         coinOptions.collide = this.tryIncreaseCurrency;
-        if (this.toybox.currencyDisplay === null) {
-            this.currencyDisplay();
-        }
         switch (coinOptions.color){
             case "gold":
                 coinOptions.spriteIndex = 2;
@@ -298,39 +296,18 @@ class ToyboxGameObjectFactory {
         return coinGO;
     }
 
-    // bronzeCoin(startingX, startingY) {
-    //     return this.coin(0, startingX, startingY);
-    // }
-
-    // silverCoin(startingX, startingY) {
-    //     return this.coin(1, startingX, startingY);
-    // }
-
-    // goldCoin(startingX, startingY) {
-    //     return this.coin(2, startingX, startingY);
-    // }
-
     tryIncreaseCurrency(coin, collidedSprite) {
         if (this.spriteIsPlayer(collidedSprite)) {
-            var numCurrency = Number(collidedSprite.toybox.currencyDisplay.text);
-            numCurrency += coin.currencyValue;
-            collidedSprite.toybox.currencyDisplay.text = String(numCurrency);
+            if (typeof(collidedSprite.stats.score) == "undefined"){
+                collidedSprite.stats.score = 0;
+            }
+            collidedSprite.stats.score += coin.currencyValue;
             coin.destroy();
         }
     }
 
     spriteIsPlayer(sprite) {
         return sprite !== null && sprite.name === "player1";
-    }
-
-    currencyDisplay() {
-        var style = {
-            font: "16px New Courier",
-            fill: "#ff0044",
-            align: "left"
-        };
-        var textGO = game.add.text(10, 10, "0", style);
-        this.toybox.currencyDisplay = textGO;
     }
 
     block(blockOptions) {
