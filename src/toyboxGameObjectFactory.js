@@ -61,9 +61,10 @@ class ToyboxGameObjectFactory {
         var playerGO = this.toybox.add.toyboxObject(playerOptions);
 
         playerGO.speed = playerOptions.speed;
-        playerGO.update = this.playerPlatformerUpdate;
+        playerGO.update = playerOptions.update;
         this.addAnimationsToPlayer(playerGO);
         playerGO.jumpForce = playerOptions.jumpForce;
+        this.playerAttachControls(playerGO,playerOptions.controls);
         this.toybox.addPlayer(playerGO);
         return playerGO;
     }
@@ -75,12 +76,28 @@ class ToyboxGameObjectFactory {
             alienOptions.color = "green";
         }
         alienOptions.spriteName = alienOptions.color + "Alien";
+        alienOptions.update = this.alienPlatformerUpdate;
         var alienGO = this.toybox.add.player(alienOptions);
         return alienGO;
     }
 
-    playerPlatformerUpdate() {
-        if (cursors.right.isDown) {
+    playerAttachControls(playerGO,controlsObject){
+        playerGO.controls = {};
+        if (typeof(controlsObject) == "undefined"){
+            controlsObject = {
+                left: 37,
+                right: 39,
+                jump: 38
+            }
+        }
+        for (var i = Object.keys(controlsObject).length - 1; i >= 0; i--) {
+            var controlName = Object.keys(controlsObject)[i];
+            playerGO.controls[controlName] = this.toybox.game.input.keyboard.addKey(controlsObject[controlName]);
+        } 
+    }
+
+    alienPlatformerUpdate() {
+        if (this.controls.right.isDown) {
             this.body.velocity.x = this.speed;
             if (this.scale.x < 0) {
                 this.scale.x *= -1;
@@ -88,7 +105,7 @@ class ToyboxGameObjectFactory {
             if (this.animations.name !== "run") {
                 this.animations.play("run");
             }
-        } else if (cursors.left.isDown) {
+        } else if (this.controls.left.isDown) {
             this.body.velocity.x = -this.speed;
             if (this.scale.x > 0) {
                 this.scale.x *= -1;
@@ -103,7 +120,7 @@ class ToyboxGameObjectFactory {
         }
 
         // checkForJump
-        if (spacebar.isDown && (this.body.onFloor() || this.body.touching.down)) {
+        if (this.controls.jump.isDown && (this.body.onFloor() || this.body.touching.down)) {
             this.body.velocity.y = -this.jumpForce;
             if (this.animations.name !== "jump") {
                 this.animations.play("jump");

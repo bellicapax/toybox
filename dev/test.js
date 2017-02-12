@@ -26,6 +26,11 @@ function create() {
 
     playerOptions.color = "blue";
     playerOptions.startingX = 300;
+    playerOptions.controls = {
+        left:65,
+        right:68,
+        jump: 87
+    }
 
     player2 = toybox.add.alienPlayer(playerOptions);
 
