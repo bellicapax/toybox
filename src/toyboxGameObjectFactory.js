@@ -63,23 +63,10 @@ class ToyboxGameObjectFactory {
         playerGO.speed = playerOptions.speed;
         playerGO.update = playerOptions.update;
         playerGO.stats = {};
-        this.addAnimationsToPlayer(playerGO);
         playerGO.jumpForce = playerOptions.jumpForce;
         this.playerAttachControls(playerGO,playerOptions.controls);
         this.toybox.addPlayer(playerGO);
         return playerGO;
-    }
-
-    alienPlayer(alienOptions) {
-        alienOptions.allowGravity = true;
-        var validColors = ["green","blue","pink"];
-        if (typeof(alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1){
-            alienOptions.color = "green";
-        }
-        alienOptions.spriteName = alienOptions.color + "Alien";
-        alienOptions.update = this.alienPlatformerUpdate;
-        var alienGO = this.toybox.add.player(alienOptions);
-        return alienGO;
     }
 
     playerAttachControls(playerGO,controlsObject){
@@ -97,44 +84,6 @@ class ToyboxGameObjectFactory {
         } 
     }
 
-    alienPlatformerUpdate() {
-        if (this.controls.right.isDown) {
-            this.body.velocity.x = this.speed;
-            if (this.scale.x < 0) {
-                this.scale.x *= -1;
-            }
-            if (this.animations.name !== "run") {
-                this.animations.play("run");
-            }
-        } else if (this.controls.left.isDown) {
-            this.body.velocity.x = -this.speed;
-            if (this.scale.x > 0) {
-                this.scale.x *= -1;
-            }
-            if (this.animations.name !== "run") {
-                this.animations.play("run");
-            }
-        } else {
-            // Not moving
-            this.body.velocity.x = 0;
-            this.animations.play("idle");
-        }
-
-        // checkForJump
-        if (this.controls.jump.isDown && (this.body.onFloor() || this.body.touching.down)) {
-            this.body.velocity.y = -this.jumpForce;
-            if (this.animations.name !== "jump") {
-                this.animations.play("jump");
-            }
-        }
-    }
-
-    addAnimationsToPlayer(player) {
-        var fps = this.toybox.animationFPS;
-        player.animations.add("idle", [1]);
-        player.animations.add("run", [9, 10], fps, true);
-        player.animations.add("jump", [7, 8], fps, true);
-    }
 
     // var collectibleOptions = {
     //     spriteName: "spriteSheet",
@@ -159,94 +108,6 @@ class ToyboxGameObjectFactory {
         return collectibleGO;
     }
 
-    mushroom(mushroomOptions){
-
-        var randomizeShroom = function() {
-            var probability = toybox.diceRoll(40);
-            if (probability <= 10) {
-                return "red";
-            } else if (probability <= 20){
-                return "yellow";
-            } else if (probability <= 30){
-                return "blue";
-            } else {
-                return "purple";
-            }
-        }
-
-        mushroomOptions.color = mushroomOptions.color || randomizeShroom();
-        mushroomOptions.spriteName = "smallMushrooms";
-        mushroomOptions.name = mushroomOptions.color + "Mushroom";
-        switch (mushroomOptions.color){
-            case "yellow":
-                mushroomOptions.spriteIndex = 14;
-                mushroomOptions.collide = this.trySpeedUpPlayer;
-            break;
-            case "red":
-                mushroomOptions.spriteIndex = 11;
-                mushroomOptions.collide = this.trySlowPlayer;
-            break;
-            case "blue":
-                mushroomOptions.spriteIndex = 20;
-                mushroomOptions.collide = this.tryShrinkPlayer;
-            break;
-            default:
-                mushroomOptions.spriteIndex = 20;
-                mushroomOptions.collide = this.tryGrowPlayer;
-            break;
-        }
-        var mushroomGO = this.toybox.add.collectible(mushroomOptions);
-        return mushroomGO;
-    }
-
-    tryGrowPlayer(sprite1, sprite2) {
-        if (sprite2 !== null && sprite2.name === "player1") {
-            var playerGO = sprite2;
-            if (playerGO.scale.x <= 3.0){
-                var tempSize = Math.abs(playerGO.scale.x)
-                var newSize = tempSize + 0.25;
-                var scaleBy = (newSize / tempSize);
-                playerGO.scale.x *= scaleBy;
-                playerGO.scale.y *= scaleBy;
-            }
-            sprite1.destroy();
-        }
-    }
-
-    tryShrinkPlayer(sprite1, sprite2) {
-        if (sprite2 !== null && sprite2.name === "player1") {
-            var playerGO = sprite2;
-            if (playerGO.scale.x <= 3.0){
-                var tempSize = Math.abs(playerGO.scale.x)
-                var newSize = tempSize - 0.25;
-                var scaleBy = (newSize / tempSize);
-                playerGO.scale.x *= scaleBy;
-                playerGO.scale.y *= scaleBy;
-            }
-            sprite1.destroy();
-        }
-    }
-
-    trySpeedUpPlayer(sprite1, sprite2) {
-        if (sprite2 !== null && sprite2.name === "player1") {
-            var playerGO = sprite2;
-            if (playerGO.speed <= 300){
-                playerGO.speed += 50;
-            }
-            sprite1.destroy();
-        }
-    }
-
-    trySlowPlayer(sprite1, sprite2) {
-        if (sprite2 !== null && sprite2.name === "player1") {
-            var playerGO = sprite2;
-            if (playerGO.speed >= 100){
-                playerGO.speed -= 50;
-            }
-            sprite1.destroy();
-        }
-    }
-
     // var collectibleOptions = {
     //     spriteName: "spriteSheet",
     //     spriteIndex: 0,
@@ -256,59 +117,6 @@ class ToyboxGameObjectFactory {
     //     update: function(){},
     //     collide: function(){}
     // };
-
-    coin(coinOptions) {
-
-        var randomizeCoin = function() {
-            var probability = toybox.diceRoll(50);
-            if (probability <= 25) {
-                return "bronze";
-            } else if (probability <= 45){
-                return "silver";
-            } else {
-                return "gold";
-            }
-        }
-
-        coinOptions.spriteName = "coins";
-        coinOptions.color = coinOptions.color || randomizeCoin();
-        coinOptions.name = coinOptions.color + "Coin";
-        coinOptions.collide = this.tryIncreaseCurrency;
-        switch (coinOptions.color){
-            case "gold":
-                coinOptions.spriteIndex = 2;
-                coinOptions.bounce = 0.75;
-                var currencyValue = 100;
-            break;
-            case "silver":
-                coinOptions.spriteIndex = 1;
-                coinOptions.bounce = 0.5;
-                var currencyValue = 10;
-            break;
-            default:
-                coinOptions.spriteIndex = 0;
-                coinOptions.bounce = 0.25;
-                var currencyValue = 1;
-            break;
-        }
-        var coinGO = this.toybox.add.collectible(coinOptions);
-        coinGO.currencyValue = currencyValue;
-        return coinGO;
-    }
-
-    tryIncreaseCurrency(coin, collidedSprite) {
-        if (this.spriteIsPlayer(collidedSprite)) {
-            if (typeof(collidedSprite.stats.score) == "undefined"){
-                collidedSprite.stats.score = 0;
-            }
-            collidedSprite.stats.score += coin.currencyValue;
-            coin.destroy();
-        }
-    }
-
-    spriteIsPlayer(sprite) {
-        return sprite !== null && sprite.name === "player1";
-    }
 
     block(blockOptions) {
         blockOptions.spriteIndex = blockOptions.spriteIndex || 0;
@@ -322,13 +130,4 @@ class ToyboxGameObjectFactory {
         return blockGO;
     }
 
-    crate(crateOptions){
-        crateOptions.spriteName = "cratesAndOre";
-        crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
-        crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
-        crateOptions.name = "type" + crateOptions.type + "Crate";
-        crateOptions.drag = (crateOptions.scale ^ 2) * 50;
-        var crateGO = this.toybox.add.block(crateOptions);
-        return crateGO;
-    }
 }
