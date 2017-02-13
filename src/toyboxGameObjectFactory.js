@@ -61,9 +61,11 @@ class ToyboxGameObjectFactory {
         var playerGO = this.toybox.add.toyboxObject(playerOptions);
 
         playerGO.speed = playerOptions.speed;
-        playerGO.update = this.playerPlatformerUpdate;
+        playerGO.update = playerOptions.update;
+        playerGO.stats = {};
         this.addAnimationsToPlayer(playerGO);
         playerGO.jumpForce = playerOptions.jumpForce;
+        this.playerAttachControls(playerGO,playerOptions.controls);
         this.toybox.addPlayer(playerGO);
         return playerGO;
     }
@@ -75,12 +77,28 @@ class ToyboxGameObjectFactory {
             alienOptions.color = "green";
         }
         alienOptions.spriteName = alienOptions.color + "Alien";
+        alienOptions.update = this.alienPlatformerUpdate;
         var alienGO = this.toybox.add.player(alienOptions);
         return alienGO;
     }
 
-    playerPlatformerUpdate() {
-        if (cursors.right.isDown) {
+    playerAttachControls(playerGO,controlsObject){
+        playerGO.controls = {};
+        if (typeof(controlsObject) == "undefined"){
+            controlsObject = {
+                left: 37,
+                right: 39,
+                jump: 38
+            }
+        }
+        for (var i = Object.keys(controlsObject).length - 1; i >= 0; i--) {
+            var controlName = Object.keys(controlsObject)[i];
+            playerGO.controls[controlName] = this.toybox.game.input.keyboard.addKey(controlsObject[controlName]);
+        } 
+    }
+
+    alienPlatformerUpdate() {
+        if (this.controls.right.isDown) {
             this.body.velocity.x = this.speed;
             if (this.scale.x < 0) {
                 this.scale.x *= -1;
@@ -88,7 +106,7 @@ class ToyboxGameObjectFactory {
             if (this.animations.name !== "run") {
                 this.animations.play("run");
             }
-        } else if (cursors.left.isDown) {
+        } else if (this.controls.left.isDown) {
             this.body.velocity.x = -this.speed;
             if (this.scale.x > 0) {
                 this.scale.x *= -1;
@@ -103,7 +121,7 @@ class ToyboxGameObjectFactory {
         }
 
         // checkForJump
-        if (spacebar.isDown && (this.body.onFloor() || this.body.touching.down)) {
+        if (this.controls.jump.isDown && (this.body.onFloor() || this.body.touching.down)) {
             this.body.velocity.y = -this.jumpForce;
             if (this.animations.name !== "jump") {
                 this.animations.play("jump");
@@ -256,9 +274,6 @@ class ToyboxGameObjectFactory {
         coinOptions.color = coinOptions.color || randomizeCoin();
         coinOptions.name = coinOptions.color + "Coin";
         coinOptions.collide = this.tryIncreaseCurrency;
-        if (this.toybox.currencyDisplay === null) {
-            this.currencyDisplay();
-        }
         switch (coinOptions.color){
             case "gold":
                 coinOptions.spriteIndex = 2;
@@ -281,39 +296,18 @@ class ToyboxGameObjectFactory {
         return coinGO;
     }
 
-    // bronzeCoin(startingX, startingY) {
-    //     return this.coin(0, startingX, startingY);
-    // }
-
-    // silverCoin(startingX, startingY) {
-    //     return this.coin(1, startingX, startingY);
-    // }
-
-    // goldCoin(startingX, startingY) {
-    //     return this.coin(2, startingX, startingY);
-    // }
-
     tryIncreaseCurrency(coin, collidedSprite) {
         if (this.spriteIsPlayer(collidedSprite)) {
-            var numCurrency = Number(collidedSprite.toybox.currencyDisplay.text);
-            numCurrency += coin.currencyValue;
-            collidedSprite.toybox.currencyDisplay.text = String(numCurrency);
+            if (typeof(collidedSprite.stats.score) == "undefined"){
+                collidedSprite.stats.score = 0;
+            }
+            collidedSprite.stats.score += coin.currencyValue;
             coin.destroy();
         }
     }
 
     spriteIsPlayer(sprite) {
         return sprite !== null && sprite.name === "player1";
-    }
-
-    currencyDisplay() {
-        var style = {
-            font: "16px New Courier",
-            fill: "#ff0044",
-            align: "left"
-        };
-        var textGO = game.add.text(10, 10, "0", style);
-        this.toybox.currencyDisplay = textGO;
     }
 
     block(blockOptions) {
