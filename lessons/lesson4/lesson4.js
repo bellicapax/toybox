@@ -5,13 +5,16 @@
 
 
 // -------ONE-------
+// --Declaring an array--
 // To make an array, you declare a variable and assign it to a set of square brackets: []
 var blockColumns = [];
+var blockColumnsWithSize = [];
 // Right now, there's nothing in the array. We call an array in this state "empty"
 // You can add data either when you assign the array OR anytime afterwards
 // We'll look at that next, but for now, go ahead and run index.html to see what happens with an empty array
 
 // -------TWO-------
+// --Assigning data in declaration--
 // Now let's put some data in our array!
 // For this first example, we want to tell the code below how many crates we want stacked
 // And we want to tell them how many columns of stacked crates we want
@@ -35,7 +38,7 @@ var blockColumns = [];
 
 
 // -------FIVE-------
-// Assign at index
+// --Assigning at an index--
 // What if we like all the numbers in our array except ONE?
 // How do we tell one number in the array to be different?
 // We need to reassign that element:
@@ -53,6 +56,7 @@ var theFirstElement = blockColumns[0];
 // blockColumns[0] = 5;
 
 // -------SIX-------
+// --Push--
 // We just saw how we change an element after we have assigned the array.
 // But what if we want to add an element after we assign the array?
 // Javascript gives many handy functions to do this and we'll look at two:
@@ -63,6 +67,7 @@ var theFirstElement = blockColumns[0];
 // blockColumns.push();
 
 // -------SEVEN-------
+// --Unshift--
 // push() is great if we want to add an element at the END
 // But what if we want to add one at the beginning?
 // unshift() lets us add an element at the beginning
@@ -71,22 +76,38 @@ var theFirstElement = blockColumns[0];
 // blockColumns.unshift();
 
 // -------EIGHT-------
-// Pop
+// --Pop--
+// Sometimes we will want to remove the last element in an array
+// For that, we want to use the fucntion pop()
+// Pop removes the last element from the array and returns it for us
+// Uncomment the next two lines and refresh!
+// var lastElement = blockColumns.pop();
+// alert("The last element in the array was " + lastElement);
 
 // -------NINE-------
-// Unshift
+// Shift
+// Remember UNwhoft? Well, it's the opposite of shift()
+// Like pop(), shift() removes and returns an element
+// But this time, it removes an element from the beginning
+// Comment out the two lines from the last section
+// Uncomment the next two lines and refresh!
+// var lastElement = blockColumns.shift();
+// alert("The last element in the array was " + lastElement);
 
 // -------TEN-------
 // Array of arrays
+// The elements in an an array can be any kind of data stored in a variable - including other arrays!
+// Let's use this ability to hold a pair of numbers together in their own array
+// The first number will be the number of blocks we create
+// The second number will be the size of those blocks
+// We assign an array holding other arrays like so:
+// blockColumnsWithSize = [ [1, 4], [2, 2], [3, 1], [4, 3] ];
+// Uncomment the previous line and refresh to see what happens!
+
 
 // -------CHALLENGE-------
-
-
-// var blockColumns = [1, 2, 3, 5, 6, 7, 10];
-// blockColumns = [];
-
-var blockColumnsWithSize = [];
-// var blockColumnsWithSize = [ [1, 1], [2, 2], [3, 1], [4, 3] ];
+// Using what you know about declaring, assigning, and editing arrays,
+// modify the blockColumnsWithSize arrays to let you reach as many coins as you can! 
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
