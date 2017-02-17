@@ -140,6 +140,7 @@ function create() {
         startingY: game.world.height * 0.25,
         allowGravity: false
     });
+    game.input.onTap.add(createCoinForTap);
 }
 
 function addColumnsOfBlocks(columnsArray) {
@@ -172,4 +173,12 @@ function addColumnsOfBlocksWithScale(columnsArray) {
 
 function update() {
     toybox.update();
+}
+
+function createCoinForTap(pointer) {
+  toybox.add.coin({
+    startingX: pointer.x,
+    startingY: pointer.y,
+    allowGravity: false
+  });
 }
