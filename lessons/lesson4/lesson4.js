@@ -9,6 +9,7 @@
 // To make an array, you declare a variable and assign it to a set of square brackets: []
 var blockColumns = [];
 var blockColumnsWithSize = [];
+var coinPositions = [];
 // Right now, there's nothing in the array. We call an array in this state "empty"
 // You can add data either when you assign the array OR anytime afterwards
 // We'll look at that next, but for now, go ahead and run index.html to see what happens with an empty array
@@ -85,7 +86,7 @@ var theFirstElement = blockColumns[0];
 // alert("The last element in the array was " + lastElement);
 
 // -------NINE-------
-// Shift
+// --Shift--
 // Remember UNwhoft? Well, it's the opposite of shift()
 // Like pop(), shift() removes and returns an element
 // But this time, it removes an element from the beginning
@@ -95,19 +96,44 @@ var theFirstElement = blockColumns[0];
 // alert("The last element in the array was " + lastElement);
 
 // -------TEN-------
-// Array of arrays
+// --Array of arrays--
 // The elements in an an array can be any kind of data stored in a variable - including other arrays!
 // Let's use this ability to hold a pair of numbers together in their own array
 // The first number will be the number of blocks we create
 // The second number will be the size of those blocks
 // We assign an array holding other arrays like so:
-// blockColumnsWithSize = [ [1, 4], [2, 2], [3, 1], [4, 3] ];
+// blockColumnsWithSize = [ [1, 4], [2, 2], [3, 1], [4, 3]];
 // Uncomment the previous line and refresh to see what happens!
 
 
-// -------CHALLENGE-------
+// -------CHALLENGE ONE-------
+// --Get the Coins!--
 // Using what you know about declaring, assigning, and editing arrays,
-// modify the blockColumnsWithSize arrays to let you reach as many coins as you can! 
+// modify ONLY the blockColumnsWithSize array to try and reach as many coins as you can!
+// (HINT: There's a trick to getting them all once you figure out how to reach them!)
+// Uncomment the next line and refresh to spawn the coins!
+// coinPositions = [ [ 531, 109 ],  [ 480, 101 ],  [ 423, 86 ],  [ 367, 74 ],  [ 312, 64 ],  [ 251, 54 ],  [ 192, 46 ],  [ 133, 41 ], [ 393, 77 ],  [ 342, 68 ],  [ 284, 58 ],  [ 220, 46 ],  [ 162, 41 ]];
+
+// -------CHALLENGE TWO-------
+// --Make your own challenge!--
+// Uncomment the line below
+// coinPositions = [];
+// After you refresh, while the game is running, click anywhere to spawn a coin
+// Create some coins you want to challenge your classmates to reach
+// When you like your pattern, press the p key to print your array to the console
+// Use the mouse to select all the array it printed and copy it with CTRL+C
+// Delete the "[];" in the declaration of coinPositions above
+// Paste your new array in its place with CTRL+V
+// Refresh and try to reach your coins!
+// MAKE SURE YOU CAN REACH THEM JUST BY EDITING THE blockColumnsWithSize ARRAY!
+// After you beat your own level, submit the array to the class slack channel!
+
+// ---- END OF LESSON MATERIAL ---
+
+
+
+
+
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
@@ -118,6 +144,7 @@ var toybox;
 var settings = {
     gravity: 980
 };
+var pKey;
 
 function preload() {
     toybox = new Toybox(game, settings);
@@ -128,19 +155,22 @@ function create() {
     var timer = new Phaser.Timer(game, true);
     var delay = 500;
     addColumnsOfBlocks(blockColumns);
-    if(blockColumns.length < 1){
-      addColumnsOfBlocksWithScale(blockColumnsWithSize);
+    if (blockColumns.length < 1) {
+        addColumnsOfBlocksWithScale(blockColumnsWithSize);
     }
     toybox.add.alienPlayer({
         speed: 100,
         jumpForce: 400
     });
-    toybox.add.coin({
-        startingX: game.world.width - 32,
-        startingY: game.world.height * 0.25,
-        allowGravity: false
-    });
+    for (var i = 0; i < coinPositions.length; i++) {
+        toybox.add.coin({
+            startingX: coinPositions[i][0],
+            startingY: coinPositions[i][1],
+            allowGravity: false
+        });
+    }
     game.input.onTap.add(createCoinForTap);
+    pKey = game.input.keyboard.addKey(80);
 }
 
 function addColumnsOfBlocks(columnsArray) {
@@ -173,12 +203,27 @@ function addColumnsOfBlocksWithScale(columnsArray) {
 
 function update() {
     toybox.update();
+    if (pKey.isDown) {
+        var arrayString = "[";
+        for (var i = 0; i < coinPositions.length; i++) {
+            arrayString += " [ " + coinPositions[i][0] + ", " + coinPositions[i][1] + " ]";
+            if(i < coinPositions.length - 1){
+              arrayString += ", ";
+            }
+        }
+        arrayString += "];";
+        console.log(arrayString);
+    }
 }
 
 function createCoinForTap(pointer) {
-  toybox.add.coin({
-    startingX: pointer.x,
-    startingY: pointer.y,
-    allowGravity: false
-  });
+    toybox.add.coin({
+        startingX: pointer.x,
+        startingY: pointer.y,
+        allowGravity: false
+    });
+    coinPositions.push([
+        pointer.x,
+        pointer.y
+    ]);
 }
