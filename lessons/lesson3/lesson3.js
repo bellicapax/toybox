@@ -149,7 +149,7 @@ function create() {
 function update() {
     toybox.update();
 
-    toybox.add.coin(coinOptions);
+    // toybox.add.coin(coinOptions);
 }
 
 // ---- UPDATE ----
@@ -167,7 +167,7 @@ function update() {
 // For example, 'toybox.update' includes the functions that check to see what keys you're pressing 
 // and tells the player game-object where to go, and checks to see if a player has touched a coin and removes it.
 
-// Now, un-comment line 150.
+// Now, un-comment line 152.
 // Notice that line of code is the EXACT SAME line of code we un-commented in 'create.'
 // So the difference is that that 'create' will call line 106 once, and 'update' will call line 150 multiple times a second, continuously.
 // Let's save and run the lesson in the browser again.
