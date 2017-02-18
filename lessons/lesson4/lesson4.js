@@ -155,10 +155,13 @@ function preload() {
 function create() {
     var timer = new Phaser.Timer(game, true);
     var delay = 500;
-    addColumnsOfBlocks(blockColumns);
-    if (blockColumns.length < 1) {
+    
+    if (blockColumnsWithSize.length) {
         addColumnsOfBlocksWithScale(blockColumnsWithSize);
+    } else {
+        addColumnsOfBlocks(blockColumns);
     }
+    
     toybox.add.alienPlayer({
         speed: 100,
         jumpForce: 400
