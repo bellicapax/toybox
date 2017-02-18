@@ -74,7 +74,7 @@ class ToyboxGameObjectFactory {
         if (typeof (alienOptions) == "undefined") {
             alienOptions = {};
         }
-        alienOptions.allowGravity = true;
+        alienOptions.allowGravity = typeof(alienOptions.allowGravity) == "undefined" ? true : alienOptions.allowGravity;
         var validColors = ["green", "blue", "pink"];
         if (typeof (alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1) {
             alienOptions.color = "green";

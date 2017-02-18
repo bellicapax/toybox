@@ -1,3 +1,4 @@
+// HOORAY FOR ARRAYS
 // In this lesson, our little alien friend is far away from a coin they want
 // We are going to use Arrays to help them get there!
 // Arrays are a way of holding a bunch of data inside a single variable
