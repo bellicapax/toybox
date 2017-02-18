@@ -108,7 +108,7 @@ function create() {
 }
 
 // ---- CREATE ----
-// 'create' is a function that Phaser runs only once in oreder to initially build the game.
+// 'create' is a function that Phaser runs only once in order to initially build the game.
 // So you would put things in 'create' that you want to only have happen to set up the game, before the player get to do anything.
 
 // So, in lines 83-106, what we're doing is we're declaring ANOTHER function, called 'create.'
@@ -156,14 +156,14 @@ function update() {
 
 // So obviously, sometimes you need the game to change, or notice changes AFTER it has started up.
 // That all will be done through 'update.'
-// 'update' is a function that Phaser runs multiple times a second in oreder to update the game state.
+// 'update' is a function that Phaser runs multiple times a second in order to update the game state.
 // 'update' is the main way you access the GAME LOOP, which is basically the functions that control the game.
 // The game loop is the functions that a game engine constantly runs over and over to check what the player is doing and how the game should react.
 
 // So, in lines 147-151, what we're doing is we're declaring ANOTHER function, called 'update.'
 // Again, we already told Phaser the name of this function when we booted Phaser up.
 // Then inside that function, we call a function that is a part of 'toybox', called 'toybox.update'
-// That function makes sure all the toybox gam-objects act like they're supposed to.
+// That function makes sure all the toybox game-objects act like they're supposed to.
 // For example, 'toybox.update' includes the functions that check to see what keys you're pressing 
 // and tells the player game-object where to go, and checks to see if a player has touched a coin and removes it.
 
