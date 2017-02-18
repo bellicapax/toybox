@@ -101,7 +101,7 @@ function create() {
     }
 
     if (shouldThereBeAPlayerObject) {
-        player = toybox.add.player(playerOptions);
+        player = toybox.add.alienPlayer(playerOptions);
     }
 
     toybox.add.mushroom({
