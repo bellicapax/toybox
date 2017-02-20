@@ -19,33 +19,36 @@ var backdropToyboxPlugin = {
  		backdropOptions.startingX = 0;
  		backdropOptions.startingY = 0;
 
- 		switch(backdropOptions.name){
- 			case "spring":
- 				backdropOptions.spriteName = "springBackdrop";
- 				break;
- 			case "summer":
- 				backdropOptions.spriteName = "summerBackdrop";
- 				break;
- 			case "fall":
- 				backdropOptions.spriteName = "fallBackdrop";
- 				break;
- 			case "winter":
- 				backdropOptions.spriteName = "winterBackdrop";
- 				break;
- 			case "grey":
- 				backdropOptions.spriteName = "greyBackdrop";
- 				break;
- 			case "green":
- 				backdropOptions.spriteName = "greenBackdrop";
- 				break;
- 			case "blue":
- 			default:
- 				backdropOptions.spriteName = "blueBackdrop";
- 				break;
+ 		if (typeof(backdropOptions.preset) !== 'undefined'){
+ 			switch(backdropOptions.preset){
+ 				case "spring":
+ 					backdropOptions.spriteName = "springBackdrop";
+ 					break;
+ 				case "summer":
+ 					backdropOptions.spriteName = "summerBackdrop";
+ 					break;
+ 				case "fall":
+ 					backdropOptions.spriteName = "fallBackdrop";
+ 					break;
+ 				case "winter":
+ 					backdropOptions.spriteName = "winterBackdrop";
+ 					break;
+ 				case "grey":
+ 					backdropOptions.spriteName = "greyBackdrop";
+ 					break;
+ 				case "green":
+ 					backdropOptions.spriteName = "greenBackdrop";
+ 					break;
+ 				case "blue":
+ 				default:
+ 					backdropOptions.spriteName = "blueBackdrop";
+ 					break;
+ 			}
  		}
 
      	var backdropGO = this.toybox.add.decoration(backdropOptions);
      	backdropGO.anchor.setTo(0, 0);
+     	backdropGO.name = backdropOptions.spriteName;
      	backdropGO.width = backdropGO.toybox.game.width;
      	backdropGO.height = backdropGO.toybox.game.height;
      	backdropGO.toybox.game.world.sendToBack(backdropGO);
