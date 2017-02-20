@@ -143,7 +143,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 });
 var toybox;
 var settings = {
-    gravity: 980
+    gravity: 980, plugins: ["alien","coin","crate"]
 };
 var pKey;
 
