@@ -141,7 +141,8 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 });
 var toybox;
 var settings = {
-    gravity: 980
+    gravity: 980,
+    plugins: ["alien","mushroom"]
 };
 
 function preload() {
@@ -152,7 +153,7 @@ function preload() {
 function create() {
   toybox.add.alien(alienOptions);
   if(typeof(mushroomOptions.startingX) == "undefined"){
-    mushroomOptions.startingX = 50
+    mushroomOptions.startingX = 50;
   }
   toybox.add.mushroom(mushroomOptions);
 }

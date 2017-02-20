@@ -12,6 +12,8 @@ var alienToyboxPlugin = {
  	create: function(alienOptions){
  		alienOptions.allowGravity = true;
         var validColors = ["green","blue","pink"];
+        alienOptions.speed = alienOptions.speed || 100;
+        alienOptions.jumpForce = alienOptions.jumpForce || 300;
         if (typeof(alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1){
             alienOptions.color = "green";
         }
