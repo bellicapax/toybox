@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien"]
+    plugins: ["crate","coin","mushroom","alien","backdrop"]
 };
 
 function preload() {
@@ -15,6 +15,8 @@ function preload() {
 }
 
 function create() {
+
+    backdrop = toybox.add.backdrop({ name: "green" });
 
     var playerOptions = {
         startingX : 100,

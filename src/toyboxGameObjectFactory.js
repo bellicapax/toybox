@@ -11,6 +11,7 @@ class ToyboxGameObjectFactory {
         objectOptions.drag = objectOptions.drag || 200;
         objectOptions.allowGravity = typeof (objectOptions.allowGravity) == "undefined" ? true : objectOptions.allowGravity;
         objectOptions.immovable = typeof (objectOptions.immovable) == "undefined" ? false : objectOptions.immovable;
+        objectOptions.enablePhysics = typeof (objectOptions.enablePhysics) == "undefined" ? true : objectOptions.enablePhysics;
 
         var objectGO = this.toybox.game.add.sprite(objectOptions.startingX, objectOptions.startingY, objectOptions.spriteName, objectOptions.spriteIndex);
 
@@ -18,23 +19,31 @@ class ToyboxGameObjectFactory {
         objectGO.scale.y = objectOptions.scale;
         objectGO.anchor.setTo(0.5, 0.5);
 
-        this.toybox.game.physics.enable(objectGO);
-        if (typeof (objectOptions.dX) !== "undefined") {
-            objectGO.body.velocity.x = objectOptions.dX;
-        }
-        if (typeof (objectOptions.dy) !== "undefined") {
-            objectGO.body.velocity.y = objectOptions.dy;
-        }
-        objectGO.body.collideWorldBounds = true;
-        objectGO.body.bounce.set(objectOptions.bounce);
-        objectGO.body.allowGravity = objectOptions.allowGravity;
-        objectGO.body.immovable = objectOptions.immovable;
         objectGO.name = objectOptions.name;
-        objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
-        if (typeof (objectOptions.collide) == "function") {
-            objectGO.body.onCollide = new Phaser.Signal();
-            objectGO.body.onCollide.add(objectOptions.collide, toybox);
+
+        if (objectOptions.enablePhysics){
+            this.toybox.game.physics.enable(objectGO);
+
+            if (typeof (objectOptions.dX) !== "undefined") {
+                objectGO.body.velocity.x = objectOptions.dX;
+            }
+            if (typeof (objectOptions.dy) !== "undefined") {
+                objectGO.body.velocity.y = objectOptions.dy;
+            }
+
+            objectGO.body.collideWorldBounds = true;
+            objectGO.body.bounce.set(objectOptions.bounce);
+            objectGO.body.allowGravity = objectOptions.allowGravity;
+            objectGO.body.immovable = objectOptions.immovable;
+
+            if (typeof (objectOptions.collide) == "function") {
+                objectGO.body.onCollide = new Phaser.Signal();
+                objectGO.body.onCollide.add(objectOptions.collide, toybox);
+            }
         }
+        
+        objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
+        
         objectGO.toybox = this.toybox;
         return objectGO;
     }
@@ -123,6 +132,18 @@ class ToyboxGameObjectFactory {
         blockGO.toyboxType = "block";
         this.toybox.addBlock(blockGO);
         return blockGO;
+    }
+
+    decoration(decoOptions) {
+        decoOptions.spriteIndex = decoOptions.spriteIndex || 0;
+        decoOptions.bounce = 0;
+        decoOptions.scale = decoOptions.scale || 1;
+        decoOptions.enablePhysics = typeof (decoOptions.enablePhysics) == "undefined" ? false : decoOptions.enablePhysics;
+
+        var decoGO = this.toybox.add.toyboxObject(decoOptions);
+        decoGO.toyboxType = "decoration";
+        this.toybox.addDecoration(decoGO);
+        return decoGO;
     }
 
 }
