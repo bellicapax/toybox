@@ -4,7 +4,10 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     update: update
 });
 var toybox;
-var settings = {gravity: 980};
+var settings = {
+    gravity: 980,
+    plugins: ["crate","coin","mushroom","alien"]
+};
 
 function preload() {
     toybox = new Toybox(game,settings);
@@ -22,7 +25,7 @@ function create() {
         scale: 1
     }
 
-    player1 = toybox.add.alienPlayer(playerOptions);
+    player1 = toybox.add.alien(playerOptions);
 
     playerOptions.color = "blue";
     playerOptions.startingX = 300;
@@ -32,7 +35,7 @@ function create() {
         jump: 87
     }
 
-    player2 = toybox.add.alienPlayer(playerOptions);
+    player2 = toybox.add.alien(playerOptions);
 
 
 }

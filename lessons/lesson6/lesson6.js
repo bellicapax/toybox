@@ -1,5 +1,5 @@
 
-// ---------- LESSON 3: Conditionals in the game loop ----------
+// ---------- LESSON 6: Conditionals in the game loop ----------
 
 // Alright, this lesson we're going to work things a little different.
 // We're going to quickly go over how the game starts up,
@@ -22,7 +22,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 // Here we're defining toybox and giving it some settings.
 
 var toybox;
-var settings = {gravity: 980};
+var settings = {gravity: 980, plugins: ["alien", "coin"]};
 
 // This is the Phaser preload function.
 // Before Phaser creates anything, it's going to boot up Toybox and run toybox's preload function.
@@ -48,7 +48,7 @@ function create() {
         scale: 1
     }
 
-    toybox.add.alienPlayer(playerOptions);
+    toybox.add.alien(playerOptions);
 }
 
 // This is the Phaser update function.
@@ -194,14 +194,14 @@ function update() {
 // What if we use a random number to determine if we should generate a coin?
 // That way it only happens SOMETIMES at random?
 
-// var shouldThereBeACoin = (Phaser.Math.between(1,300) >= 380);
+// var shouldThereBeACoin = (Phaser.Math.between(1,400) >= 380);
 
 // so the above line of code declares a variable 'shouldThereBeACoin,'
-// and assigns it a boolean expression which evaluates a random number between 1 and 300.
-// If the random number is greater or equal to 280, shouldThereBeACoin will be true.
+// and assigns it a boolean expression which evaluates a random number between 1 and 400.
+// If the random number is greater or equal to 380, shouldThereBeACoin will be true.
 // Otherwise, shouldThereBeACoin will be false.
 
-// Go ahead and copy that line of code (probably 199 now).
+// Go ahead and copy that line of code (probably 200 now).
 // We're going to paste it into our update function,
 // on a new line before the conditional, after line 61.
 // Make sure it's uncommented after you've added it in.

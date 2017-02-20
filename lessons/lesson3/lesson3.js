@@ -37,7 +37,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 // We haven't talked in detail about objects yet. For now, all you need to know is that objects are collections of variables.
 
 var toybox;
-var settings = {gravity: 980};
+var settings = {gravity: 980, plugins: ["alien","coin"]};
 
 // ---- COMPONENT 3: Toybox ----
 // So Toybox is a set of scripts we've created just for this class.
@@ -95,7 +95,7 @@ function create() {
         scale: 1
     }
 
-    mainPlayer = toybox.add.alienPlayer(playerOptions);
+    mainPlayer = toybox.add.alien(playerOptions);
 
     coinOptions = {
         startingX: 320, 
@@ -119,7 +119,7 @@ function create() {
 // Some of this should look a little familiar from Lesson 1: you can probably guess what some of the information in 'playerOptions' does.
 
 // Now, on line 97, we're calling a function from the 'toybox' object we created in 'preload.'
-// We're calling 'toybox.add.alienPlayer,' and then we're passing it the object 'playerOptions.'
+// We're calling 'toybox.add.alien,' and then we're passing it the object 'playerOptions.'
 
 // WHEW! We've done a lot of reading in this lesson so far.
 // Why don't you pause, and run this program in your browser so far?
@@ -129,7 +129,7 @@ function create() {
 // OK! So that should've looked familiar: We made a little pink Alien player you can control.
 // Because we added that line of code in the 'create' function, Phaser added that pink alien player object to the game for us!
 // That little alien is called a GAME-OBJECT.
-// Now, because 'toybox.add.alienPlayer' is part of the toybox object, that's a shortcut created specific for this class, 
+// Now, because 'toybox.add.alien' is part of the toybox object, that's a shortcut created specific for this class, 
 // and not a part of Phaser itself.
 // However, Toybox is designed to work just like Phaser. So making game-objects in Phaser is very similar.
 

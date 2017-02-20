@@ -1,6 +1,3 @@
-var cursors;
-var spacebar;
-// TODO: Refactor - These should NOT be global variables
 
 class Toybox {
     constructor(game, gameOptions) {
@@ -8,6 +5,7 @@ class Toybox {
         gameOptions.gravity = gameOptions.gravity || 980;
 
         console.log("Toybox constructed");
+        this.pluginsArray = gameOptions.plugins;
         this._game = game;
         this._game.stage.smoothed = false;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -16,9 +14,6 @@ class Toybox {
         this.players = new Phaser.Group(game, null, 'players', true);
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         this.blocks = new Phaser.Group(game, null, 'blocks', true);
-
-        cursors = this._game.input.keyboard.createCursorKeys();
-        spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
         this.animationFPS = 12;
         this._currencyDisplay = null;
@@ -65,7 +60,11 @@ class Toybox {
     // helpers
 
     spriteIsPlayer(spriteGO) {
-        return (spriteGO.name.substring(0, 6) == "player");
+        return (
+            (spriteGO !== null) && 
+            (typeof(spriteGO) !== "undefined") &&
+            (spriteGO.name.substring(0, 6) == "player")
+            );
     }
 
     diceRoll(diceSides) {
@@ -81,22 +80,28 @@ class Toybox {
     }
 
     preload() {
-        this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
-        this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
-        this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
-        this._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
-        this._game.load.spritesheet("smallMushrooms", "../../assets/sprites/smallMushroomsSheet.png", 16, 16);
-        this._game.load.spritesheet("cratesAndOre", "../../assets/sprites/cratesAndOreSheet.png", 16, 16);
-        this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
-        this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
-        this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
+        this.preloadPlugins()
+        // this._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
+        // this._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
+        // this._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
+        //this._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
+        //this._game.load.spritesheet("smallMushrooms", "../../assets/sprites/smallMushroomsSheet.png", 16, 16);
+        //this._game.load.spritesheet("cratesAndOre", "../../assets/sprites/cratesAndOreSheet.png", 16, 16);
 
-        this._game.load.image("purpleMushroom", "../../assets/sprites/single-images/purpleMushroom.png");
-        this._game.load.image("blueMushroom", "../../assets/sprites/single-images/blueMushroom.png");
-        this._game.load.image("redMushroom", "../../assets/sprites/single-images/redMushroom.png");
-        this._game.load.image("yellowMushroom", "../../assets/sprites/single-images/yellowMushroom.png");
-        this._game.load.image("crate1", "../../assets/sprites/single-images/crate1.png");
         this.preloadMobs();
+    }
+
+    preloadPlugins(){
+        this.loadedPlugins = {};
+        if (typeof(this.pluginsArray) !== "undefined") {
+            for (var index = this.pluginsArray.length - 1; index >= 0; index--) {
+                var pluginName = this.pluginsArray[index];
+                var pluginObject = window[pluginName + 'ToyboxPlugin'];
+                this.loadedPlugins[pluginName] = pluginObject;
+                this.add[pluginName] = pluginObject.create;
+                pluginObject.preload(this);
+            }
+        }
     }
 
     preloadMobs() {
