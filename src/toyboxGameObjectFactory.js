@@ -72,18 +72,13 @@ class ToyboxGameObjectFactory {
     playerAttachControls(playerGO,controlsObject){
         playerGO.controls = {};
         if (typeof(controlsObject) == "undefined"){
-            controlsObject = {
-                left: 37,
-                right: 39,
-                jump: 38
-            }
+            return;
         }
         for (var i = Object.keys(controlsObject).length - 1; i >= 0; i--) {
             var controlName = Object.keys(controlsObject)[i];
             playerGO.controls[controlName] = this.toybox.game.input.keyboard.addKey(controlsObject[controlName]);
         } 
     }
-
 
     // var collectibleOptions = {
     //     spriteName: "spriteSheet",

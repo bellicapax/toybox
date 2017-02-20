@@ -95,7 +95,7 @@ function create() {
         scale: 1
     }
 
-    mainPlayer = toybox.add.alienPlayer(playerOptions);
+    mainPlayer = toybox.add.alien(playerOptions);
 
     coinOptions = {
         startingX: 320, 
@@ -108,7 +108,7 @@ function create() {
 }
 
 // ---- CREATE ----
-// 'create' is a function that Phaser runs only once in oreder to initially build the game.
+// 'create' is a function that Phaser runs only once in order to initially build the game.
 // So you would put things in 'create' that you want to only have happen to set up the game, before the player get to do anything.
 
 // So, in lines 83-106, what we're doing is we're declaring ANOTHER function, called 'create.'
@@ -119,7 +119,7 @@ function create() {
 // Some of this should look a little familiar from Lesson 1: you can probably guess what some of the information in 'playerOptions' does.
 
 // Now, on line 97, we're calling a function from the 'toybox' object we created in 'preload.'
-// We're calling 'toybox.add.alienPlayer,' and then we're passing it the object 'playerOptions.'
+// We're calling 'toybox.add.alien,' and then we're passing it the object 'playerOptions.'
 
 // WHEW! We've done a lot of reading in this lesson so far.
 // Why don't you pause, and run this program in your browser so far?
@@ -129,7 +129,7 @@ function create() {
 // OK! So that should've looked familiar: We made a little pink Alien player you can control.
 // Because we added that line of code in the 'create' function, Phaser added that pink alien player object to the game for us!
 // That little alien is called a GAME-OBJECT.
-// Now, because 'toybox.add.alienPlayer' is part of the toybox object, that's a shortcut created specific for this class, 
+// Now, because 'toybox.add.alien' is part of the toybox object, that's a shortcut created specific for this class, 
 // and not a part of Phaser itself.
 // However, Toybox is designed to work just like Phaser. So making game-objects in Phaser is very similar.
 
@@ -149,25 +149,25 @@ function create() {
 function update() {
     toybox.update();
 
-    toybox.add.coin(coinOptions);
+    // toybox.add.coin(coinOptions);
 }
 
 // ---- UPDATE ----
 
 // So obviously, sometimes you need the game to change, or notice changes AFTER it has started up.
 // That all will be done through 'update.'
-// 'update' is a function that Phaser runs multiple times a second in oreder to update the game state.
+// 'update' is a function that Phaser runs multiple times a second in order to update the game state.
 // 'update' is the main way you access the GAME LOOP, which is basically the functions that control the game.
 // The game loop is the functions that a game engine constantly runs over and over to check what the player is doing and how the game should react.
 
 // So, in lines 147-151, what we're doing is we're declaring ANOTHER function, called 'update.'
 // Again, we already told Phaser the name of this function when we booted Phaser up.
 // Then inside that function, we call a function that is a part of 'toybox', called 'toybox.update'
-// That function makes sure all the toybox gam-objects act like they're supposed to.
+// That function makes sure all the toybox game-objects act like they're supposed to.
 // For example, 'toybox.update' includes the functions that check to see what keys you're pressing 
 // and tells the player game-object where to go, and checks to see if a player has touched a coin and removes it.
 
-// Now, un-comment line 150.
+// Now, un-comment line 152.
 // Notice that line of code is the EXACT SAME line of code we un-commented in 'create.'
 // So the difference is that that 'create' will call line 106 once, and 'update' will call line 150 multiple times a second, continuously.
 // Let's save and run the lesson in the browser again.

@@ -15,9 +15,6 @@ class Toybox {
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         this.blocks = new Phaser.Group(game, null, 'blocks', true);
 
-        cursors = this._game.input.keyboard.createCursorKeys();
-        spacebar = this._game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
         this.animationFPS = 12;
         this._currencyDisplay = null;
         this._add = new ToyboxGameObjectFactory(this);

@@ -15,6 +15,13 @@ var alienToyboxPlugin = {
         if (typeof(alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1){
             alienOptions.color = "green";
         }
+        if (typeof(alienOptions.controls) == "undefined"){
+            alienOptions.controls = {
+                left: 37,
+                right: 39,
+                jump: 38
+            }
+        };
         alienOptions.spriteName = alienOptions.color + "Alien";
 
         var alienPlatformerUpdate = function(){
