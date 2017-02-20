@@ -37,7 +37,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 // We haven't talked in detail about objects yet. For now, all you need to know is that objects are collections of variables.
 
 var toybox;
-var settings = {gravity: 980};
+var settings = {gravity: 980, plugins: ["alien","coin"]};
 
 // ---- COMPONENT 3: Toybox ----
 // So Toybox is a set of scripts we've created just for this class.
