@@ -94,7 +94,7 @@ var theFirstElement = blockColumns[0];
 // Comment out the two lines from the last section
 // Uncomment the next two lines and refresh!
 // var lastElement = blockColumns.shift();
-// alert("The last element in the array was " + lastElement);
+// alert("The first element in the array was " + lastElement);
 
 // -------TEN-------
 // --Array of arrays--
