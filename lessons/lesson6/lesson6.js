@@ -143,7 +143,6 @@ function update() {
 //       }
 //   
 //       var newCoin = toybox.add.coin(coinOptions);
-//       coinsInGame.push(newCoin);
 //   };
 
 // Now, if you like, you may want to stop here, save, and run this lesson in the browser again.
