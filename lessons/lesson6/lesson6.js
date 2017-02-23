@@ -86,7 +86,7 @@ function update() {
 // We need it only make coins on SOME of the updates.
 // In order to do that, we're going to need to use some kind of conditional.
 
-// A conditional is a peice of code that means
+// A conditional is a piece of code that means
 // 'if the following conditions are true, execute the following block of code.'
 // Line 93 below is an example of a basic conditional.
 
