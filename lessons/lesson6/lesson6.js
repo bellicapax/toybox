@@ -120,7 +120,7 @@ function update() {
 // Again, that's happening because that conditional will ALWAYS trigger.
 
 // Now, for laughs, let's tie our coin generation to this goofy conditional we've got.
-// So what I want you to do is to add returns on line 69 inside the block of code that conditional is executing.
+// So what I want you to do is to add new lines on line 69 inside the block of code that conditional is executing.
 // Technically this isn't part of the code, this just helps us read and understand the code being executed.
 // When you're done, the conditional should take up lines 62-64, and look something like this:
 
