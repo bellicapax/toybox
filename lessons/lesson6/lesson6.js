@@ -86,7 +86,7 @@ function update() {
 // We need it only make coins on SOME of the updates.
 // In order to do that, we're going to need to use some kind of conditional.
 
-// A conditional is a peice of code that means
+// A conditional is a piece of code that means
 // 'if the following conditions are true, execute the following block of code.'
 // Line 93 below is an example of a basic conditional.
 
@@ -120,7 +120,7 @@ function update() {
 // Again, that's happening because that conditional will ALWAYS trigger.
 
 // Now, for laughs, let's tie our coin generation to this goofy conditional we've got.
-// So what I want you to do is to add returns on line 69 inside the block of code that conditional is executing.
+// So what I want you to do is to add new lines on line 69 inside the block of code that conditional is executing.
 // Technically this isn't part of the code, this just helps us read and understand the code being executed.
 // When you're done, the conditional should take up lines 62-64, and look something like this:
 
@@ -143,7 +143,6 @@ function update() {
 //       }
 //   
 //       var newCoin = toybox.add.coin(coinOptions);
-//       coinsInGame.push(newCoin);
 //   };
 
 // Now, if you like, you may want to stop here, save, and run this lesson in the browser again.
