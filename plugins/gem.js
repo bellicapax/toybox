@@ -37,19 +37,19 @@ var gemToyboxPlugin = {
 
         switch (gemOptions.color){
             case "yellow":
-                gemGO.animations.add("yellowGlimmer", [0, 4], fps, true);
+                gemGO.animations.add("yellowGlimmer", [0, 0, 0, 4], fps, true);
                 gemGO.animations.play("yellowGlimmer");
             break;
             case "red":
-                gemGO.animations.add("redGlimmer", [2, 6], fps, true);
+                gemGO.animations.add("redGlimmer", [2, 6, 2, 2], fps, true);
                 gemGO.animations.play("redGlimmer");
             break;
             case "blue":
-                gemGO.animations.add("blueGlimmer", [3, 7], fps, true);
+                gemGO.animations.add("blueGlimmer", [3, 7, 7, 7], fps, true);
                 gemGO.animations.play("blueGlimmer");
             break;
             default:
-                gemGO.animations.add("greenGlimmer", [1, 5], fps, true);
+                gemGO.animations.add("greenGlimmer", [1, 1, 5, 1], fps, true);
                 gemGO.animations.play("greenGlimmer");
             break;
         }
