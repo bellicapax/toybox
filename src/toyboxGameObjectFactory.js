@@ -64,20 +64,13 @@ class ToyboxGameObjectFactory {
     // }
 
     player(playerOptions) {
-        playerOptions.name = "player1";
+        playerOptions.name = "player";
 
-        // var playerGO = this.playerGO;
-        // if (playerGO != null) {
-        //     playerGO.destroy();
-        // }
-
-        playerOptions.spriteName = playerOptions.color + "Alien";
         var playerGO = this.toybox.add.toyboxObject(playerOptions);
 
         playerGO.speed = playerOptions.speed;
-        playerGO.update = playerOptions.update;
-        playerGO.stats = {};
         playerGO.jumpForce = playerOptions.jumpForce;
+        playerGO.score = 0;
         this.playerAttachControls(playerGO,playerOptions.controls);
         this.toybox.addPlayer(playerGO);
         return playerGO;
@@ -150,6 +143,15 @@ class ToyboxGameObjectFactory {
         decoGO.sendTo = decoOptions.sendTo || 'bottom';
         this.toybox.addDecoration(decoGO);
         return decoGO;
+    }
+
+    mob(mobOptions) {
+        mobOptions.name = "mob";
+        var mobGO = this.toybox.add.toyboxObject(mobOptions);
+        mobGO.speed = mobOptions.speed;
+        mobGO.jumpforce = mobOptions.speed;
+        this.toybox.addMob(mobGO);
+        return mobGO;
     }
 
 }

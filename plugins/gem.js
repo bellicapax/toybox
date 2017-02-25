@@ -8,22 +8,25 @@ var gemToyboxPlugin = {
 
     create: function(gemOptions){
 
+        var validColors = ["yellow","red","blue","green"];
+
         var randomizeGem = function() {
-            var gemColors = ["yellow","red","blue","green"];
-            return gemColors[this.game.Math.between(0,(gemColors.length - 1))];
+            return validColors[this.game.Math.between(0,(validColors.length - 1))];
         }
 
         gemOptions.spriteName = "gems";
-        gemOptions.color = gemOptions.color || randomizeGem();
+        if (typeof(gemOptions.color) == "undefined" || validColors.indexOf(gemOptions.color) == -1){
+            gemOptions.color = randomizeGem();
+        }
         gemOptions.name = gemOptions.color + "Gem";
         gemOptions.allowGravity = false;
 
         var tryIncreaseCurrency = function(gem, collidedSprite) {
             if (this.spriteIsPlayer(collidedSprite)) {
-                if (typeof(collidedSprite.stats.score) == "undefined"){
-                    collidedSprite.stats.score = 0;
+                if (typeof(collidedSprite.score) == "undefined"){
+                    collidedSprite.score = 0;
                 }
-                collidedSprite.stats.score += gem.currencyValue;
+                collidedSprite.score += gem.currencyValue;
                 gem.destroy();
             }
         }

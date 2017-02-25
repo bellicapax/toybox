@@ -26,10 +26,10 @@ var coinToyboxPlugin = {
 
         var tryIncreaseCurrency = function(coin, collidedSprite) {
             if (this.spriteIsPlayer(collidedSprite)) {
-                if (typeof(collidedSprite.stats.score) == "undefined"){
-                    collidedSprite.stats.score = 0;
+                if (typeof(collidedSprite.score) == "undefined"){
+                    collidedSprite.score = 0;
                 }
-                collidedSprite.stats.score += coin.currencyValue;
+                collidedSprite.score += coin.currencyValue;
                 coin.destroy();
             }
         }

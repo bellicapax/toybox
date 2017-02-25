@@ -14,6 +14,7 @@ class Toybox {
         this.bottomDecorations = new Phaser.Group(game, null, 'decorations', true);
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         this.blocks = new Phaser.Group(game, null, 'blocks', true);
+        this.mobs = new Phaser.Group(game, null, 'mobs', true);
         this.players = new Phaser.Group(game, null, 'players', true);
         this.topDecorations = new Phaser.Group(game, null, 'effects', true);
 
@@ -70,6 +71,11 @@ class Toybox {
                 this.bottomDecorations.add(go);
                 break;
         }
+    }
+
+    addMob(go) {
+        this.addGameObject(go);
+        this.mobs.add(go);
     }
 
     // helpers
