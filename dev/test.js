@@ -16,7 +16,7 @@ function preload() {
 
 function create() {
 
-    backdrop = toybox.add.backdrop({ preset: "green" });
+    backdrop = toybox.add.backdrop({ preset: "summer" });
 
     var playerOptions = {
         startingX : 100,

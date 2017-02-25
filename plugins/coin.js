@@ -4,6 +4,7 @@ var coinToyboxPlugin = {
 
     preload: function(toyboxObject){
         toyboxObject._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("poof", "../../assets/sprites/poofSheet.png", 16, 24);
     },
 
     create: function(coinOptions){
@@ -34,6 +35,23 @@ var coinToyboxPlugin = {
         }
 
         coinOptions.collide = tryIncreaseCurrency;
+
+        var coinDestroy = function(coin){
+            var poofOptions = {
+                startingX: coin.x,
+                startingY: coin.y,
+                spriteName: "poof",
+                sendTo: "top"
+            }
+            var poofGO = this.toybox.add.decoration(poofOptions);
+            poofGO.animations.add("poof", [0, 1, 2, 3], this.toybox.animationFPS, true);
+            poofGO.animations.play("poof");
+            this.game.time.events.add(250, function(){ poofGO.destroy(); }, this);
+
+        }
+
+        coinOptions.destroy = coinDestroy;
+
         switch (coinOptions.color){
             case "gold":
                 coinOptions.spriteIndex = 2;

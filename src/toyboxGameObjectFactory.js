@@ -43,6 +43,11 @@ class ToyboxGameObjectFactory {
         }
         
         objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
+
+        if (typeof (objectOptions.destroy) == "function") {
+            objectGO.events.onDestroy.add(objectOptions.destroy);
+            //objectGO.events.onDestroy.add(function() { console.log(arguments); });
+        }
         
         objectGO.toybox = this.toybox;
         return objectGO;
@@ -142,6 +147,7 @@ class ToyboxGameObjectFactory {
 
         var decoGO = this.toybox.add.toyboxObject(decoOptions);
         decoGO.toyboxType = "decoration";
+        decoGO.sendTo = decoOptions.sendTo || 'bottom';
         this.toybox.addDecoration(decoGO);
         return decoGO;
     }

@@ -11,10 +11,11 @@ class Toybox {
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
         this._game.physics.arcade.gravity.y = gameOptions.gravity;
         this.currentGameObjects = [];
-        this.decorations = new Phaser.Group(game, null, 'decorations', true);
+        this.bottomDecorations = new Phaser.Group(game, null, 'decorations', true);
         this.collectibles = new Phaser.Group(game, null, 'collectibles', true);
         this.blocks = new Phaser.Group(game, null, 'blocks', true);
         this.players = new Phaser.Group(game, null, 'players', true);
+        this.topDecorations = new Phaser.Group(game, null, 'effects', true);
 
         this.animationFPS = 12;
         this._currencyDisplay = null;
@@ -60,7 +61,15 @@ class Toybox {
 
     addDecoration(go) {
         this.addGameObject(go);
-        this.decorations.add(go);
+        switch (go.sendTo){
+            case 'top':
+                this.topDecorations.add(go);
+                break;
+            case 'bottom':
+            default:
+                this.bottomDecorations.add(go);
+                break;
+        }
     }
 
     // helpers
