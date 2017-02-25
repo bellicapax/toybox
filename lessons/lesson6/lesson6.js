@@ -120,7 +120,8 @@ function update() {
 // Again, that's happening because that conditional will ALWAYS trigger.
 
 // Now, for laughs, let's tie our coin generation to this goofy conditional we've got.
-// So what I want you to do is to add new lines on line 69 inside the block of code that conditional is executing.
+// So what I want you to do is to add new lines (press Enter)
+// on line 62 inside the block of code that conditional is executing.
 // Technically this isn't part of the code, this just helps us read and understand the code being executed.
 // When you're done, the conditional should take up lines 62-64, and look something like this:
 
@@ -153,7 +154,7 @@ function update() {
 // It's just that now we've made all those things dependant on our if statement.
 
 // Now, let's change the expression that conditional is evaluating.
-// On line 69 (in the parentheses of our if statement,) change 'true' to 'false.'
+// On line 62 (in the parentheses of our if statement,) change 'true' to 'false.'
 
 // Now save, and run this lesson in the browser again.
 
