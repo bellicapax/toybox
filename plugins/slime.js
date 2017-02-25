@@ -30,15 +30,15 @@ var slimeToyboxPlugin = {
         slimeOptions.speed = slimeOptions.speed || 100;
 
         var slimeUpdate = function(){
-            this.body.velocity.x *= 0.95
+            this.body.velocity.x *= 0.95;
+
+            if(this.x >= (this.toybox.game.width - 8) || this.x <= 8){
+                this.turnAround();
+            }
 
             if(this.timeToMove){
                 this.animations.play("idle");
                 this.timeToMove = false;
-
-                if(this.x >= (this.toybox.game.width - 8) || this.x <= 8){
-                    this.scale.x *= -1;
-                }
 
                 this.body.velocity.x = (-1 * this.speed * this.scale.x);
                 var thisSlime = this;
@@ -48,7 +48,35 @@ var slimeToyboxPlugin = {
         };
 
         slimeOptions.update = slimeUpdate;
+
+        var slimeCollide = function(slime, collidedSprite){
+            var isFromTop = (collidedSprite.y + collidedSprite.height / 2) < (slime.y + 4);
+
+            if (isFromTop){
+                if (this.spriteIsPlayer(collidedSprite)){
+                    collidedSprite.body.velocity.y = -200;
+                    slime.kill();
+                }
+                
+            } else {
+                slime.turnAround();
+            }
+
+        }
+
+        slimeOptions.collide = slimeCollide;
+
         var slimeGO = this.toybox.add.mob(slimeOptions);
+
+        slimeGO.turnAround = function(){
+            if (!this.canTurnAround){
+                return;
+            }
+            this.scale.x *= -1;
+            this.canTurnAround = false;
+            var thisSlime = this;
+            this.toybox.game.time.events.add(500, function(){ thisSlime.canTurnAround = true; }, this);
+        }
 
         var fps = this.toybox.animationFPS;
         slimeGO.animations.add("dead", [2]);
@@ -77,6 +105,7 @@ var slimeToyboxPlugin = {
         }
 
         slimeGO.timeToMove = true;
+        slimeGO.canTurnAround = true;
 
         return slimeGO;
  	}
