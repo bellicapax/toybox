@@ -50,17 +50,6 @@ function create() {
 function update() {
     toybox.update();
 
-    for (var i = toybox.collectibles.children.length - 1; i >= 0; i--) {
-        if (typeof(toybox.collectibles.children[i].age) == "undefined"){
-            toybox.collectibles.children[i].age = 0;
-        } else {
-            toybox.collectibles.children[i].age++;
-            if (toybox.collectibles.children[i].age >= 300){
-                //toybox.collectibles.children[i].kill();
-            }
-        }
-    }
-
     if(toybox.oneOutOf(100)){ 
         toybox.add.crate({startingX: toybox.diceRoll(641)-1})
     };

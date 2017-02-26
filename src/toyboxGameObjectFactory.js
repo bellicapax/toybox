@@ -65,7 +65,13 @@ class ToyboxGameObjectFactory {
         objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
 
         if (typeof (objectOptions.kill) == "function") {
-            objectGO.events.onKilled.add(objectOptions.kill);
+            objectGO.events.onKilled.addOnce(objectOptions.kill);
+            var toybox = this.toybox;
+            objectGO.events.onKilled.add(function(){
+                toybox.game.time.events.add(1000, function(){ 
+                    objectGO.destroy(); 
+                }, this);
+            });
         }
         
         objectGO.toybox = this.toybox;

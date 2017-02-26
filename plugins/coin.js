@@ -24,8 +24,22 @@ var coinToyboxPlugin = {
         coinOptions.color = coinOptions.color || randomizeCoin();
         coinOptions.name = coinOptions.color + "Coin";
 
+        var ageCoin = function(){
+            if(this.killAge == false){
+                return;
+            }
+            this.age = this.age || 0;
+            if (this.age >= this.killAge){
+                this.kill();
+            } else {
+                this.age++;
+            }
+        }
+
+        coinOptions.update = ageCoin;
+
         var tryIncreaseCurrency = function(coin, collidedSprite) {
-            if (this.spriteIsPlayer(collidedSprite)) {
+            if (collidedSprite.isPlayer()) {
                 if (typeof(collidedSprite.score) == "undefined"){
                     collidedSprite.score = 0;
                 }
@@ -70,6 +84,7 @@ var coinToyboxPlugin = {
             break;
         }
         var coinGO = this.toybox.add.collectible(coinOptions);
+        coinGO.killAge = (typeof(coinOptions.killAge) !== "undefined") ? coinOptions.killAge : 1000;
         coinGO.currencyValue = currencyValue;
         return coinGO;
     }
