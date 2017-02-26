@@ -39,6 +39,8 @@ var coinToyboxPlugin = {
             }
         }
 
+        coinOptions.update = ageCoin;
+
         var tryIncreaseCurrency = function(coin, collidedSprite) {
             if (collidedSprite.isPlayer()) {
                 if (typeof(collidedSprite.score) == "undefined"){
