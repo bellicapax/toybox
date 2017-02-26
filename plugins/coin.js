@@ -30,13 +30,13 @@ var coinToyboxPlugin = {
                     collidedSprite.score = 0;
                 }
                 collidedSprite.score += coin.currencyValue;
-                coin.destroy();
+                coin.kill();
             }
         }
 
         coinOptions.collide = tryIncreaseCurrency;
 
-        var coinDestroy = function(coin){
+        var coinKill = function(coin){
             var poofOptions = {
                 startingX: coin.x,
                 startingY: coin.y,
@@ -46,11 +46,11 @@ var coinToyboxPlugin = {
             var poofGO = this.toybox.add.decoration(poofOptions);
             poofGO.animations.add("poof", [0, 1, 2, 3], this.toybox.animationFPS, true);
             poofGO.animations.play("poof");
-            this.game.time.events.add(250, function(){ poofGO.destroy(); }, this);
+            this.game.time.events.add(250, function(){ poofGO.kill(); }, this);
 
         }
 
-        coinOptions.destroy = coinDestroy;
+        coinOptions.kill = coinKill;
 
         switch (coinOptions.color){
             case "gold":

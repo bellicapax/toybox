@@ -29,7 +29,7 @@ var alienToyboxPlugin = {
         alienOptions.spriteName = alienOptions.color + "Alien";
 
         var alienPlatformerUpdate = function(){
-            if (this.isHit){
+            if (this.isHit || this.health <= 0){
                 return;
             }
         	if (this.controls.right.isDown) {
@@ -66,7 +66,7 @@ var alienToyboxPlugin = {
         alienOptions.update = alienPlatformerUpdate;
 
         var alienCollide = function(alien, collidedSprite){
-            var alienIsOnTop = (alien.y + 10) <= (collidedSprite.y - collidedSprite.height / 2) ;
+            var alienIsOnTop = (alien.y + (alien.height / 2)) <= (collidedSprite.y - collidedSprite.height / 2) ;
 
             if (collidedSprite.isMob()){
                 if (alienIsOnTop){
@@ -79,19 +79,19 @@ var alienToyboxPlugin = {
 
         alienOptions.collide = alienCollide;
 
-        var alienDestroy = function(alien){
+        var alienKill = function(alien){
             var splosion = this.toybox.game.add.emitter(alien.x, alien.y, 12);
             this.toybox.topDecorations.add(splosion);
             splosion.makeParticles('heartsAndStar',[5]);
             splosion.gravity = 0;
-            //splosion.minParticleSpeed = 400;
+            splosion.minParticleSpeed = new Phaser.Point(-400,-400);
             splosion.maxParticleSpeed = new Phaser.Point(400,400);
             splosion.start(true,4000,null,12);
-            game.time.events.add(2000, function(){ splosion.destroy()}, this);
+            game.time.events.add(2000, function(){ splosion.kill()}, this);
 
         }
 
-        alienOptions.destroy = alienDestroy;
+        alienOptions.kill = alienKill;
 
         var alienGO = this.toybox.add.player(alienOptions);
 
@@ -109,7 +109,7 @@ var alienToyboxPlugin = {
             var thisAlien = this;
             this.toybox.game.time.events.add(500, function(){
                 if (thisAlien.health <= 0){
-                    thisAlien.destroy();
+                    thisAlien.kill();
                 } else {
                     thisAlien.animations.play("idle");
                     thisAlien.isHit = false; 

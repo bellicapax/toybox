@@ -30,9 +30,11 @@ var slimeToyboxPlugin = {
         slimeOptions.speed = slimeOptions.speed || 100;
 
         var slimeUpdate = function(){
-            this.body.velocity.x *= 0.95;
+            if (this.body !== null){
+                this.body.velocity.x *= 0.95;
+            }
 
-            if(this.x >= (this.toybox.game.width - 8) || this.x <= 8){
+            if( this.x >= (this.toybox.game.width - (Math.abs(this.width) / 2) ) || (this.x <= (Math.abs(this.width) / 2) ) ){
                 this.turnAround();
             }
 
@@ -80,10 +82,11 @@ var slimeToyboxPlugin = {
             this.isHit = true;
             this.health -= 1;
             this.animations.play("dead");
+            this.height = 3;
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){ 
                 if (thisSlime.health <= 0){
-                    thisSlime.destroy();
+                    thisSlime.kill();
                 } else {
                     thisSlime.animations.play("idle");
                     thisSlime.isHit = false; 

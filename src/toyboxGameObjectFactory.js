@@ -64,9 +64,8 @@ class ToyboxGameObjectFactory {
         
         objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
 
-        if (typeof (objectOptions.destroy) == "function") {
-            objectGO.events.onDestroy.add(objectOptions.destroy);
-            //objectGO.events.onDestroy.add(function() { console.log(arguments); });
+        if (typeof (objectOptions.kill) == "function") {
+            objectGO.events.onKilled.add(objectOptions.kill);
         }
         
         objectGO.toybox = this.toybox;

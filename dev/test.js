@@ -28,7 +28,7 @@ function create() {
     }
 
     player1 = toybox.add.alien(playerOptions);
-    player1.health = 1;
+    //player1.health = 1;
 
     playerOptions.color = "blue";
     playerOptions.startingX = 300;
@@ -42,7 +42,7 @@ function create() {
 
     // gem = toybox.add.gem({color: "red"});
 
-    slime = toybox.add.slime({ startingX: 400});
+    //slime = toybox.add.slime({ startingX: 200});
 
 
 }
@@ -56,24 +56,28 @@ function update() {
         } else {
             toybox.collectibles.children[i].age++;
             if (toybox.collectibles.children[i].age >= 300){
-                toybox.collectibles.children[i].destroy();
+                //toybox.collectibles.children[i].kill();
             }
         }
     }
 
     if(toybox.oneOutOf(100)){ 
-        //toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+        toybox.add.crate({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(30)){ 
-        //toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
     };
 
     if(toybox.oneOutOf(400)){ 
-        //toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+        toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+    };
+
+    if(toybox.oneOutOf(400)){ 
+        toybox.add.slime({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.blocks.children.length > 30){
-        //toybox.blocks.children[0].destroy();
+        toybox.blocks.children[0].kill();
     };
 }

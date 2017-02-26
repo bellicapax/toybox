@@ -25,70 +25,68 @@ var mushroomToyboxPlugin = {
         mushroomOptions.spriteName = "smallMushrooms";
         mushroomOptions.name = mushroomOptions.color + "Mushroom";
 
-        var tryGrowPlayer = function(sprite1, sprite2) {
-    	    if (this.spriteIsPlayer(sprite2)) {
-    	        var playerGO = sprite2;
-    	        if (playerGO.scale.x <= 3.0){
-    	            var tempSize = Math.abs(playerGO.scale.x)
-    	            var newSize = tempSize + 0.25;
+        var tryGrowObject = function(mushroom, sprite2) {
+    	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
+    	        if (sprite2.scale.x <= 3.0){
+    	            var tempSize = Math.abs(sprite2.scale.x)
+    	            var newSize = tempSize * 1.5;
+                    Phaser.Math.clamp(newSize, 0.25, 5);
     	            var scaleBy = (newSize / tempSize);
-    	            playerGO.scale.x *= scaleBy;
-    	            playerGO.scale.y *= scaleBy;
+    	            sprite2.scale.x *= scaleBy;
+    	            sprite2.scale.y *= scaleBy;
     	        }
-    	        sprite1.destroy();
+    	        mushroom.kill();
     	    }
     	}
 	
-    	var tryShrinkPlayer = function(sprite1, sprite2) {
-    	    if (this.spriteIsPlayer(sprite2)) {
-    	        var playerGO = sprite2;
-    	        if (playerGO.scale.x <= 3.0){
-    	            var tempSize = Math.abs(playerGO.scale.x)
-    	            var newSize = tempSize - 0.25;
+    	var tryShrinkObject = function(mushroom, sprite2) {
+    	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
+    	        if (sprite2.scale.x <= 3.0){
+    	            var tempSize = Math.abs(sprite2.scale.x)
+    	            var newSize = tempSize * 0.5;
+                    Phaser.Math.clamp(newSize, 0.25, 5);
     	            var scaleBy = (newSize / tempSize);
-    	            playerGO.scale.x *= scaleBy;
-    	            playerGO.scale.y *= scaleBy;
+    	            sprite2.scale.x *= scaleBy;
+    	            sprite2.scale.y *= scaleBy;
     	        }
-    	        sprite1.destroy();
+    	        mushroom.kill();
     	    }
     	}
 	
-    	var trySpeedUpPlayer = function(sprite1, sprite2) {
-    	    if (this.spriteIsPlayer(sprite2)) {
-    	        var playerGO = sprite2;
-    	        if (playerGO.speed <= 300){
-    	            playerGO.speed += 50;
+    	var trySpeedUpObject = function(mushroom, sprite2) {
+    	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
+    	        if (sprite2.speed <= 300){
+    	            sprite2.speed += 50;
     	        }
-    	        sprite1.destroy();
+    	        mushroom.kill();
     	    }
     	}
 	
-    	var trySlowPlayer = function(sprite1, sprite2) {
-    	    if (this.spriteIsPlayer(sprite2)) {
-    	        var playerGO = sprite2;
-    	        if (playerGO.speed >= 100){
-    	            playerGO.speed -= 50;
+    	var trySlowObject = function(mushroom, sprite2) {
+    	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
+    	        if (sprite2.speed >= 100){
+    	            sprite2.speed -= 50;
     	        }
-    	        sprite1.destroy();
+    	        mushroom.kill();
     	    }
     	}
 
         switch (mushroomOptions.color){
             case "yellow":
                 mushroomOptions.spriteIndex = 14;
-                mushroomOptions.collide = trySpeedUpPlayer;
+                mushroomOptions.collide = trySpeedUpObject;
             break;
             case "red":
                 mushroomOptions.spriteIndex = 11;
-                mushroomOptions.collide = trySlowPlayer;
+                mushroomOptions.collide = trySlowObject;
             break;
             case "blue":
                 mushroomOptions.spriteIndex = 20;
-                mushroomOptions.collide = tryShrinkPlayer;
+                mushroomOptions.collide = tryShrinkObject;
             break;
             default:
-                mushroomOptions.spriteIndex = 20;
-                mushroomOptions.collide = tryGrowPlayer;
+                mushroomOptions.spriteIndex = 23;
+                mushroomOptions.collide = tryGrowObject;
             break;
         }
         var mushroomGO = this.toybox.add.collectible(mushroomOptions);

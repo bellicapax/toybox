@@ -27,7 +27,7 @@ var gemToyboxPlugin = {
                     collidedSprite.score = 0;
                 }
                 collidedSprite.score += gem.currencyValue;
-                gem.destroy();
+                gem.kill();
             }
         }
 
