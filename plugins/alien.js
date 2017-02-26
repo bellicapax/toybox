@@ -7,6 +7,7 @@ var alienToyboxPlugin = {
  		toyboxObject._game.load.spritesheet("greenAlien", "../../assets/sprites/greenAlienSheet.png", 16, 20);
         toyboxObject._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         toyboxObject._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
+        toyboxObject._game.load.spritesheet("heartsAndStar", "../../assets/sprites/heartsAndStarSheet.png", 16, 16);
  	},
 
  	create: function(alienOptions){
@@ -14,6 +15,7 @@ var alienToyboxPlugin = {
         var validColors = ["green","blue","pink"];
         alienOptions.speed = alienOptions.speed || 100;
         alienOptions.jumpForce = alienOptions.jumpForce || 300;
+        alienOptions.health = alienOptions.health || 3;
         if (typeof(alienOptions.color) == "undefined" || validColors.indexOf(alienOptions.color) == -1){
             alienOptions.color = "green";
         }
@@ -27,6 +29,9 @@ var alienToyboxPlugin = {
         alienOptions.spriteName = alienOptions.color + "Alien";
 
         var alienPlatformerUpdate = function(){
+            if (this.isHit){
+                return;
+            }
         	if (this.controls.right.isDown) {
         	    this.body.velocity.x = this.speed;
         	    if (this.scale.x < 0) {
@@ -59,12 +64,66 @@ var alienToyboxPlugin = {
         };
 
         alienOptions.update = alienPlatformerUpdate;
+
+        var alienCollide = function(alien, collidedSprite){
+            var alienIsOnTop = (alien.y + 10) <= (collidedSprite.y - collidedSprite.height / 2) ;
+
+            if (collidedSprite.isMob()){
+                if (alienIsOnTop){
+                    collidedSprite.hit();
+                } else {
+                    alien.hit();
+                }
+            }
+        };
+
+        alienOptions.collide = alienCollide;
+
+        var alienDestroy = function(alien){
+            var splosion = this.toybox.game.add.emitter(alien.x, alien.y, 12);
+            this.toybox.topDecorations.add(splosion);
+            splosion.makeParticles('heartsAndStar',[5]);
+            splosion.gravity = 0;
+            //splosion.minParticleSpeed = 400;
+            splosion.maxParticleSpeed = new Phaser.Point(400,400);
+            splosion.start(true,4000,null,12);
+            game.time.events.add(2000, function(){ splosion.destroy()}, this);
+
+        }
+
+        alienOptions.destroy = alienDestroy;
+
         var alienGO = this.toybox.add.player(alienOptions);
+
+        alienGO.health = alienOptions.health;
+
+        alienGO.hit = function(){
+            if (this.isHit){
+                return;
+            }
+            this.isHit = true;
+            this.health -= 1;
+            this.body.velocity.x = -75 * this.scale.x;
+            this.body.velocity.y = -200;
+            this.animations.play("hit");
+            var thisAlien = this;
+            this.toybox.game.time.events.add(500, function(){
+                if (thisAlien.health <= 0){
+                    thisAlien.destroy();
+                } else {
+                    thisAlien.animations.play("idle");
+                    thisAlien.isHit = false; 
+                }
+            }, this);
+        }
 
         var fps = this.toybox.animationFPS;
         alienGO.animations.add("idle", [1]);
+        alienGO.animations.add("hit", [4]);
         alienGO.animations.add("run", [9, 10], fps, true);
         alienGO.animations.add("jump", [7, 8], fps, true);
+
+        alienGO.isHit = false;
         
         return alienGO;
  	}

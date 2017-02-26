@@ -28,6 +28,7 @@ function create() {
     }
 
     player1 = toybox.add.alien(playerOptions);
+    player1.health = 1;
 
     playerOptions.color = "blue";
     playerOptions.startingX = 300;
@@ -41,7 +42,7 @@ function create() {
 
     // gem = toybox.add.gem({color: "red"});
 
-    slime = toybox.add.slime({color:"yellow", startingX: 400});
+    slime = toybox.add.slime({ startingX: 400});
 
 
 }

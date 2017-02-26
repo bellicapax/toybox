@@ -81,11 +81,7 @@ class Toybox {
     // helpers
 
     spriteIsPlayer(spriteGO) {
-        return (
-            (spriteGO !== null) && 
-            (typeof(spriteGO) !== "undefined") &&
-            (spriteGO.name.substring(0, 6) == "player")
-            );
+        return ( (spriteGO !== null) && (spriteGO.toyboxType == "player") );
     }
 
     diceRoll(diceSides) {

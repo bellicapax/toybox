@@ -17,11 +17,11 @@ var slimeToyboxPlugin = {
         var validColors = ["yellow","red","blue","green","purple","black"];
 
         var randomizeSlime = function() {
-            return validColors[this.game.Math.between(0,(validColors.length - 1))];
+            return validColors[Phaser.Math.between(0,(validColors.length - 1))];
         }
 
         if (typeof(slimeOptions.color) == "undefined" || validColors.indexOf(slimeOptions.color) == -1){
-            slimeOptions.color = randomizeGem();
+            slimeOptions.color = randomizeSlime();
         }
         slimeOptions.name = slimeOptions.color + "Slime";
         slimeOptions.spriteName = slimeOptions.color + "Slime";
@@ -36,7 +36,7 @@ var slimeToyboxPlugin = {
                 this.turnAround();
             }
 
-            if(this.timeToMove){
+            if(this.timeToMove && !this.isHit && (this.body.onFloor() || this.body.touching.down)){
                 this.animations.play("idle");
                 this.timeToMove = false;
 
@@ -50,15 +50,10 @@ var slimeToyboxPlugin = {
         slimeOptions.update = slimeUpdate;
 
         var slimeCollide = function(slime, collidedSprite){
-            var isFromTop = (collidedSprite.y + collidedSprite.height / 2) < (slime.y + 4);
+            var horizDis = collidedSprite.x - slime.x;
+            var isBlocked = ((horizDis < 0 && slime.scale.x > 0) || (horizDis > 0 && slime.scale.x < 0))
 
-            if (isFromTop){
-                if (this.spriteIsPlayer(collidedSprite)){
-                    collidedSprite.body.velocity.y = -200;
-                    slime.kill();
-                }
-                
-            } else {
+            if (isBlocked) {
                 slime.turnAround();
             }
 
@@ -76,6 +71,24 @@ var slimeToyboxPlugin = {
             this.canTurnAround = false;
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){ thisSlime.canTurnAround = true; }, this);
+        }
+
+        slimeGO.hit = function(){
+            if (this.isHit){
+                return;
+            }
+            this.isHit = true;
+            this.health -= 1;
+            this.animations.play("dead");
+            var thisSlime = this;
+            this.toybox.game.time.events.add(500, function(){ 
+                if (thisSlime.health <= 0){
+                    thisSlime.destroy();
+                } else {
+                    thisSlime.animations.play("idle");
+                    thisSlime.isHit = false; 
+                }
+            }, this);
         }
 
         var fps = this.toybox.animationFPS;
@@ -106,6 +119,7 @@ var slimeToyboxPlugin = {
 
         slimeGO.timeToMove = true;
         slimeGO.canTurnAround = true;
+        slimeGO.isHit = false;
 
         return slimeGO;
  	}

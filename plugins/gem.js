@@ -11,7 +11,7 @@ var gemToyboxPlugin = {
         var validColors = ["yellow","red","blue","green"];
 
         var randomizeGem = function() {
-            return validColors[this.game.Math.between(0,(validColors.length - 1))];
+            return validColors[Phaser.Math.between(0,(validColors.length - 1))];
         }
 
         gemOptions.spriteName = "gems";

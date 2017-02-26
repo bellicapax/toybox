@@ -21,6 +21,26 @@ class ToyboxGameObjectFactory {
 
         objectGO.name = objectOptions.name;
 
+        objectGO.isBlock = function(){
+            return objectGO.toyboxType == "block";
+        }
+
+        objectGO.isPlayer = function(){
+            return objectGO.toyboxType == "player";
+        }
+
+        objectGO.isDecoration = function(){
+            return objectGO.toyboxType == "decoration";
+        }
+
+        objectGO.isCollectible = function(){
+            return objectGO.toyboxType == "collectible";
+        }
+
+        objectGO.isMob = function(){
+            return objectGO.toyboxType == "mob";
+        }
+
         if (objectOptions.enablePhysics){
             this.toybox.game.physics.enable(objectGO);
 
@@ -73,6 +93,7 @@ class ToyboxGameObjectFactory {
         playerGO.score = 0;
         this.playerAttachControls(playerGO,playerOptions.controls);
         this.toybox.addPlayer(playerGO);
+        playerGO.toyboxType = "player";
         return playerGO;
     }
 
@@ -146,11 +167,11 @@ class ToyboxGameObjectFactory {
     }
 
     mob(mobOptions) {
-        mobOptions.name = "mob";
         var mobGO = this.toybox.add.toyboxObject(mobOptions);
         mobGO.speed = mobOptions.speed;
         mobGO.jumpforce = mobOptions.speed;
         this.toybox.addMob(mobGO);
+        mobGO.toyboxType = "mob";
         return mobGO;
     }
 
