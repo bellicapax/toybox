@@ -6,7 +6,10 @@ var crateToyboxPlugin = {
  	preload: function(toyboxObject){
  		toyboxObject._game.load.spritesheet("cratesAndOre", "../../assets/sprites/cratesAndOreSheet.png", 16, 16);
  		toyboxObject._game.load.spritesheet("poof", "../../assets/sprites/poofSheet.png", 16, 24);
+ 		toyboxObject._game.load.audio("crateBump", "../../assets/sfx/impact-3.wav");
  	},
+
+ 	sfx: ["crateBump"],
 
  	create: function(crateOptions){
  		crateOptions.spriteName = "cratesAndOre";
@@ -14,6 +17,14 @@ var crateToyboxPlugin = {
      	crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
      	crateOptions.name = "type" + crateOptions.type + "Crate";
      	crateOptions.drag = (crateOptions.scale ^ 2) * 50;
+
+     	var crateCollide = function(crate, collidedSprite){
+     		if( (crate.body.velocity.x >= 100 || crate.body.velocity.y >= 100) && !crate.bumped){
+   				crate.bump();
+     		}
+     	}
+
+     	crateOptions.collide = crateCollide;
 
      	var crateKill = function(crate){
             var poofOptions = {
@@ -31,6 +42,15 @@ var crateToyboxPlugin = {
         crateOptions.kill = crateKill;
 
      	var crateGO = this.toybox.add.block(crateOptions);
+     	crateGO.bumped = false;
+
+     	crateGO.bump = function(){
+     		this.bumped = true;
+     		this.toybox.sfx.crateBump.play();
+     		var thisCrate = this;
+     		this.toybox.game.time.events.add(2000, function(){ thisCrate.bumped = false; }, this);
+     	};
+
      	return crateGO;
  	}
      

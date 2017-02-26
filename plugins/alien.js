@@ -8,7 +8,13 @@ var alienToyboxPlugin = {
         toyboxObject._game.load.spritesheet("blueAlien", "../../assets/sprites/blueAlienSheet.png", 16, 20);
         toyboxObject._game.load.spritesheet("pinkAlien", "../../assets/sprites/pinkAlienSheet.png", 16, 20);
         toyboxObject._game.load.spritesheet("heartsAndStar", "../../assets/sprites/heartsAndStarSheet.png", 16, 16);
+        toyboxObject._game.load.audio("alienJump", "../../assets/sfx/jump-2.wav");
+        toyboxObject._game.load.audio("alienHit", "../../assets/sfx/chirp-3.wav");
+        toyboxObject._game.load.audio("alienKill", "../../assets/sfx/zap-1.wav");
+
  	},
+
+    sfx: ["alienJump","alienHit","alienKill"],
 
  	create: function(alienOptions){
  		alienOptions.allowGravity = true;
@@ -59,6 +65,7 @@ var alienToyboxPlugin = {
         	    this.body.velocity.y = -this.jumpForce;
         	    if (this.animations.name !== "jump") {
         	        this.animations.play("jump");
+                    this.toybox.sfx.alienJump.play();
         	    }
         	}
         };
@@ -86,6 +93,7 @@ var alienToyboxPlugin = {
             splosion.gravity = 0;
             splosion.minParticleSpeed = new Phaser.Point(-400,-400);
             splosion.maxParticleSpeed = new Phaser.Point(400,400);
+            this.toybox.sfx.alienKill.play();
             splosion.start(true,4000,null,12);
             game.time.events.add(2000, function(){ splosion.kill()}, this);
 
@@ -106,6 +114,7 @@ var alienToyboxPlugin = {
             this.body.velocity.x = -75 * this.scale.x;
             this.body.velocity.y = -200;
             this.animations.play("hit");
+            this.toybox.sfx.alienHit.play();
             var thisAlien = this;
             this.toybox.game.time.events.add(500, function(){
                 if (thisAlien.health <= 0){

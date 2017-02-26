@@ -4,7 +4,10 @@ var gemToyboxPlugin = {
 
     preload: function(toyboxObject){
         toyboxObject._game.load.spritesheet("gems", "../../assets/sprites/gemsSheet.png", 16, 16);
+        toyboxObject._game.load.audio("gemCollected", "../../assets/sfx/gem-1.wav");
     },
+
+    sfx: ["gemCollected"],
 
     create: function(gemOptions){
 
@@ -22,11 +25,12 @@ var gemToyboxPlugin = {
         gemOptions.allowGravity = false;
 
         var tryIncreaseCurrency = function(gem, collidedSprite) {
-            if (this.spriteIsPlayer(collidedSprite)) {
+            if (collidedSprite.isPlayer()) {
                 if (typeof(collidedSprite.score) == "undefined"){
                     collidedSprite.score = 0;
                 }
                 collidedSprite.score += gem.currencyValue;
+                this.toybox.sfx.gemCollected.play();
                 gem.kill();
             }
         }

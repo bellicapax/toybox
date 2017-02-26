@@ -38,6 +38,7 @@ function preload() {
 // then we use toybox to create an alien player character, passing along that options object as an argument.
 
 function create() {
+    toybox.create();
 
     var playerOptions = {
         startingX : 100,

@@ -151,6 +151,7 @@ function preload() {
 }
 
 function create() {
+  toybox.create();
   toybox.add.alien(alienOptions);
   if(typeof(mushroomOptions.startingX) == "undefined"){
     mushroomOptions.startingX = 50;

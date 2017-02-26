@@ -90,6 +90,7 @@ function preload() {
 }
 
 function create() {
+    toybox.create();
     if (!validColors.indexOf(playerColor)) {
         playerColor = "green";
     }

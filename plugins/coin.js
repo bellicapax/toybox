@@ -5,7 +5,10 @@ var coinToyboxPlugin = {
     preload: function(toyboxObject){
         toyboxObject._game.load.spritesheet("coins", "../../assets/sprites/coinsSheet.png", 16, 16);
         toyboxObject._game.load.spritesheet("poof", "../../assets/sprites/poofSheet.png", 16, 24);
+        toyboxObject._game.load.audio("coinCollected", "../../assets/sfx/coin-1.wav");
     },
+
+    sfx: ["coinCollected"],
 
     create: function(coinOptions){
 
@@ -36,14 +39,13 @@ var coinToyboxPlugin = {
             }
         }
 
-        coinOptions.update = ageCoin;
-
         var tryIncreaseCurrency = function(coin, collidedSprite) {
             if (collidedSprite.isPlayer()) {
                 if (typeof(collidedSprite.score) == "undefined"){
                     collidedSprite.score = 0;
                 }
                 collidedSprite.score += coin.currencyValue;
+                this.toybox.sfx.coinCollected.play();
                 coin.kill();
             }
         }

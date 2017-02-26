@@ -103,6 +103,7 @@ function preload() {
 }
 
 function create() {
+    toybox.create();
     createTextAnimation();
     createSprites();
 }

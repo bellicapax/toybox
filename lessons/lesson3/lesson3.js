@@ -85,6 +85,7 @@ var playerOptions;
 var coinOptions;
 
 function create() {
+    toybox.create();
 
     playerOptions = {
         startingX : 100,
@@ -183,6 +184,6 @@ function update() {
 // ----- END OF LESSON MATERIAL -----
 
 function render(){
-    var coinScore = mainPlayer.stats.score || 0;
+    var coinScore = mainPlayer.score || 0;
     game.debug.text(coinScore,10,30)
 }

@@ -10,7 +10,11 @@ var slimeToyboxPlugin = {
         toyboxObject._game.load.spritesheet("yellowSlime", "../../assets/sprites/yellowSlimeSheet.png", 16, 8);
         toyboxObject._game.load.spritesheet("purpleSlime", "../../assets/sprites/purpleSlimeSheet.png", 16, 8);
         toyboxObject._game.load.spritesheet("blackSlime", "../../assets/sprites/blackSlimeSheet.png", 16, 8);
+        toyboxObject._game.load.audio("slimeBump", "../../assets/sfx/goo-2.wav");
+        toyboxObject._game.load.audio("slimeDie", "../../assets/sfx/goo-1.wav");
  	},
+
+    sfx: ["slimeBump","slimeDie"],
 
  	create: function(slimeOptions){
 
@@ -70,6 +74,7 @@ var slimeToyboxPlugin = {
                 return;
             }
             this.scale.x *= -1;
+            this.toybox.sfx.slimeBump.play();
             this.canTurnAround = false;
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){ thisSlime.canTurnAround = true; }, this);
@@ -86,6 +91,7 @@ var slimeToyboxPlugin = {
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){ 
                 if (thisSlime.health <= 0){
+                    this.toybox.sfx.slimeDie.play();
                     thisSlime.kill();
                 } else {
                     thisSlime.animations.play("idle");

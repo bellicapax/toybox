@@ -4,7 +4,11 @@ var mushroomToyboxPlugin = {
 
  	preload: function(toyboxObject){
  		toyboxObject._game.load.spritesheet("smallMushrooms", "../../assets/sprites/smallMushroomsSheet.png", 16, 16);
+        toyboxObject._game.load.audio("goodShroom", "../../assets/sfx/gem-3.wav");
+        toyboxObject._game.load.audio("badShroom", "../../assets/sfx/chirp-2.wav");
  	},
+
+    sfx: ["goodShroom", "badShroom"],
 
  	create: function(mushroomOptions){
 
@@ -35,6 +39,7 @@ var mushroomToyboxPlugin = {
     	            sprite2.scale.x *= scaleBy;
     	            sprite2.scale.y *= scaleBy;
     	        }
+                this.toybox.sfx.goodShroom.play();
     	        mushroom.kill();
     	    }
     	}
@@ -49,6 +54,7 @@ var mushroomToyboxPlugin = {
     	            sprite2.scale.x *= scaleBy;
     	            sprite2.scale.y *= scaleBy;
     	        }
+                this.toybox.sfx.badShroom.play();
     	        mushroom.kill();
     	    }
     	}
@@ -57,6 +63,7 @@ var mushroomToyboxPlugin = {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        sprite2.speed *= 1.5;
                 Phaser.Math.clamp(sprite2.speed, 50, 300);
+                this.toybox.sfx.goodShroom.play();
     	        mushroom.kill();
     	    }
     	}
@@ -65,6 +72,7 @@ var mushroomToyboxPlugin = {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        sprite2.speed *= 0.5;
                 Phaser.Math.clamp(sprite2.speed, 50, 250);
+                this.toybox.sfx.badShroom.play();
     	        mushroom.kill();
     	    }
     	}

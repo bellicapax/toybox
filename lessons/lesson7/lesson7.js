@@ -21,6 +21,7 @@ function preload() {
 }
 
 function create() {
+    toybox.create();
 
     var playerOptions = {
         startingX : 100,

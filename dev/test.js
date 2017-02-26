@@ -15,6 +15,7 @@ function preload() {
 }
 
 function create() {
+    toybox.create();
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
 
@@ -55,15 +56,19 @@ function update() {
     };
 
     if(toybox.oneOutOf(30)){ 
-        //toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
     };
 
     if(toybox.oneOutOf(400)){ 
-        //toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+        toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(400)){ 
-        //toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+        toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+    };
+
+    if(toybox.oneOutOf(400)){ 
+        toybox.add.gem({startingX: toybox.diceRoll(641)-1, startingY: 300})
     };
 
     if(toybox.blocks.children.length > 20){

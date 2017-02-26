@@ -110,6 +110,7 @@ class Toybox {
 
     preloadPlugins(){
         this.loadedPlugins = {};
+        this.sfx = {};
         if (typeof(this.pluginsArray) !== "undefined") {
             for (var index = this.pluginsArray.length - 1; index >= 0; index--) {
                 var pluginName = this.pluginsArray[index];
@@ -117,6 +118,12 @@ class Toybox {
                 this.loadedPlugins[pluginName] = pluginObject;
                 this.add[pluginName] = pluginObject.create;
                 pluginObject.preload(this);
+
+                if (typeof(pluginObject.sfx) !== "undefined"){
+                    for (var i = pluginObject.sfx.length - 1; i >= 0; i--) {
+                        this.sfx[pluginObject.sfx[i]] = null;
+                    }
+                }
             }
         }
     }
@@ -137,6 +144,13 @@ class Toybox {
         this._game.load.spritesheet("yellowSlime", "../../assets/sprites/yellowSlimeSheet.png", 16, 16);
         this._game.load.spritesheet("yellowSnail", "../../assets/sprites/yellowSnailSheet.png", 16, 16);
 
+    }
+
+    create() {
+        var sfxKeys = Object.keys(this.sfx);
+        for (var i = sfxKeys.length - 1; i >= 0; i--) {
+            this.sfx[sfxKeys[i]] = game.sound.add(sfxKeys[i]);
+        }
     }
 
     update() {

@@ -153,6 +153,7 @@ function preload() {
 }
 
 function create() {
+    toybox.create();
     var timer = new Phaser.Timer(game, true);
     var delay = 500;
     
