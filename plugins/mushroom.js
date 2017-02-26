@@ -43,8 +43,8 @@ var mushroomToyboxPlugin = {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        if (sprite2.scale.x <= 3.0){
     	            var tempSize = Math.abs(sprite2.scale.x)
-    	            var newSize = tempSize * 0.5;
-                    Phaser.Math.clamp(newSize, 0.25, 5);
+    	            var newSize = 0.5;
+                    //Phaser.Math.clamp(newSize, 0.5, 5);
     	            var scaleBy = (newSize / tempSize);
     	            sprite2.scale.x *= scaleBy;
     	            sprite2.scale.y *= scaleBy;
@@ -55,18 +55,16 @@ var mushroomToyboxPlugin = {
 	
     	var trySpeedUpObject = function(mushroom, sprite2) {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
-    	        if (sprite2.speed <= 300){
-    	            sprite2.speed += 50;
-    	        }
+    	        sprite2.speed *= 1.5;
+                Phaser.Math.clamp(sprite2.speed, 50, 300);
     	        mushroom.kill();
     	    }
     	}
 	
     	var trySlowObject = function(mushroom, sprite2) {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
-    	        if (sprite2.speed >= 100){
-    	            sprite2.speed -= 50;
-    	        }
+    	        sprite2.speed *= 0.5;
+                Phaser.Math.clamp(sprite2.speed, 50, 250);
     	        mushroom.kill();
     	    }
     	}

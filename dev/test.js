@@ -55,18 +55,19 @@ function update() {
     };
 
     if(toybox.oneOutOf(30)){ 
-        toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        //toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
     };
 
     if(toybox.oneOutOf(400)){ 
-        toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+        //toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(400)){ 
-        toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+        //toybox.add.slime({startingX: toybox.diceRoll(641)-1})
     };
 
-    if(toybox.blocks.children.length > 30){
-        toybox.blocks.children[0].kill();
+    if(toybox.blocks.children.length > 20){
+        var remover = toybox.blocks.children.shift();
+        remover.kill();
     };
 }
