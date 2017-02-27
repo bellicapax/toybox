@@ -15,7 +15,6 @@ var springToyboxPlugin = {
      	springOptions.spriteIndex = 2;
      	springOptions.name = "spring";
         //springOptions.immovable = true;
-        springOptions.drag = 5000;
 
      	var springCollide = function(spring, collidedSprite){
             var onTop = ( collidedSprite.y + (collidedSprite.height / 2) < spring.y + (spring.height / 2))
@@ -43,7 +42,6 @@ var springToyboxPlugin = {
      	var springGO = this.toybox.add.block(springOptions);
      	springGO.hasBounced = false;
         springGO.animations.add("bounce", [2, 1, 0, 1, 2], this.toybox.animationFPS, false);
-        springOptions.body = 5000;
 
      	springGO.bounce = function(){
      		this.hasBounced = true;

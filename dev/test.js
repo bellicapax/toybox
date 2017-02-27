@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button"]
 };
 
 function preload() {
@@ -19,8 +19,15 @@ function create() {
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
 
-    spring = toybox.add.spring({
-        startingX: 200
+    //spring = toybox.add.spring({ startingX: 200});
+
+    button = toybox.add.button({ 
+        startingX: 200,
+        onPress: function(){
+            for (var i = 0; i < 8; i++) {
+                toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+            }
+        }
     });
 
     floor = toybox.add.platform({
@@ -74,24 +81,24 @@ function update() {
     toybox.update();
 
     if(toybox.oneOutOf(100)){ 
-        var newCrate = toybox.add.crate({startingX: toybox.diceRoll(641)-1})
-        crates.add(newCrate);
+        // var newCrate = toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+        // crates.add(newCrate);
     };
 
     if(toybox.oneOutOf(30)){ 
-        toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
     };
 
     if(toybox.oneOutOf(400)){ 
-        toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
+        // toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(400)){ 
-        toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+        // toybox.add.slime({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(400)){ 
-        toybox.add.gem({startingX: toybox.diceRoll(641)-1, startingY: 300})
+        // toybox.add.gem({startingX: toybox.diceRoll(641)-1, startingY: 300})
     };
 
     if(crates.children.length > 20){
