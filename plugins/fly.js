@@ -55,7 +55,16 @@ var flyToyboxPlugin = {
                this.animations.play("idle"); 
             }
 
-            var targetPlayer = this.toybox.players.children[0];
+            var targetPlayer = {x: this.toybox.game.width + 16, x: this.toybox.game.height + 16,};
+
+            for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
+                var newPlayer = this.toybox.players.children[i];
+                var targetDist = Math.sqrt((Math.abs(this.y - targetPlayer.y))^2 + (Math.abs(this.x - targetPlayer.x))^2);
+                var newDist = Math.sqrt((Math.abs(this.y - newPlayer.y))^2 + (Math.abs(this.x - newPlayer.x))^2);
+                if( newDist < targetDist ){
+                    targetPlayer = newPlayer;
+                }
+            }
 
             if( (targetPlayer.x < this.x && this.scale.x < 0) || (targetPlayer.x > this.x && this.scale.x > 0) ){
                 this.turnAround();

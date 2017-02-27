@@ -95,6 +95,7 @@ var alienToyboxPlugin = {
             splosion.maxParticleSpeed = new Phaser.Point(400,400);
             this.toybox.sfx.alienKill.play();
             splosion.start(true,4000,null,12);
+            this.toybox.players.remove(this);
             game.time.events.add(2000, function(){ splosion.kill()}, this);
 
         }

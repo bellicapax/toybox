@@ -84,13 +84,13 @@ function create() {
 
     crates = new Phaser.Group(game, null, 'crates', true);
 
-    //player2 = toybox.add.alien(playerOptions);
+    player2 = toybox.add.alien(playerOptions);
 
     //gem = toybox.add.gem({color: "red"});
 
     //slime = toybox.add.slime({ startingX: 200});
 
-    //fly = toybox.add.fly({ startingX: 400, color: "black"});
+    fly = toybox.add.fly({ startingX: 400, color: "black"});
 
 
 }
