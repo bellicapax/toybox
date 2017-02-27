@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever"]
 };
 
 function preload() {
@@ -21,12 +21,28 @@ function create() {
 
     //spring = toybox.add.spring({ startingX: 200});
 
-    button = toybox.add.button({ 
-        startingX: 200,
-        onPress: function(){
-            for (var i = 0; i < 8; i++) {
-                toybox.add.slime({startingX: toybox.diceRoll(641)-1})
-            }
+    // button = toybox.add.button({ 
+    //     startingX: 200,
+    //     onPress: function(){
+    //         for (var i = 0; i < 8; i++) {
+    //             toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+    //         }
+    //     }
+    // });
+
+    lever = toybox.add.lever({ 
+        startingX: 320,
+        startingY: 480 - 24,
+        whileLeft: function(){
+            if(toybox.oneOutOf(300)){ 
+                toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dy: -200});
+            };
+            
+        },
+        whileRight: function(){
+            if(toybox.oneOutOf(300)){ 
+                toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dy: -200});
+            };
         }
     });
 
@@ -70,9 +86,11 @@ function create() {
 
     //player2 = toybox.add.alien(playerOptions);
 
-    // gem = toybox.add.gem({color: "red"});
+    //gem = toybox.add.gem({color: "red"});
 
     //slime = toybox.add.slime({ startingX: 200});
+
+    //fly = toybox.add.fly({ startingX: 400, color: "black"});
 
 
 }
