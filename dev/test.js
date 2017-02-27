@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform"]
 };
 
 function preload() {
@@ -18,6 +18,13 @@ function create() {
     toybox.create();
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
+    floor = toybox.add.platform({
+        width: game.width,
+        height: 16,
+        startingX: game.width / 2,
+        startingY: game.height - 8,
+        type: 4
+    });
 
     var playerOptions = {
         startingX : 100,
@@ -38,6 +45,8 @@ function create() {
         right:68,
         jump: 87
     }
+
+    crates = new Phaser.Group(game, null, 'crates', true);
 
     //player2 = toybox.add.alien(playerOptions);
 
@@ -71,8 +80,8 @@ function update() {
         toybox.add.gem({startingX: toybox.diceRoll(641)-1, startingY: 300})
     };
 
-    if(toybox.blocks.children.length > 20){
-        var remover = toybox.blocks.children.shift();
+    if(crates.children.length > 20){
+        var remover = crates.children.shift();
         remover.kill();
     };
 }
