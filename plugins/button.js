@@ -74,7 +74,7 @@ var buttonToyboxPlugin = {
             this.animations.play("pressed");
             this.onPress();
      		var thisButton = this;
-     		this.toybox.game.time.events.add(1000, function(){ 
+     		this.toybox.game.time.events.add(2000, function(){ 
                 thisButton.depressed = false;
                 this.animations.play("unpressed");
             }, this);
