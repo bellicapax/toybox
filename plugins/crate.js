@@ -26,6 +26,14 @@ var crateToyboxPlugin = {
 
      	crateOptions.collide = crateCollide;
 
+     	var crateUpdate = function(){
+            if (this.body.touching.down){
+                this.body.velocity.x *= 0.95;
+            }
+        }
+
+        crateOptions.update = crateUpdate;
+
      	var crateKill = function(crate){
             var poofOptions = {
                 startingX: crate.x,

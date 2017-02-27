@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring"]
 };
 
 function preload() {
@@ -18,6 +18,11 @@ function create() {
     toybox.create();
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
+
+    spring = toybox.add.spring({
+        startingX: 200
+    });
+
     floor = toybox.add.platform({
         width: game.width,
         height: 16,
@@ -61,7 +66,7 @@ function update() {
     toybox.update();
 
     if(toybox.oneOutOf(100)){ 
-        toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+        //toybox.add.crate({startingX: toybox.diceRoll(641)-1})
     };
 
     if(toybox.oneOutOf(30)){ 
