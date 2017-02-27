@@ -58,8 +58,8 @@ var slimeToyboxPlugin = {
         var slimeCollide = function(slime, collidedSprite){
             var horizDis = collidedSprite.x - slime.x;
             var isBlocked = ((horizDis < 0 && slime.scale.x > 0) || (horizDis > 0 && slime.scale.x < 0))
-
-            if (isBlocked) {
+            var slimeIsAbove = (slime.y + slime.height / 2) <= (collidedSprite.y - collidedSprite.height / 2)
+            if (isBlocked && !slimeIsAbove) {
                 slime.turnAround();
             }
 
@@ -88,10 +88,10 @@ var slimeToyboxPlugin = {
             this.health -= 1;
             this.animations.play("dead");
             this.height = 3;
+            this.toybox.sfx.slimeDie.play();
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){ 
                 if (thisSlime.health <= 0){
-                    this.toybox.sfx.slimeDie.play();
                     thisSlime.kill();
                 } else {
                     thisSlime.animations.play("idle");
