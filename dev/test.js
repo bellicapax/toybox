@@ -31,6 +31,14 @@ function create() {
         type: 4
     });
 
+    function oopsFloor(floor, collidedSprite){
+        if( collidedSprite.y > floor.y - (floor.height / 2) ){
+            collidedSprite.y = floor.y - (floor.height / 2) - (collidedSprite.height / 2)
+        }
+    };
+
+    floor.body.onCollide.add(oopsFloor);
+
     var playerOptions = {
         startingX : 100,
         startingY: 100,
@@ -66,7 +74,8 @@ function update() {
     toybox.update();
 
     if(toybox.oneOutOf(100)){ 
-        //toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+        var newCrate = toybox.add.crate({startingX: toybox.diceRoll(641)-1})
+        crates.add(newCrate);
     };
 
     if(toybox.oneOutOf(30)){ 

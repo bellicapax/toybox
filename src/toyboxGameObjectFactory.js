@@ -56,8 +56,8 @@ class ToyboxGameObjectFactory {
             objectGO.body.allowGravity = objectOptions.allowGravity;
             objectGO.body.immovable = objectOptions.immovable;
 
+            objectGO.body.onCollide = new Phaser.Signal();
             if (typeof (objectOptions.collide) == "function") {
-                objectGO.body.onCollide = new Phaser.Signal();
                 objectGO.body.onCollide.add(objectOptions.collide, toybox);
             }
         }
@@ -68,7 +68,7 @@ class ToyboxGameObjectFactory {
             objectGO.events.onKilled.addOnce(objectOptions.kill);
             var toybox = this.toybox;
             objectGO.events.onKilled.add(function(){
-                toybox.game.time.events.add(1000, function(){ 
+                toybox.game.time.events.add(2000, function(){ 
                     objectGO.destroy(); 
                 }, this);
             });
