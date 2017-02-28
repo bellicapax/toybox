@@ -55,7 +55,7 @@ var flyToyboxPlugin = {
                this.animations.play("idle"); 
             }
 
-            var targetPlayer = {x: this.toybox.game.width + 16, x: this.toybox.game.height + 16,};
+            var targetPlayer = this.toybox.players.children[0];
 
             for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
                 var newPlayer = this.toybox.players.children[i];

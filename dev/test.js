@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly"]
 };
 
 function preload() {
@@ -89,14 +89,16 @@ function create() {
 
     //gem = toybox.add.gem({color: "red"});
 
-    slime = toybox.add.slime({ startingX: 200});
-    slime = toybox.add.slime({ startingX: 200, facing: "right"});
+    // slime = toybox.add.slime({ startingX: 200});
+    // slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
-    fly = toybox.add.fly({ startingX: 400, color: "black"});
-    fly = toybox.add.fly({ startingX: 450, facing: "right"});
+    // fly = toybox.add.fly({ startingX: 400, color: "black"});
+    // fly = toybox.add.fly({ startingX: 450, facing: "right"});
 
-    fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
-    fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
+    // fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
+    // fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
+
+    jelly = toybox.add.jelly({ startingX: 600});
 
 
 
