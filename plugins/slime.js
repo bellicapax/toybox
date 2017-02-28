@@ -57,8 +57,8 @@ var slimeToyboxPlugin = {
 
         var slimeCollide = function(slime, collidedSprite){
             var horizDis = collidedSprite.x - slime.x;
-            var isBlocked = ((horizDis < 0 && slime.scale.x > 0) || (horizDis > 0 && slime.scale.x < 0))
-            var slimeIsAbove = (slime.y + slime.height / 2) <= (collidedSprite.y - collidedSprite.height / 2)
+            var isBlocked = ((horizDis < 0 && slime.scale.x > 0) || (horizDis > 0 && slime.scale.x < 0));
+            var slimeIsAbove = (slime.y + slime.height / 2) <= (collidedSprite.y - collidedSprite.height / 2);
             if (isBlocked && !slimeIsAbove) {
                 slime.turnAround();
             }

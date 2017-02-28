@@ -77,6 +77,7 @@ var alienToyboxPlugin = {
 
             if (collidedSprite.isMob()){
                 if (alienIsOnTop){
+                    alien.body.velocity.y = -200;
                     collidedSprite.hit();
                 } else {
                     alien.hit();

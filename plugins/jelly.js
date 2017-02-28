@@ -72,8 +72,8 @@ var jellyToyboxPlugin = {
         var jellyCollide = function(jelly, collidedSprite){
             if (jelly.state == "calm"){
                 var horizDis = collidedSprite.x - jelly.x;
-                var isBlocked = ((horizDis < 0 && jelly.xDir == -1) || (horizDis > 0 && jelly.xDir == 1))
-                var jellyIsAbove = (jelly.y + jelly.height / 2) <= (collidedSprite.y - collidedSprite.height / 2)
+                var isBlocked = ((horizDis < 0 && jelly.xDir == -1) || (horizDis > 0 && jelly.xDir == 1));
+                var jellyIsAbove = (jelly.y + jelly.height / 2) <= (collidedSprite.y - collidedSprite.height / 2);
                 if (isBlocked && !jellyIsAbove) {
                     jelly.turnAround();
                 }
@@ -105,7 +105,7 @@ var jellyToyboxPlugin = {
             this.xDir *= -1;
             this.canTurnAround = false;
             var thisJelly = this;
-            this.toybox.game.time.events.add(250, function(){ thisJelly.canTurnAround = true; }, this);
+            this.toybox.game.time.events.add(1500, function(){ thisJelly.canTurnAround = true; }, this);
         }
 
         jellyGO.hit = function(){
@@ -140,6 +140,7 @@ var jellyToyboxPlugin = {
         jellyGO.canTurnAround = true;
         jellyGO.isHit = false;
         jellyGO.health = 3;
+        jellyGO.state = "calm";
         jellyGO.xDir = (jellyOptions.facing == "right") ? -1 : 1 ;
 
         return jellyGO;
