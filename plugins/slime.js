@@ -129,6 +129,7 @@ var slimeToyboxPlugin = {
         slimeGO.timeToMove = true;
         slimeGO.canTurnAround = true;
         slimeGO.isHit = false;
+        slimeGO.scale.x = (slimeOptions.facing == "right") ? -1 : 1 ;
 
         return slimeGO;
  	}

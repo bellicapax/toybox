@@ -129,6 +129,7 @@ var flyToyboxPlugin = {
         flyGO.canTurnAround = true;
         flyGO.isHit = false;
         flyGO.isDead = false;
+        flyGO.scale.x = (flyOptions.facing == "right") ? -1 : 1 ;
 
         return flyGO;
  	}

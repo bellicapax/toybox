@@ -127,7 +127,7 @@ var fireballToyboxPlugin = {
         fireballGO.animations.play("flicker");
         fireballGO.speed = fireballOptions.speed;
 
-        fireballGO.xDir = 1;
+        fireballGO.xDir = (fireballOptions.facing == "right") ? 1 : -1 ;
         fireballGO.yDir = 1;
         fireballGO.wasBumped = false;
 

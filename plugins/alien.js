@@ -134,7 +134,8 @@ var alienToyboxPlugin = {
         alienGO.animations.add("jump", [7, 8], fps, true);
 
         alienGO.isHit = false;
-        
+        alienGO.scale.x = (alienOptions.facing == "right") ? 1 : -1 ;
+
         return alienGO;
  	}
      

@@ -79,8 +79,9 @@ function create() {
     playerOptions.controls = {
         left:65,
         right:68,
-        jump: 87
+        jump: 87,
     }
+    playerOptions.facing = "right";
 
     crates = new Phaser.Group(game, null, 'crates', true);
 
@@ -88,11 +89,15 @@ function create() {
 
     //gem = toybox.add.gem({color: "red"});
 
-    //slime = toybox.add.slime({ startingX: 200});
+    slime = toybox.add.slime({ startingX: 200});
+    slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
-    //fly = toybox.add.fly({ startingX: 400, color: "black"});
+    fly = toybox.add.fly({ startingX: 400, color: "black"});
+    fly = toybox.add.fly({ startingX: 450, facing: "right"});
 
-    fireball = toybox.add.fireball({ startingX: 500, startingY: 100, color: "black"});
+    fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
+    fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
+
 
 
 }
