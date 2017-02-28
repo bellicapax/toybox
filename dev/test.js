@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball"]
 };
 
 function preload() {
@@ -90,7 +90,9 @@ function create() {
 
     //slime = toybox.add.slime({ startingX: 200});
 
-    fly = toybox.add.fly({ startingX: 400, color: "black"});
+    //fly = toybox.add.fly({ startingX: 400, color: "black"});
+
+    fireball = toybox.add.fireball({ startingX: 500, startingY: 100, color: "black"});
 
 
 }
