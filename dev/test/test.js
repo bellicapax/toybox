@@ -21,30 +21,30 @@ function create() {
 
     //spring = toybox.add.spring({ startingX: 200});
 
-    // button = toybox.add.button({ 
-    //     startingX: 200,
-    //     onPress: function(){
-    //         for (var i = 0; i < 8; i++) {
-    //             toybox.add.slime({startingX: toybox.diceRoll(641)-1})
-    //         }
-    //     }
-    // });
-
-    lever = toybox.add.lever({ 
-        startingX: 320,
-        startingY: 480 - 24,
-        whileLeft: function(){
-            if(toybox.oneOutOf(300)){ 
-                toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dy: -200});
-            };
-            
-        },
-        whileRight: function(){
-            if(toybox.oneOutOf(300)){ 
-                toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dy: -200});
-            };
+    button = toybox.add.button({
+        startingX: 200,
+        onPress: function(){
+            for (var i = 0; i < 8; i++) {
+                toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+            }
         }
     });
+
+    // lever = toybox.add.lever({
+    //     startingX: 320,
+    //     startingY: 480 - 24,
+    //     whileLeft: function(){
+    //         if(toybox.oneOutOf(300)){
+    //             toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dy: -200});
+    //         };
+    //
+    //     },
+    //     whileRight: function(){
+    //         if(toybox.oneOutOf(300)){
+    //             toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dy: -200});
+    //         };
+    //     }
+    // });
 
     floor = toybox.add.platform({
         width: game.width,
@@ -107,24 +107,24 @@ function create() {
 function update() {
     toybox.update();
 
-    if(toybox.oneOutOf(100)){ 
+    if(toybox.oneOutOf(100)){
         // var newCrate = toybox.add.crate({startingX: toybox.diceRoll(641)-1})
         // crates.add(newCrate);
     };
 
-    if(toybox.oneOutOf(30)){ 
+    if(toybox.oneOutOf(30)){
         // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
     };
 
-    if(toybox.oneOutOf(400)){ 
+    if(toybox.oneOutOf(400)){
         // toybox.add.mushroom({startingX: toybox.diceRoll(641)-1})
     };
 
-    if(toybox.oneOutOf(400)){ 
+    if(toybox.oneOutOf(400)){
         // toybox.add.slime({startingX: toybox.diceRoll(641)-1})
     };
 
-    if(toybox.oneOutOf(400)){ 
+    if(toybox.oneOutOf(400)){
         // toybox.add.gem({startingX: toybox.diceRoll(641)-1, startingY: 300})
     };
 
