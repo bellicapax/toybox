@@ -59,7 +59,7 @@ var alienToyboxPlugin = {
         	    this.body.velocity.x = 0;
         	    this.animations.play("idle");
         	}
-	
+
         	// checkForJump
         	if (this.controls.jump.isDown && (this.body.onFloor() || this.body.touching.down)) {
         	    this.body.velocity.y = -this.jumpForce;
@@ -123,7 +123,7 @@ var alienToyboxPlugin = {
                     thisAlien.kill();
                 } else {
                     thisAlien.animations.play("idle");
-                    thisAlien.isHit = false; 
+                    thisAlien.isHit = false;
                 }
             }, this);
         }
@@ -135,9 +135,9 @@ var alienToyboxPlugin = {
         alienGO.animations.add("jump", [7, 8], fps, true);
 
         alienGO.isHit = false;
-        alienGO.scale.x = (alienOptions.facing == "right") ? 1 : -1 ;
+        alienGO.scale.x *= (alienOptions.facing == "right") ? 1 : -1 ;
 
         return alienGO;
  	}
-     
+
 };
