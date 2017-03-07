@@ -66,6 +66,10 @@ var flyToyboxPlugin = {
                 }
             }
 
+            if (typeof(targetPlayer) == "undefined"){
+                return;
+            }
+
             if( (targetPlayer.x < this.x && this.scale.x < 0) || (targetPlayer.x > this.x && this.scale.x > 0) ){
                 this.turnAround();
             }
