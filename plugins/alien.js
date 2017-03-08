@@ -35,9 +35,15 @@ var alienToyboxPlugin = {
         alienOptions.spriteName = alienOptions.color + "Alien";
 
         var alienPlatformerUpdate = function(){
-            if (this.isHit || this.health <= 0){
+            if (this.isHit){
                 return;
             }
+
+            if (this.health <= 0){
+                this.kill();
+                return;
+            }
+
         	if (this.controls.right.isDown) {
         	    this.body.velocity.x = this.speed;
         	    if (this.scale.x < 0) {
