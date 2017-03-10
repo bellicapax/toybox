@@ -61,16 +61,20 @@ var buttonToyboxPlugin = {
       buttonGO.animations.add("pressed", [buttonOptions.spriteIndex + 4], this.toybox.animationFPS, true);
 
      	buttonGO.press = function(){
-     		this.depressed = true;
-     		this.toybox.sfx.buttonClick.play();
-        this.animations.play("pressed");
-        this.body.checkCollision.up = false;
-        this.onPress();
-     		this.toybox.game.time.events.add(1000, function(){
-                this.depressed = false;
-                this.animations.play("unpressed");
-                this.body.checkCollision.up = true;
-            }, this);
+       		this.depressed = true;
+       		this.toybox.sfx.buttonClick.play();
+          this.animations.play("pressed");
+          this.body.checkCollision.up = false;
+          this.onPress();
+       		this.toybox.game.time.events.add(1000, function(){
+                    if(this != null){
+                  this.depressed = false;
+                  this.animations.play("unpressed");
+                  if(this.body != null){
+                    this.body.checkCollision.up = true;
+                  }
+                }
+              }, this);
      	};
 
       buttonGO.body.checkCollision = {none: false, any: true, up: true, down: true, left: false, right: false};

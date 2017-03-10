@@ -15,7 +15,7 @@ function preload() {
 }
 
 function create() {
-
+  toybox.create();
 }
 
 function update() {
