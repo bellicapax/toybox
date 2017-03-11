@@ -15,6 +15,7 @@ var flyToyboxPlugin = {
     sfx: ["flyTurn","flyDie"],
 
  	create: function(flyOptions){
+    flyOptions = typeof (flyOptions) == "undefined" ? {} : flyOptions;
 
         var validColors = ["yellow","red","blue","black"];
 
@@ -52,7 +53,7 @@ var flyToyboxPlugin = {
             }
 
             if (!this.isHit && !this.isDead){
-               this.animations.play("idle"); 
+               this.animations.play("idle");
             }
 
             var targetPlayer = this.toybox.players.children[0];
@@ -121,7 +122,7 @@ var flyToyboxPlugin = {
             } else {
                 this.toybox.game.time.events.add(500, function(){
                     thisFly.animations.play("idle");
-                    thisFly.isHit = false; 
+                    thisFly.isHit = false;
                 }, this);
             }
         }
@@ -137,5 +138,5 @@ var flyToyboxPlugin = {
 
         return flyGO;
  	}
-     
+
 };

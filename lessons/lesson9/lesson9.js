@@ -70,7 +70,7 @@
 // --Where's our text?--
 // I promise you the text is ACTUALLY THERE. And I will prove it
 // Go to the commented out line in the create() function that looks like
-// game.stage.backgroundColor = "ffffff";
+// game.stage.backgroundColor = "#ffffff";
 // and uncomment that one (NOT this ^^^ one), then refresh!
 //
 //
@@ -84,14 +84,64 @@
 // Now let's make our text white.
 // Photon lets us customize our text using a style object
 // We give the style object the properties we want to customize
-// In this case, we want the property color
+// In this case, we want the property fill - to fill our text with color
 // The value of that property will be a string containing a hexidecimal representation of a color
-// In hexidecimal, white is "ffffff", so so our object will look like:
-// { color : "ffffff" }
-// and we can pass that right into our
+// In hexidecimal, white is "#ffffff", so so our object will look like:
+// { fill : "#ffffff" }
+// (If you want a different color, you can find color codes at http://www.colorpicker.com/)
+// and we can pass that right into our call to add the text after the string we want to display:
+// game.add.text(50, 100, alien.health, { fill : "#ffffff"});
+// Since we're passing in the object as a parameter, we don't *have* to assign it to a local variable.
+// Go ahead and insert that into your call below and refresh!
+//
+//
+//
+// --Updating our text--
+// So now we can see our text, but it's not updating when we get hit
+// In order to update it, we need a reference to that text Game Object we have created,
+// So let's go down to the create() function and assign it to a variable like we did for the alien - something like:
+// var healthDisplay = game.add.tex(50, 100, alien.health { fill: "#ffffff"});
+// Now that we have that variable, we need to update its text property
+// Let's try doing that in update()
+// Add a line in update() that sets the text property of your healthDisplay object to alien.health and refresh!
+//
+//
+//
+// --Scope it out!--
+// Whoops! Did you get an error!?
+// Well, that was kind of on purpose (^_^)
+// It gives us a perfect opportunity to talk about scope.
+// Scope means "What sections of the code know about a particular variable?"
+// So in this case, the update() function didn't know about healthDisplay or alien.
+// Even though we see them being assigned in create(),
+// the interreter discards them at the end of that function because they are declared INSIDE the function
+// In Javascript, functions are scope for variables declared with var.
+// This means that for a variable declared inside a function,
+// Everything inside the curly braces that define a function's beginning and ending knows it exists,
+// but everything *outside* those braces thinks it doesn't exist and will throw an error
+// In our case, we can fix that by declaring our variables OUTSIDE the scope of the function.
+// So let's declare them outisde create() or any other function like:
+var alien;
+var healthDisplay;
+// AND THEN we must remember to remove the "var" from the variables that are inside the create() function
+// var tells the interpreter we are creating a NEW variable and if we didn't remove them,
+// it would overwrite the ones we just declared and would still keep all the info we assign
+// inside the scope of the function.
+// Go ahead and declare our variables outside the function
+// and remove the var for each of them inside the create() function - then refresh!
+//
+//
 //
 // -------FOUR-------
-// --Callbacks - Calling a function without knowing what it does--
+// --Events - Calling a function without knowing what it does--
+// Hooray! Our alien's health is displayed and updates.
+// It's updated every frame, which really isn't completely necessary,
+// So let's look at one more different way to do the same thing.
+// FIrst, take the line of code we are using in update(),
+// Remove it from update() and place it inside a new function called something like updateHealthDisplay()
+// If we aren't calling it every frame in update(), when do we want to call it?
+// Well, we know when we want to call it - every time the alien is hurt
+// So let's take a look at the Game Object that lives inside our alien variable:
 // The object that is returned is a Phaser object called a Sprite
 // The documentation for the object can be found here https://phaser.io/docs/2.6.2/Phaser.Sprite.html
 // If you look at its properties, you can see it has one called "events"
@@ -99,39 +149,25 @@
 // Events are like notifications on your phone - you got a text, someone liked your post, etc...
 // But they let you DO SOMETHING when that event happens!
 // Not only do you know about it, you get to have your own response to it
-// We have added a custom event to the events object called
+// We have added a custom event to the events object called onHit
+// In Phaser, we add our own function to be called when the event happens
+// by using the syntax eventWeCareAbout.add(functionWeWantToFire);
+// so for our example. after we assign our alien object, we can do something like:
+// alien.events.onHit.add(updateHealthDisplay);
+// Notice in this case, we don't want to CALL the function inside the other function;
+// Calling the function would return its value
+// (in our case, since we don't explicitly return anything, it will return undefined)
+// So when we pass a function as a parameter, we want to omit the parentheses
+// Try adding our function to onHit below in our create() function and refresh!
 //
 //
 //
-// -------THREE-------
-// --Passing in arguments--
-// Sometimes we want to pass data into our function
-// So that we can do something with the data
-// And make the function more flexible to work with different data
-// In Javascript, we can pass data into a function whenever we want
-// When we are passing in data, we call that data arguments
-// To pass in arguments, we put a value or variable inside the parentheses
-// when we call the function
-// So sayHello(); becomes something like sayHello("Goodbye"); or sayHello(5);
-// Try that now in our sayHello call and refresh!
-//
-//
-// -------FOUR-------
-// --Using the arguments--
-// Well, isn't this the lesson of disappointment?
-// Nothing new happened, did it?
-// But here's the cool thing: You didn't break the game!
-// So how do we use the argument we pass in?
-// let's use a different function to demonstrate
-// The declaration of this function is different
-// because we put a word inside the parentheses
-// Putting that word in there named the argument
-// so we can use it just like a variable inside the fucntion
-function sayTheArgument(pusheen) {
-  console.log("The argument is " + pusheen);
-}
-// Try calling this function in create or preload and passing in an argument
-// Then refresh!
+// -- CHALLENGE --
+// See if you can use your new understanding of Phaser documentation
+// to use a Group to make the healthDisplay follow the player around!
+// https://phaser.io/docs/2.6.2/Phaser.Group.html
+// HINT: you'll need to creat this class object by using the keyword new in front of it:
+// var myGroup = new Phaser.Group(someParameter1, differentParameter, BestParameter);
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
@@ -152,12 +188,17 @@ function preload() {
 function create() {
     toybox.create();
     toybox.add.slime();
-    var alien = toybox.add.alien();
-    game.add.text(50, 100, alien.health);
-
-    // game.stage.backgroundColor = "ffffff";
+    alien = toybox.add.alien();
+    healthDisplay = game.add.text(50, 100, alien.health, { fill : "#ffffff"});
+    alien.events.onHit.add(updateHealthDisplay);
+    // game.stage.backgroundColor = "#ffffff";
 }
 
 function update() {
     toybox.update();
+}
+
+function updateHealthDisplay() {
+  healthDisplay.text = alien.health;
+
 }

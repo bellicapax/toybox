@@ -11,6 +11,7 @@ var fireballToyboxPlugin = {
     sfx: ["fireball"],
 
  	create: function(fireballOptions){
+    fireballOptions = typeof (fireballOptions) == "undefined" ? {} : fireballOptions;
 
         var validColors = ["yellow","red","blue","green","purple","tan"];
 
@@ -22,7 +23,7 @@ var fireballToyboxPlugin = {
             fireballOptions.color = randomizeFireball();
         }
         fireballOptions.name = fireballOptions.color + "Fireball";
-        
+
         fireballOptions.spriteName = "fireballs";
  		fireballOptions.allowGravity = false;
 
@@ -72,7 +73,7 @@ var fireballToyboxPlugin = {
                 this.bump("x");
             }
 
-            this.body.velocity.x = this.speed * this.xDir; 
+            this.body.velocity.x = this.speed * this.xDir;
             this.body.velocity.y = this.speed * this.yDir;
 
         };
@@ -133,5 +134,5 @@ var fireballToyboxPlugin = {
 
         return fireballGO;
  	}
-     
+
 };

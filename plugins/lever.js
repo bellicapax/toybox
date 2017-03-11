@@ -11,6 +11,8 @@ var leverToyboxPlugin = {
  	sfx: ["leverClick"],
 
  	create: function(leverOptions){
+    leverOptions = typeof (leverOptions) == "undefined" ? {} : leverOptions;
+    
  		leverOptions.spriteName = "lever";
      	leverOptions.name = "lever";
         leverOptions.immovable = true;
@@ -56,12 +58,12 @@ var leverToyboxPlugin = {
             }
      		this.toybox.sfx.leverClick.play();
      		var thisLever = this;
-     		this.toybox.game.time.events.add(1000, function(){ 
+     		this.toybox.game.time.events.add(1000, function(){
                 thisLever.wasSwitched = false;
             }, this);
      	};
 
      	return leverGO;
  	}
-     
+
 };

@@ -11,6 +11,7 @@ var coinToyboxPlugin = {
     sfx: ["coinCollected"],
 
     create: function(coinOptions){
+      coinOptions = typeof (coinOptions) == "undefined" ? {} : coinOptions;
 
         var randomizeCoin = function() {
             var probability = toybox.diceRoll(50);

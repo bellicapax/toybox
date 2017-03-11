@@ -8,6 +8,7 @@ var lavaToyboxPlugin = {
  	},
 
  	create: function(lavaOptions){
+    lavaOptions = typeof (lavaOptions) == "undefined" ? {} : lavaOptions;
 
  		var validColors = ["yellow","orange","red","darkblue","lightblue","green","brown","black"];
 
@@ -73,5 +74,5 @@ var lavaToyboxPlugin = {
 
      	return lavaGO;
  	}
-     
+
 };

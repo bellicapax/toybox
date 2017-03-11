@@ -17,10 +17,9 @@ var slimeToyboxPlugin = {
     sfx: ["slimeBump","slimeDie"],
 
  	create: function(slimeOptions){
-    if(typeof(slimeOptions) == "undefined"){
-      slimeOptions = {};
-    }
+    slimeOptions = typeof (slimeOptions) == "undefined" ? {} : slimeOptions;
     
+
     var validColors = ["yellow","red","blue","green","purple","black"];
 
     var randomizeSlime = function() {

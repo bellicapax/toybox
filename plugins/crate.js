@@ -12,6 +12,8 @@ var crateToyboxPlugin = {
  	sfx: ["crateBump"],
 
  	create: function(crateOptions){
+    crateOptions = typeof (crateOptions) == "undefined" ? {} : crateOptions;
+    
  		crateOptions.spriteName = "cratesAndOre";
      	crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
      	crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
@@ -64,5 +66,5 @@ var crateToyboxPlugin = {
 
      	return crateGO;
  	}
-     
+
 };

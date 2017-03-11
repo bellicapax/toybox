@@ -11,6 +11,8 @@ var buttonToyboxPlugin = {
   sfx: ["buttonClick"],
 
  	create: function(buttonOptions){
+    buttonOptions = typeof (buttonOptions) == "undefined" ? {} : buttonOptions;
+
       buttonOptions.spriteName = "button";
 
       var validColors = ["yellow","red","blue","green"];

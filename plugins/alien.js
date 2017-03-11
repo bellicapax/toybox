@@ -17,9 +17,8 @@ var alienToyboxPlugin = {
     sfx: ["alienJump","alienHit","alienKill"],
 
  	create: function(alienOptions){
-    if(typeof(alienOptions) == "undefined"){
-      alienOptions = {};
-    }
+    alienOptions = typeof (alienOptions) == "undefined" ? {} : alienOptions;
+
  		alienOptions.allowGravity = true;
         var validColors = ["green","blue","pink"];
         alienOptions.speed = alienOptions.speed || 100;
@@ -130,6 +129,7 @@ var alienToyboxPlugin = {
             this.body.velocity.y = -200;
             this.animations.play("hit");
             this.toybox.sfx.alienHit.play();
+            this.events.onHit.dispatch(this);
             var thisAlien = this;
             this.toybox.game.time.events.add(500, function(){
                 if (thisAlien.health <= 0){

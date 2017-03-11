@@ -10,6 +10,7 @@ var gemToyboxPlugin = {
     sfx: ["gemCollected"],
 
     create: function(gemOptions){
+      gemOptions = typeof (gemOptions) == "undefined" ? {} : gemOptions;
 
         var validColors = ["yellow","red","blue","green"];
 

@@ -11,6 +11,7 @@ var mushroomToyboxPlugin = {
     sfx: ["goodShroom", "badShroom"],
 
  	create: function(mushroomOptions){
+    mushroomOptions = typeof (mushroomOptions) == "undefined" ? {} : mushroomOptions;
 
  		var randomizeShroom = function() {
             var probability = toybox.diceRoll(40);
@@ -43,7 +44,7 @@ var mushroomToyboxPlugin = {
     	        mushroom.kill();
     	    }
     	}
-	
+
     	var tryShrinkObject = function(mushroom, sprite2) {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        if (sprite2.scale.x <= 3.0){
@@ -58,7 +59,7 @@ var mushroomToyboxPlugin = {
     	        mushroom.kill();
     	    }
     	}
-	
+
     	var trySpeedUpObject = function(mushroom, sprite2) {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        sprite2.speed *= 1.5;
@@ -67,7 +68,7 @@ var mushroomToyboxPlugin = {
     	        mushroom.kill();
     	    }
     	}
-	
+
     	var trySlowObject = function(mushroom, sprite2) {
     	    if ( sprite2.isPlayer() || sprite2.isMob() ) {
     	        sprite2.speed *= 0.5;
@@ -99,5 +100,5 @@ var mushroomToyboxPlugin = {
         return mushroomGO;
 
  	}
-     
+
 };
