@@ -68,9 +68,27 @@
 //
 //
 // --Where's our text?--
+// I promise you the text is ACTUALLY THERE. And I will prove it
+// Go to the commented out line in the create() function that looks like
+// game.stage.backgroundColor = "ffffff";
+// and uncomment that one (NOT this ^^^ one), then refresh!
 //
 //
 //
+// --Back in Black--
+// Did you notice the problem with our text?
+// Yes, by default our text is black and by default our background is black.
+// So although the text was there, we couldn't see it!
+// But what if we want to keep our black background?
+// Delete the line you uncommented in the last step
+// Now let's make our text white.
+// Photon lets us customize our text using a style object
+// We give the style object the properties we want to customize
+// In this case, we want the property color
+// The value of that property will be a string containing a hexidecimal representation of a color
+// In hexidecimal, white is "ffffff", so so our object will look like:
+// { color : "ffffff" }
+// and we can pass that right into our
 //
 // -------FOUR-------
 // --Callbacks - Calling a function without knowing what it does--
@@ -136,8 +154,8 @@ function create() {
     toybox.add.slime();
     var alien = toybox.add.alien();
     game.add.text(50, 100, alien.health);
-    
-    game.stage.backgroundColor = "ffffff";
+
+    // game.stage.backgroundColor = "ffffff";
 }
 
 function update() {
