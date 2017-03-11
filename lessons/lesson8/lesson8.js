@@ -133,11 +133,23 @@ function recreateGems() {
 //
 //
 // -------CHALLENGE-------
-// --Unconventional button!--
+// --Add a new plugin!--
 // This challenge is pretty open ended!
-// Just make one of your buttons do something different than creating a gem!
-// Think about the things you know how to do in toybox so far
-// And do one of them! If you don't know how, ask!
+// Just make one of your buttons create an object that isn't in the game yet!
+// So far, we have aliens, gems, and buttons
+// But if you look at your folder structure of this project,
+// You'll see a plugins folder - each of those plugins is something you can add to the game!
+// You'll have to add the plugin first in two places
+// Let's say you want to add a spring!
+// You would open the index.html file for this lesson and add after
+// <script src="../../plugins/button.js"></script>
+// You would add
+// <script src="../../plugins/spring.js"></script>
+// Then you would come back to this file and in the settings object below,
+// you would add the string "spring" to the plugins array property
+// Adding a spring is as easy as toybox.add.spring()
+// Don't hesistate to ask for help if you get stuck!
+
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,

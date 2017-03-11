@@ -20,6 +20,8 @@ var springToyboxPlugin = {
  	sfx: ["springBounce"],
 
  	create: function(springOptions){
+    springOptions = typeof (springOptions) == "undefined" ? {} : springOptions;
+    
  		springOptions.spriteName = "spring";
      	springOptions.spriteIndex = 2;
      	springOptions.name = "spring";
@@ -62,5 +64,5 @@ var springToyboxPlugin = {
 
      	return springGO;
  	}
-     
+
 };

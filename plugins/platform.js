@@ -20,6 +20,8 @@ var platformToyboxPlugin = {
  	},
 
  	create: function(platformOptions){
+    platformOptions = typeof (platformOptions) == "undefined" ? {} : platformOptions;
+    
         if (typeof(platformOptions.spriteName) == "undefined"){
             platformOptions.spriteName = "platforms";
             platformOptions.spriteIndex = platformOptions.type || Phaser.Math.between(0,7);
@@ -28,7 +30,7 @@ var platformToyboxPlugin = {
             platformOptions.spriteIndex = 0;
             platformOptions.name = "customPlatform";
         }
-     	
+
      	platformOptions.allowGravity = false;
         platformOptions.immovable = true;
 
@@ -54,5 +56,5 @@ var platformToyboxPlugin = {
 
      	return platformGO;
  	}
-     
+
 };

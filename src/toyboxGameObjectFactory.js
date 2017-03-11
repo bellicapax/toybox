@@ -78,19 +78,19 @@ class ToyboxGameObjectFactory {
                 objectGO.body.onCollide.add(objectOptions.collide, toybox);
             }
         }
-        
+
         objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
 
         if (typeof (objectOptions.kill) == "function") {
             objectGO.events.onKilled.addOnce(objectOptions.kill);
             var toybox = this.toybox;
             objectGO.events.onKilled.add(function(){
-                toybox.game.time.events.add(2000, function(){ 
-                    objectGO.destroy(); 
+                toybox.game.time.events.add(2000, function(){
+                    objectGO.destroy();
                 }, this);
             });
         }
-        
+
         objectGO.toybox = this.toybox;
         return objectGO;
     }
@@ -116,6 +116,9 @@ class ToyboxGameObjectFactory {
     //     controls: object, contains key-value pairs of keycodes and named controls    
 
     player(playerOptions) {
+        if(typeof(playerOptions) == "undefined"){
+          playerOptions = {};
+        }
         playerOptions.name = "player";
 
         var playerGO = this.toybox.add.toyboxObject(playerOptions);
@@ -137,7 +140,7 @@ class ToyboxGameObjectFactory {
         for (var i = Object.keys(controlsObject).length - 1; i >= 0; i--) {
             var controlName = Object.keys(controlsObject)[i];
             playerGO.controls[controlName] = this.toybox.game.input.keyboard.addKey(controlsObject[controlName]);
-        } 
+        }
     }
 
     // collectibleOptions attributes:

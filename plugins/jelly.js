@@ -20,6 +20,7 @@ var jellyToyboxPlugin = {
     sfx: ["jellyBump","jellyDie"],
 
  	create: function(jellyOptions){
+    jellyOptions = typeof (jellyOptions) == "undefined" ? {} : jellyOptions;
 
         jellyOptions.name = "jelly";
         jellyOptions.spriteName = "jelly";
@@ -29,7 +30,7 @@ var jellyToyboxPlugin = {
 
         var jellyUpdate = function(){
             if (this.body == null){
-               return; 
+               return;
             }
 
             this.body.velocity.x *= 0.95;
@@ -122,7 +123,7 @@ var jellyToyboxPlugin = {
             }
             this.isHit = true;
             this.health -= 1;
-            
+
             this.toybox.sfx.jellyDie.play();
             var thisJelly = this;
             if (thisJelly.health <= 0){
@@ -130,11 +131,11 @@ var jellyToyboxPlugin = {
                 this.toybox.game.time.events.add(1500, function(){ thisJelly.kill(); }, this);
             } else {
                 thisJelly.animations.play("hit");
-                this.toybox.game.time.events.add(1500, function(){ 
+                this.toybox.game.time.events.add(1500, function(){
                     thisJelly.isHit = false;
-                    thisJelly.state = "mad"; 
+                    thisJelly.state = "mad";
                 }, this);
-                 
+
             }
         }
 
@@ -153,5 +154,5 @@ var jellyToyboxPlugin = {
 
         return jellyGO;
  	}
-     
+
 };

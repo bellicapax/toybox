@@ -27,18 +27,20 @@ var slimeToyboxPlugin = {
     sfx: ["slimeBump","slimeDie"],
 
  	create: function(slimeOptions){
+    slimeOptions = typeof (slimeOptions) == "undefined" ? {} : slimeOptions;
+    
 
-        var validColors = ["yellow","red","blue","green","purple","black"];
+    var validColors = ["yellow","red","blue","green","purple","black"];
 
-        var randomizeSlime = function() {
-            return validColors[Phaser.Math.between(0,(validColors.length - 1))];
-        }
+    var randomizeSlime = function() {
+        return validColors[Phaser.Math.between(0,(validColors.length - 1))];
+    }
 
-        if (typeof(slimeOptions.color) == "undefined" || validColors.indexOf(slimeOptions.color) == -1){
-            slimeOptions.color = randomizeSlime();
-        }
-        slimeOptions.name = slimeOptions.color + "Slime";
-        slimeOptions.spriteName = slimeOptions.color + "Slime";
+    if (typeof(slimeOptions.color) == "undefined" || validColors.indexOf(slimeOptions.color) == -1){
+        slimeOptions.color = randomizeSlime();
+    }
+    slimeOptions.name = slimeOptions.color + "Slime";
+    slimeOptions.spriteName = slimeOptions.color + "Slime";
 
  		slimeOptions.allowGravity = true;
         slimeOptions.speed = slimeOptions.speed || 100;
@@ -100,12 +102,12 @@ var slimeToyboxPlugin = {
             this.height = 3;
             this.toybox.sfx.slimeDie.play();
             var thisSlime = this;
-            this.toybox.game.time.events.add(500, function(){ 
+            this.toybox.game.time.events.add(500, function(){
                 if (thisSlime.health <= 0){
                     thisSlime.kill();
                 } else {
                     thisSlime.animations.play("idle");
-                    thisSlime.isHit = false; 
+                    thisSlime.isHit = false;
                 }
             }, this);
         }
@@ -143,5 +145,5 @@ var slimeToyboxPlugin = {
 
         return slimeGO;
  	}
-     
+
 };
