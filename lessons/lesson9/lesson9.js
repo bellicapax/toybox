@@ -121,8 +121,8 @@
 // but everything *outside* those braces thinks it doesn't exist and will throw an error
 // In our case, we can fix that by declaring our variables OUTSIDE the scope of the function.
 // So let's declare them outisde create() or any other function like:
-var alien;
-var healthDisplay;
+// var alien;
+// var healthDisplay;
 // AND THEN we must remember to remove the "var" from the variables that are inside the create() function
 // var tells the interpreter we are creating a NEW variable and if we didn't remove them,
 // it would overwrite the ones we just declared and would still keep all the info we assign
@@ -187,18 +187,10 @@ function preload() {
 
 function create() {
     toybox.create();
-    toybox.add.slime();
-    alien = toybox.add.alien();
-    healthDisplay = game.add.text(50, 100, alien.health, { fill : "#ffffff"});
-    alien.events.onHit.add(updateHealthDisplay);
+
     // game.stage.backgroundColor = "#ffffff";
 }
 
 function update() {
     toybox.update();
-}
-
-function updateHealthDisplay() {
-  healthDisplay.text = alien.health;
-
 }
