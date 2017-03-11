@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes"]
 };
 
 function preload() {
@@ -19,7 +19,7 @@ function create() {
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
 
-    spring = toybox.add.spring({ startingX: 200});
+    //spring = toybox.add.spring({ startingX: 200});
 
     // button = toybox.add.button({ 
     //     startingX: 200,
@@ -92,15 +92,17 @@ function create() {
     // slime = toybox.add.slime({ startingX: 200});
     // slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
-    //fly = toybox.add.fly({ startingX: 400, color: "black"});
-    //fly = toybox.add.fly({ startingX: 450, facing: "right"});
+    fly = toybox.add.fly({ startingX: 400, color: "black"});
+    fly = toybox.add.fly({ startingX: 450, facing: "right"});
 
     //fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
     //jelly = toybox.add.jelly({ startingX: 600});
 
-    lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 })
+    //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
+
+    spikes = toybox.add.spikes({startingX: 200, startingY: 440 });
 
 
 
