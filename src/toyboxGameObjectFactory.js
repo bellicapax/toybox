@@ -4,14 +4,31 @@ class ToyboxGameObjectFactory {
         //this.playerGO = null;
     }
 
+    // objectOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     bounce: number, how elastic collisions with this object are
+    //     name: string, name of the object type, meant mostly for debugging
+    //     
+
     toyboxObject(objectOptions) {
         objectOptions.spriteIndex = objectOptions.spriteIndex || 0;
         objectOptions.bounce = objectOptions.bounce || 0;
         objectOptions.scale = objectOptions.scale || 1;
-        objectOptions.drag = objectOptions.drag || 200;
+        objectOptions.enablePhysics = typeof (objectOptions.enablePhysics) == "undefined" ? true : objectOptions.enablePhysics;
         objectOptions.allowGravity = typeof (objectOptions.allowGravity) == "undefined" ? true : objectOptions.allowGravity;
         objectOptions.immovable = typeof (objectOptions.immovable) == "undefined" ? false : objectOptions.immovable;
-        objectOptions.enablePhysics = typeof (objectOptions.enablePhysics) == "undefined" ? true : objectOptions.enablePhysics;
+        objectOptions.collideWorld = typeof (objectOptions.collideWorld) == "undefined" ? true : objectOptions.collideWorld;
 
         var objectGO = this.toybox.game.add.sprite(objectOptions.startingX, objectOptions.startingY, objectOptions.spriteName, objectOptions.spriteIndex);
 
@@ -51,7 +68,7 @@ class ToyboxGameObjectFactory {
                 objectGO.body.velocity.y = objectOptions.dy;
             }
 
-            objectGO.body.collideWorldBounds = true;
+            objectGO.body.collideWorldBounds = objectOptions.collideWorld;
             objectGO.body.bounce.set(objectOptions.bounce);
             objectGO.body.allowGravity = objectOptions.allowGravity;
             objectGO.body.immovable = objectOptions.immovable;
@@ -78,15 +95,25 @@ class ToyboxGameObjectFactory {
         return objectGO;
     }
 
-    // var playerOptions = {
-    //     startingX : 0,
-    //     startingY: 0,
-    //     color: "green"
-    //     spritesheetName: this.color + "Alien",
-    //     jumpForce: 300,
-    //     speed: 100,
-    //     scale: 1
-    // }
+    // playerOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     bounce: number, how elastic collisions with this object are
+    //     name: string, name of the object type, meant mostly for debugging
+    //     
+    //     speed: number, represents the speed the player will move when activated
+    //     jumpForce: number, represents how hard a player will jump
+    //     controls: object, contains key-value pairs of keycodes and named controls    
 
     player(playerOptions) {
         playerOptions.name = "player";
@@ -113,21 +140,27 @@ class ToyboxGameObjectFactory {
         } 
     }
 
-    // var collectibleOptions = {
-    //     spriteName: "spriteSheet",
-    //     spriteIndex: 0,
-    //     startingX: 0,
-    //     startingY: 0,
-    //     bounce: 0,
-    //     update: function(){},
-    //     collide: function(){}
-    // };
+    // collectibleOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     bounce: number, how elastic collisions with this object are
+    //     name: string, name of the object type, meant mostly for debugging
+
 
     collectible(collectibleOptions) {
         collectibleOptions.spriteIndex = collectibleOptions.spriteIndex || 0;
         collectibleOptions.bounce = collectibleOptions.bounce || 0;
         collectibleOptions.scale = collectibleOptions.scale || 1;
-        collectibleOptions.drag = collectibleOptions.drag || 200;
 
         var collectibleGO = this.toybox.add.toyboxObject(collectibleOptions);
 
@@ -136,27 +169,47 @@ class ToyboxGameObjectFactory {
         return collectibleGO;
     }
 
-    // var collectibleOptions = {
-    //     spriteName: "spriteSheet",
-    //     spriteIndex: 0,
-    //     startingX: 0,
-    //     startingY: 0,
-    //     bounce: 0,
-    //     update: function(){},
-    //     collide: function(){}
-    // };
+    // blockOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     bounce: number, how elastic collisions with this object are
+    //     name: string, name of the object type, meant mostly for debugging
 
     block(blockOptions) {
         blockOptions.spriteIndex = blockOptions.spriteIndex || 0;
         blockOptions.bounce = blockOptions.bounce || 0;
         blockOptions.scale = blockOptions.scale || 1;
-        blockOptions.drag = blockOptions.drag || 500;
 
         var blockGO = this.toybox.add.toyboxObject(blockOptions);
         blockGO.toyboxType = "block";
         this.toybox.addBlock(blockGO);
         return blockGO;
     }
+
+    // decorationOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     name: string, name of the object type, meant mostly for debugging
 
     decoration(decoOptions) {
         decoOptions.spriteIndex = decoOptions.spriteIndex || 0;
@@ -170,6 +223,22 @@ class ToyboxGameObjectFactory {
         this.toybox.addDecoration(decoGO);
         return decoGO;
     }
+
+    // mobOptions attributes:
+    //     spriteName: string, name of spritesheet loaded in preload
+    //     spriteIndex: number, starting sprite in spritesheet
+    //     startingX: number, initial X location for sprite's center
+    //     startingY: number, initial Y location for sprite's center
+    //     scale: number, the size of the sprite as a multiple
+    //     update: function, this is run every update cycle
+    //     collide: function, this is added to the sprite's onCollide signal
+    //     kill: function, this is added to the sprite's onKilled signal
+    //     enablePhysics: boolean, true: sprite collides with other sprites
+    //     allowGravity: boolean, true: sprite falls with gravity
+    //     immovable: boolean, true: object will be fixed in place and cannot move
+    //     collideWorld: boolean, true: object will collide with the edges of the game
+    //     bounce: number, how elastic collisions with this object are
+    //     name: string, name of the object type, meant mostly for debugging
 
     mob(mobOptions) {
         var mobGO = this.toybox.add.toyboxObject(mobOptions);
