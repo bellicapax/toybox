@@ -1,3 +1,11 @@
+// decorationOptions attributes:
+//     update: function, this is run every update cycle
+//     kill: function, this is added to the sprite's onKilled signal
+//
+//	unique backdropOtions attributes:
+//		preset: string, selects one of several preset backdrops
+//			valid values: "grey", "green", "blue", "spring", "summer", "fall", "winter"
+
 
 var backdropToyboxPlugin = {
  	name: "backdrop",

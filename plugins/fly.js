@@ -1,3 +1,15 @@
+// mobOptions attributes:
+//     spriteName: string, name of spritesheet loaded in preload
+//     spriteIndex: number, starting sprite in spritesheet
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     facing: string ("left" or "right") determines the direction the sprite starts out facing.
+//
+//  unique flyOptions attributes:
+//      color: string, determines speed and sprite color
+//          valid values: "yellow", "black", "red", "blue"
+
 
 var flyToyboxPlugin = {
  	name: "fly",

@@ -1,3 +1,18 @@
+// playerOptions attributes:
+//     spriteName: string, name of spritesheet loaded in preload
+//     spriteIndex: number, starting sprite in spritesheet
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     facing: string ("left" or "right") determines the direction the sprite starts out facing.
+//     speed: number, represents the speed the player will move when activated
+//     jumpForce: number, represents how hard a player will jump
+//     controls: object, contains key-value pairs of keycodes and named controls   
+//
+// unique alienOptions attributes:
+//      color: string, valid options: "green" "blue" "pink"
+//      controls: object, needs to contains keycodes for left,right,jump
+
 
 var alienToyboxPlugin = {
  	name: "alien",

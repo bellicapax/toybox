@@ -1,3 +1,15 @@
+// blockOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     kill: function, this is added to the sprite's onKilled signal
+//     allowGravity: boolean, true: sprite falls with gravity
+//     immovable: boolean, true: object will be fixed in place and cannot move
+//     collideWorld: boolean, true: object will collide with the edges of the game
+//     bounce: number, how elastic collisions with this object are
+//
+//  unique buttonOptions attributes:
+//      onPress: function, is called when a player or mob trigger the button from above
 
 var buttonToyboxPlugin = {
  	name: "button",

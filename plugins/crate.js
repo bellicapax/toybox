@@ -1,3 +1,18 @@
+// blockOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//	   update: function, this is run every update cycle
+//     collide: function, this is added to the sprite's onCollide signal
+//     allowGravity: boolean, true: sprite falls with gravity
+//     immovable: boolean, true: object will be fixed in place and cannot move
+//     collideWorld: boolean, true: object will collide with the edges of the game
+//     bounce: number, how elastic collisions with this object are
+//     name: string, name of the object type, meant mostly for debugging
+//
+// unique crateOptions attributes:
+//		type: number, 0-3, determines sprite for crate
+
 
 var crateToyboxPlugin = {
  	name: "crate",
@@ -16,7 +31,6 @@ var crateToyboxPlugin = {
      	crateOptions.scale = crateOptions.scale || this.toybox.diceRoll(4);
      	crateOptions.spriteIndex = crateOptions.type || this.toybox.diceRoll(4) - 1;
      	crateOptions.name = "type" + crateOptions.type + "Crate";
-     	crateOptions.drag = (crateOptions.scale ^ 2) * 50;
 
      	var crateCollide = function(crate, collidedSprite){
      		if( (crate.body.velocity.x >= 100 || crate.body.velocity.y >= 100) && !crate.bumped){

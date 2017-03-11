@@ -1,3 +1,11 @@
+// mobOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     allowGravity: boolean, true: sprite falls with gravity
+//     immovable: boolean, true: object will be fixed in place and cannot move
+//     bounce: number, how elastic collisions with this object are
+//     facing: string ("left" or "right") determines the direction the sprite starts out facing.
 
 var jellyToyboxPlugin = {
  	name: "jelly",

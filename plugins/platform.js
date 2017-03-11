@@ -1,3 +1,14 @@
+// blockOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     update: function, this is run every update cycle
+//     collide: function, this is added to the sprite's onCollide signal
+//
+// unique platformOptions attributes:
+//      type: number, 0-7, determines sprite appearance
+//      width: number, determines the width of the lava sprite
+//      height: number, determines the height of the lava sprite
 
 var platformToyboxPlugin = {
  	name: "platform",
