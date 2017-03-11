@@ -3,15 +3,11 @@
 //     startingY: number, initial Y location for sprite's center
 //     scale: number, the size of the sprite as a multiple
 //	   update: function, this is run every update cycle
-//     collide: function, this is added to the sprite's onCollide signal
-//     allowGravity: boolean, true: sprite falls with gravity
-//     immovable: boolean, true: object will be fixed in place and cannot move
-//     collideWorld: boolean, true: object will collide with the edges of the game
-//     bounce: number, how elastic collisions with this object are
-//     name: string, name of the object type, meant mostly for debugging
+//     kill: function, this is added to the sprite's onKilled signal
 //
 // unique spikesOptions attributes:
-//		type: number, 0-3, determines sprite for spikes
+//		color: string, determines sprite appearance
+//          valid values: "red","blue","pink"
 
 
 var spikesToyboxPlugin = {
