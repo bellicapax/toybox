@@ -1,3 +1,16 @@
+// blockOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     update: function, this is run every update cycle
+//     collide: function, this is added to the sprite's onCollide signal
+//     kill: function, this is added to the sprite's onKilled signal
+//
+// unique lavaOptions attributes:
+//		color: determines the sprite color
+// 			valid values: "yellow","orange","red","darkblue","lightblue","green","brown","black"
+// 		width: number, determines the width of the lava sprite
+// 		height: number, determines the height of the lava sprite
 
 var lavaToyboxPlugin = {
  	name: "lava",
@@ -50,8 +63,8 @@ var lavaToyboxPlugin = {
 
      	var lavaGO = this.toybox.add.decoration(lavaOptions);
      	lavaGO.name = lavaOptions.color + 'lava';
-     	//lavaGO.width = (typeof(lavaOptions.width) !== 'undefined') ? lavaOptions.width : 128;
-        //lavaGO.height = (typeof(lavaOptions.height) !== 'undefined') ? lavaOptions.height : 16;
+     	lavaGO.width = (typeof(lavaOptions.width) !== 'undefined') ? lavaOptions.width : 128;
+        lavaGO.height = (typeof(lavaOptions.height) !== 'undefined') ? lavaOptions.height : 16;
 
         var killBlockOptions = {
         	startingX: lavaOptions.startingX,

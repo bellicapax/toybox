@@ -110,7 +110,7 @@ class ToyboxGameObjectFactory {
     //     collideWorld: boolean, true: object will collide with the edges of the game
     //     bounce: number, how elastic collisions with this object are
     //     name: string, name of the object type, meant mostly for debugging
-    //     
+    //     facing: string ("left" or "right") determines the direction the sprite starts out facing.
     //     speed: number, represents the speed the player will move when activated
     //     jumpForce: number, represents how hard a player will jump
     //     controls: object, contains key-value pairs of keycodes and named controls    
@@ -210,6 +210,7 @@ class ToyboxGameObjectFactory {
     //     immovable: boolean, true: object will be fixed in place and cannot move
     //     collideWorld: boolean, true: object will collide with the edges of the game
     //     name: string, name of the object type, meant mostly for debugging
+    //     sendTo: string, 'top' or 'bottom', determines whether decoration is drawn above or below all other sprites
 
     decoration(decoOptions) {
         decoOptions.spriteIndex = decoOptions.spriteIndex || 0;
@@ -239,6 +240,7 @@ class ToyboxGameObjectFactory {
     //     collideWorld: boolean, true: object will collide with the edges of the game
     //     bounce: number, how elastic collisions with this object are
     //     name: string, name of the object type, meant mostly for debugging
+    //     facing: string ("left" or "right") determines the direction the sprite starts out facing.
 
     mob(mobOptions) {
         var mobGO = this.toybox.add.toyboxObject(mobOptions);

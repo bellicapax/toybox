@@ -1,3 +1,13 @@
+// mobOptions attributes:
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     kill: function, this is added to the sprite's onKilled signal
+//     facing: string ("left" or "right") determines the direction the sprite starts out facing.
+//
+//  unique fireballOptions attributes:
+//      color: string, determines sprite color and speed;
+//          valid values: "yellow","red","blue","green","purple","tan"
 
 var fireballToyboxPlugin = {
  	name: "fireball",
