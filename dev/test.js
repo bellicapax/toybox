@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet"]
 };
 
 function preload() {
@@ -102,9 +102,20 @@ function create() {
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 
-    spikes = toybox.add.spikes({startingX: 200, startingY: 440 });
+    //spikes = toybox.add.spikes({startingX: 200, startingY: 440 });
 
+    timer = game.time.create(false);
+    timer.loop(2000, player1Fire, this);
+    timer.start();
 
+    function player1Fire(){
+        var bulletOptions = {
+            startingX: player1.x,
+            startingY: player1.y - (player1.height / 2 + 4),
+            speedVector: new Phaser.Point(0,-300)
+        }
+        toybox.add.bullet(bulletOptions);
+    }
 
 }
 
