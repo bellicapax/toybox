@@ -103,7 +103,9 @@ var alienToyboxPlugin = {
                     alien.body.velocity.y = -200;
                     collidedSprite.hit();
                 } else {
-                    alien.hit();
+                    if (collidedSprite.health > 0){
+                        alien.hit();
+                    }
                 }
             }
         };

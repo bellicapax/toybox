@@ -17,7 +17,7 @@ class Toybox {
         this.mobs = new Phaser.Group(game, null, 'mobs', true);
         this.players = new Phaser.Group(game, null, 'players', true);
         this.topDecorations = new Phaser.Group(game, null, 'effects', true);
-
+        this.texts = new Phaser.Group(game, null, 'texts', true);
         this.animationFPS = 12;
         this._currencyDisplay = null;
         this._add = new ToyboxGameObjectFactory(this);
@@ -60,6 +60,11 @@ class Toybox {
         this.blocks.add(go);
     }
 
+    addMob(go) {
+        this.addGameObject(go);
+        this.mobs.add(go);
+    }
+
     addDecoration(go) {
         this.addGameObject(go);
         switch (go.sendTo){
@@ -73,9 +78,8 @@ class Toybox {
         }
     }
 
-    addMob(go) {
-        this.addGameObject(go);
-        this.mobs.add(go);
+    addText(go){
+        this.texts.add(go);
     }
 
     // helpers

@@ -254,4 +254,10 @@ class ToyboxGameObjectFactory {
         return mobGO;
     }
 
+    text(x,y,text,styleObject) {
+        var textGO = this.toybox.game.add.text(x,y,text,styleObject);
+        this.toybox.addText(textGO);
+        return textGO;
+    }
+
 }
