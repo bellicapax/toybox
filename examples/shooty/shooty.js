@@ -25,7 +25,7 @@ function create() {
         startingX : 320,
         startingY: 470,
         color: "pink",
-        jumpForce: 450,
+        jumpForce: 500,
         speed: 150,
         scale: 1,
         health: 1

@@ -6,6 +6,7 @@
 //
 // unique bulletOptions attributes:
 //      speedVector: phaser Point object, represents the speed of the bullet in x,y form
+//      spriteName: string, optionally use a non-default preloaded sprite
 //      hitPlayers: boolean, true: this bullet object will hit player objects
 //      hitMobs: boolean, true: this bullet object will hit mob objects
 
@@ -25,7 +26,7 @@ var bulletToyboxPlugin = {
 
         bulletOptions.name = "bullet";
 
-        bulletOptions.spriteName = "bullet";
+        bulletOptions.spriteName = bulletOptions.spriteName || "bullet";
  		bulletOptions.allowGravity = false;
         bulletOptions.collideWorld = false;
 
@@ -50,7 +51,7 @@ var bulletToyboxPlugin = {
 
         var bulletCollide = function(bullet, collidedSprite){
 
-            if ((collidedSprite.isMob() && this.hitMobs) || (collidedSprite.isPlayer() && this.hitPlayers)){
+            if ((collidedSprite.isMob() && bullet.hitMobs) || (collidedSprite.isPlayer() && bullet.hitPlayers)){
                 collidedSprite.hit();
             }
             this.toybox.sfx.bulletHit.play();
