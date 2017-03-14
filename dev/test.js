@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet","multibrick"]
 };
 
 function preload() {
@@ -21,27 +21,27 @@ function create() {
 
     //spring = toybox.add.spring({ startingX: 200});
 
-    // button = toybox.add.button({ 
-    //     startingX: 200,
-    //     onPress: function(){
-    //         for (var i = 0; i < 8; i++) {
-    //             toybox.add.slime({startingX: toybox.diceRoll(641)-1})
-    //         }
-    //     }
-    // });
+    button = toybox.add.button({ 
+        startingX: 200,
+        onPress: function(){
+            for (var i = 0; i < 8; i++) {
+                toybox.add.slime({startingX: toybox.diceRoll(641)-1})
+            }
+        }
+    });
 
     // lever = toybox.add.lever({ 
     //     startingX: 320,
     //     startingY: 480 - 24,
     //     whileLeft: function(){
     //         if(toybox.oneOutOf(300)){ 
-    //             toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dy: -200});
+    //             toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dY: -200});
     //         };
             
     //     },
     //     whileRight: function(){
     //         if(toybox.oneOutOf(300)){ 
-    //             toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dy: -200});
+    //             toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dY: -200});
     //         };
     //     }
     // });
@@ -92,8 +92,8 @@ function create() {
     // slime = toybox.add.slime({ startingX: 200});
     // slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
-    fly = toybox.add.fly({ startingX: 400, color: "black"});
-    fly = toybox.add.fly({ startingX: 450, facing: "right"});
+    //fly = toybox.add.fly({ startingX: 400, color: "black"});
+    //fly = toybox.add.fly({ startingX: 450, facing: "right"});
 
     //fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
@@ -104,18 +104,20 @@ function create() {
 
     //spikes = toybox.add.spikes({startingX: 200, startingY: 440 });
 
-    timer = game.time.create(false);
-    timer.loop(2000, player1Fire, this);
-    timer.start();
+    multibrick = toybox.add.multibrick({startingX: 320, startingY: 410, type: "pow", resetTimer: 3000, scale: 1.5})
 
-    function player1Fire(){
-        var bulletOptions = {
-            startingX: player1.x,
-            startingY: player1.y - (player1.height / 2 + 4),
-            speedVector: new Phaser.Point(0,-300)
-        }
-        toybox.add.bullet(bulletOptions);
-    }
+    // timer = game.time.create(false);
+    // timer.loop(2000, player1Fire, this);
+    // timer.start();
+
+    // function player1Fire(){
+    //     var bulletOptions = {
+    //         startingX: player1.x,
+    //         startingY: player1.y - (player1.height / 2 + 4),
+    //         speedVector: new Phaser.Point(0,-300)
+    //     }
+    //     toybox.add.bullet(bulletOptions);
+    // }
 
 }
 
@@ -128,7 +130,7 @@ function update() {
     };
 
     if(toybox.oneOutOf(30)){ 
-        // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dY: -200});
     };
 
     if(toybox.oneOutOf(400)){ 

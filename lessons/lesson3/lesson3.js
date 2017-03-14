@@ -102,7 +102,7 @@ function create() {
         startingX: 320, 
         startingY: 100, 
         dX: (toybox.diceRoll(400) - 200), 
-        dy: -200
+        dY: -200
     }
 
     //toybox.add.coin(coinOptions);

@@ -35,13 +35,13 @@ function create() {
     //     startingY: 480 - 24,
     //     whileLeft: function(){
     //         if(toybox.oneOutOf(300)){
-    //             toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dy: -200});
+    //             toybox.add.coin({startingX: 100, startingY: 100, dX: (Phaser.Math.between(50,200)), dY: -200});
     //         };
     //
     //     },
     //     whileRight: function(){
     //         if(toybox.oneOutOf(300)){
-    //             toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dy: -200});
+    //             toybox.add.coin({startingX: 540, startingY: 100, dX: (Phaser.Math.between(-50,-200)), dY: -200});
     //         };
     //     }
     // });
@@ -113,7 +113,7 @@ function update() {
     };
 
     if(toybox.oneOutOf(30)){
-        // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dy: -200});
+        // toybox.add.coin({startingX: 320, startingY: 100, dX: (toybox.diceRoll(400) - 200), dY: -200});
     };
 
     if(toybox.oneOutOf(400)){

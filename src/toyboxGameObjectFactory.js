@@ -64,8 +64,8 @@ class ToyboxGameObjectFactory {
             if (typeof (objectOptions.dX) !== "undefined") {
                 objectGO.body.velocity.x = objectOptions.dX;
             }
-            if (typeof (objectOptions.dy) !== "undefined") {
-                objectGO.body.velocity.y = objectOptions.dy;
+            if (typeof (objectOptions.dY) !== "undefined") {
+                objectGO.body.velocity.y = objectOptions.dY;
             }
 
             objectGO.body.collideWorldBounds = objectOptions.collideWorld;

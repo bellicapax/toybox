@@ -64,7 +64,7 @@ function update() {
     var coinOptions = {
         startingX: 320, 
         startingY: 100,
-        dy: -200, 
+        dY: -200, 
         dX: (Phaser.Math.between(-200,200))
     }
 
@@ -140,7 +140,7 @@ function update() {
 //       var coinOptions = {
 //          startingX: 320, 
 //          startingY: 100,
-//          dy: -200, 
+//          dY: -200, 
 //          dX: (Phaser.Math.between(-200,200))
 //       }
 //   
