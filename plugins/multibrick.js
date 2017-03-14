@@ -2,16 +2,13 @@
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center
 //     scale: number, the size of the sprite as a multiple
-//	   update: function, this is run every update cycle
-//     collide: function, this is added to the sprite's onCollide signal
-//     allowGravity: boolean, true: sprite falls with gravity
-//     immovable: boolean, true: object will be fixed in place and cannot move
-//     collideWorld: boolean, true: object will collide with the edges of the game
-//     bounce: number, how elastic collisions with this object are
-//     name: string, name of the object type, meant mostly for debugging
 //
 // unique multibrickOptions attributes:
-//		type: number, 0-3, determines sprite for multibrick
+//      color: string, determines sprite color
+//          valid values: orange, yellow, green, blue, grey
+//		type: string, determines block behavior
+//          valid values: normal, coin, mushroom, pow, random
+//      resetTimer: number, determines how many milliseconds before a non-normal block resets.
 
 
 var multibrickToyboxPlugin = {
@@ -64,7 +61,9 @@ var multibrickToyboxPlugin = {
         var validTypes = ["normal","coin","mushroom","pow","striped"];
 
         if (typeof(multibrickOptions.type) == "undefined" || validTypes.indexOf(multibrickOptions.type) == -1){
-            multibrickOptions.type = randomizer(validTypes);
+            multibrickOptions.type = normal
+        } else if (multibrickOptions.type == "random"){
+            randomizer(validTypes);
         }
 
         var noCoins = (typeof(this.toybox.loadedPlugins.coin) == "undefined")
