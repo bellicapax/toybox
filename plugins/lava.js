@@ -71,7 +71,7 @@ var lavaToyboxPlugin = {
         	startingX: lavaOptions.startingX,
         	startingY: lavaOptions.startingY,
         	collide: function(killBlock, collidedSprite){
-        		if (collidedSprite.isPlayer() || collidedSprite.isMob){
+        		if (collidedSprite.isPlayer()){
         			if (collidedSprite.health > 0){
         				collidedSprite.health = 0;
         			}

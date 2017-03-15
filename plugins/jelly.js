@@ -69,6 +69,10 @@ var jellyToyboxPlugin = {
                     }
                 }
 
+                if (typeof(targetPlayer) == "undefined"){
+                    return;
+                }
+
                 if( (targetPlayer.x < this.x && this.xDir == 1) || (targetPlayer.x > this.x && this.xDir == -1) ){
                     this.turnAround();
                 }

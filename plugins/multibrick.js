@@ -5,7 +5,7 @@
 //
 // unique multibrickOptions attributes:
 //      color: string, determines sprite color
-//          valid values: orange, yellow, green, blue, grey
+//          valid values: orange, yellow, green, blue, grey, random
 //		type: string, determines block behavior
 //          valid values: normal, coin, mushroom, pow, random
 //      resetTimer: number, determines how many milliseconds before a non-normal block resets.
@@ -35,7 +35,7 @@ var multibrickToyboxPlugin = {
             return array[Phaser.Math.between(0,(array.length - 1))];
         }
 
-        if (typeof(multibrickOptions.color) == "undefined" || validColors.indexOf(multibrickOptions.color) == -1){
+        if (typeof(multibrickOptions.color) == "undefined" || validColors.indexOf(multibrickOptions.color) == -1 || multibrickOptions.color == "random"){
             multibrickOptions.color = randomizer(validColors);
         }
 
@@ -60,10 +60,10 @@ var multibrickToyboxPlugin = {
 
         var validTypes = ["normal","coin","mushroom","pow","striped"];
 
-        if (typeof(multibrickOptions.type) == "undefined" || validTypes.indexOf(multibrickOptions.type) == -1){
-            multibrickOptions.type = normal
-        } else if (multibrickOptions.type == "random"){
-            randomizer(validTypes);
+        if (multibrickOptions.type == "random"){
+            multibrickOptions.type = randomizer(validTypes);
+        } else if ( typeof(multibrickOptions.type) == "undefined" || validTypes.indexOf(multibrickOptions.type) == -1 ) {
+            multibrickOptions.type = "normal"
         }
 
         var noCoins = (typeof(this.toybox.loadedPlugins.coin) == "undefined")
@@ -122,10 +122,13 @@ var multibrickToyboxPlugin = {
             case "striped":
                 multibrickOptions.spriteIndex = multibrickOptions.baseSpriteIndex + 1;
                 multibrickOptions.spriteIndex += (Phaser.Math.between(0,1) * 6);
+                multibrickOptions.baseSpriteIndex = multibrickOptions.spriteIndex;
+                multibrickOptions.postBump = function(){};
             break;
             case "normal":
             default:
                 multibrickOptions.spriteIndex = multibrickOptions.baseSpriteIndex + (Phaser.Math.between(0,1) * 6);
+                multibrickOptions.baseSpriteIndex = multibrickOptions.spriteIndex;
                 multibrickOptions.postBump = function(){};
             break;
         }
@@ -133,9 +136,9 @@ var multibrickToyboxPlugin = {
      	multibrickOptions.name = multibrickOptions.color + multibrickOptions.type + "Multibrick";
 
      	var multibrickCollide = function(multibrick, collidedSprite){
-            var spriteNotOnSide = Math.abs(collidedSprite.x - multibrick.x) < (multibrick.width / 2);
+            var spriteNotOnSide = Math.abs(collidedSprite.x - multibrick.x) <= (multibrick.width / 2);
             var spriteCanBeHit = collidedSprite.isMob() || collidedSprite.isPlayer();
-     		if( collidedSprite.y > multibrick.y && !multibrick.bumped && spriteNotOnSide){
+     		if( collidedSprite.y > multibrick.y && !multibrick.bumped && spriteNotOnSide && collidedSprite.isPlayer()){
    				multibrick.bump(collidedSprite);
      		} else if (collidedSprite.y < multibrick.y && multibrick.bumped && spriteNotOnSide && spriteCanBeHit) {
                 collidedSprite.hit();
@@ -158,15 +161,15 @@ var multibrickToyboxPlugin = {
         }
 
      	multibrickGO.bump = function(collidedSprite){
-     		this.bumped = true;
      		this.toybox.sfx.multibrickBump.play();
             this.y -= 2;
             this.postBump(collidedSprite);
             this.active = false;
             this.animations.play("inactive");
-            if (typeof(this.resetTimer) == "number"){
+            if (typeof(this.resetTimer) == "number" && this.bumped == false){
                 this.toybox.game.time.events.add(this.resetTimer, this.reActivate , this);
             }
+            this.bumped = true;
      		this.toybox.game.time.events.add(250, this.unBump , this);
      	};
 

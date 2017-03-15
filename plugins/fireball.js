@@ -124,7 +124,7 @@ var fireballToyboxPlugin = {
             direction *= -1;
             this.toybox.sfx.fireball.play();
             var thisFireball = this;
-            this.toybox.game.time.events.add(100, function(){ thisFireball.wasBumped = false; }, this);
+            this.toybox.game.time.events.add(250, function(){ thisFireball.wasBumped = false; }, this);
 
         }
 
