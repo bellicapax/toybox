@@ -43,6 +43,15 @@ function alienAstronautUpdate(){
             this.toybox.sfx.alienJump.play();
       }
   }
+
+  // Draw line to pointer
+  this.graphics.clear();
+  this.graphics.lineStyle(1, 0xffffff, 1);
+
+  this.graphics.moveTo(this.x, this.y);
+  var pointer = this.toybox.game.input.activePointer;
+  this.graphics.lineTo(pointer.x, pointer.y);
+
 };
 
 function preload() {
@@ -67,6 +76,7 @@ function create() {
   console.log(typeof(alienAstronautOptions.update) == "undefined");
   var player = toybox.add.alien(alienAstronautOptions);
   player.body.allowGravity = false;
+  player.graphics = game.add.graphics(0,0);
   // player.body.drag = new Phaser.Point(200,200);
 }
 
