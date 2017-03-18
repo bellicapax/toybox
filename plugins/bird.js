@@ -9,7 +9,7 @@ var birdToyboxPlugin = {
  		toyboxObject._game.load.spritesheet("greenBird", "../../assets/sprites/greenBirdSheet.png", 16, 16);
         toyboxObject._game.load.spritesheet("blueBird", "../../assets/sprites/blueBirdSheet.png", 16, 16);
         toyboxObject._game.load.spritesheet("pinkBird", "../../assets/sprites/pinkBirdSheet.png", 16, 16);
-        toyboxObject._game.load.spritesheet("orangeBird", "../../assets/sprites/pinkBirdSheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("orangeBird", "../../assets/sprites/orangeBirdSheet.png", 16, 16);
         toyboxObject._game.load.spritesheet("heartsAndStar", "../../assets/sprites/heartsAndStarSheet.png", 16, 16);
         toyboxObject._game.load.audio("birdFlap", "../../assets/sfx/impact-6.wav");
         toyboxObject._game.load.audio("birdChirp", "../../assets/sfx/chirp-2.wav");
@@ -48,9 +48,13 @@ var birdToyboxPlugin = {
         birdOptions.spriteName = birdOptions.color + "Bird";
 
         var birdPlatformerUpdate = function(){
+            if (this.body == null){
+                return;
+            }
+
             if (this.isHit || this.health <= 0){
                 birdGO.animations.play("hit");
-                if ((this.body.onFloor() || this.body.touching.down) && this.health <= 0){
+                if ((this.body.onFloor() || this.body.touching.down) && this.health <= 0 ){
                     this.kill();
                 }
                 return;
@@ -102,7 +106,7 @@ var birdToyboxPlugin = {
             this.toybox.sfx.birdKill.play();
             splosion.start(true,4000,null,12);
             this.toybox.players.remove(this);
-            game.time.events.add(2000, function(){ splosion.kill()}, this);
+            game.time.events.add(10000, function(){ splosion.kill()}, this);
 
         }
 
@@ -128,7 +132,7 @@ var birdToyboxPlugin = {
             this.toybox.sfx.birdChirp.play();
             this.events.onHit.dispatch(this);
             var thisBird = this;
-            this.toybox.game.time.events.add(1000, function(){
+            this.toybox.game.time.events.add(500, function(){
                 if (thisBird.health > 0){
                     thisBird.animations.play("idle");
                     thisBird.isHit = false;
@@ -150,7 +154,11 @@ var birdToyboxPlugin = {
                 this.animations.play("flap");
             }
             var xDir = (this.scale.x > 0) ? 1 : -1;
-            this.body.velocity.y -= this.jumpForce;
+            if (this.body.onFloor() || this.body.touching.down){
+                this.body.velocity.y = -this.jumpForce;
+            } else {
+                this.body.velocity.y -= this.jumpForce;
+            }
             this.body.velocity.x -= this.speed * xDir;
             this.toybox.sfx.birdFlap.play();
             this.toybox.game.time.events.add(250, function(){ this.canFlap = true; }, this);
