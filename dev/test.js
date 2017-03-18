@@ -89,7 +89,7 @@ function create() {
 
     //gem = toybox.add.gem({color: "red"});
 
-    // slime = toybox.add.slime({ startingX: 200});
+    slime = toybox.add.slime({ startingX: 200, scale: 3});
     // slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
     //fly = toybox.add.fly({ startingX: 400, color: "black"});
