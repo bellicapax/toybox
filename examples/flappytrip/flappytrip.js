@@ -20,25 +20,33 @@ function create() {
   playersArray = [];
 
   player1 =  addPlayer({ color: "orange"});
+  player2 =  addPlayer({ color: "blue", controls: { left:65, right:68}});
 
   lava = toybox.add.lava( {startingX: 320, startingY: 480 - 8, width: game.width, height: 16, color: "green"});
 
   startPlatform = toybox.add.platform ({ startingX: 320, startingY: 364, type: 3, width: 128, height: 16});
-  toybox.game.time.events.add( 5000, function(){startPlatform.kill()} , this )
+  toybox.game.time.events.add( 5000, function(){startPlatform.kill()} , this );
+  toybox.game.time.events.loop( 2000, increasePlayerScores , this );
 
   globalSpikesColor = "blue";
   isGameOver = false;
+  initScores();
 }
 
 function update() {
     toybox.update();
 
-    // for (var i = playersArray.length - 1; i >= 0; i--) {
-    // 	playersArray[i].score.setText(playersArray[i].color.toUpperCase() + ": "+ playersArray[i].sprite.score)
-    // }
+    for (var i = scoresArray.length - 1; i >= 0; i--) {
+    	scoreObj = scoresArray[i];
+    	scoreObj.score.setText(scoreObj.player.color.toUpperCase() + ": "+ scoreObj.player.score)
+    }
 
     if(toybox.oneOutOf(100)){ 
         addNewSpikeLine(Phaser.Math.between(0,6),Phaser.Math.between(0,460),Phaser.Math.between(-10,10)*3,Phaser.Math.between(250,1500));
+    };
+
+    if(toybox.oneOutOf(500)){ 
+        addNewGem(Phaser.Math.between(10,435));
     };
 }
 
@@ -66,27 +74,62 @@ function addNewSpike(height){
 	}
 }
 
+function addNewGem(height){
+	var newGem = toybox.add.gem({
+		startingX: -24,
+		startingY: height,
+		collideWorld: false
+	});
+	newGem.currencyValue = 10;
+	newGem.update = function(){
+		this.body.velocity.x = 50;
+		if (this.x > (this.game.width + this.width)){
+			this.kill();
+		}
+	}
+}
+
 function addPlayer(options){
 
-	var playerScoreObject = {};
-
-	playersArray.push(playerScoreObject);
-
-	var scoreX = 20 + (550 / playersArray.length * playersArray.indexOf(playerScoreObject));
-	var playerX = 320 - (playersArray.length * 20) + (40 * playersArray.indexOf(playerScoreObject) );
-	options.startingX = playerX;
 	options.startingY = 300;
 	options.scale = 2;
 
-	playerScoreObject = {
-		//score: toybox.add.text(scoreX, 20, options.color.toUpperCase() + ": " , {
-        //	fill: "#ffffff",
-        //	align: "right",
-        //	font: "bold 10pt Arial"
-    	//}),
-    	sprite: toybox.add.bird(options),
-    	color: options.color
-	}
+	var newBird = toybox.add.bird(options);
 
-	return playerScoreObject;
+	newBird.color = options.color;
+	playersArray.push(newBird);
+
+	var playerX = 320 - (playersArray.length * 20) + (60 * playersArray.indexOf(newBird) );
+	newBird.x = playerX;
+
+	return newBird;
+}
+
+function initScores(){
+	scoresArray = [];
+
+	for (var i = playersArray.length - 1; i >= 0; i--) {
+
+		var scoreX = 20 + (550 / playersArray.length * i);
+
+		var playerScoreObj = {
+			player: playersArray[i],
+			score: toybox.add.text(scoreX, 20, player1.color.toUpperCase() + ": " + player1.score, {
+   			    fill: "#ffffff",
+   			    align: "right",
+   			    font: "bold 10pt Arial"
+   			})
+		}
+
+		scoresArray.push(playerScoreObj);
+
+	}
+};
+
+function increasePlayerScores(){
+	for (var i = playersArray.length - 1; i >= 0; i--) {
+		if( playersArray[i].health > 0 ){
+			playersArray[i].score++;
+		}
+	}
 }
