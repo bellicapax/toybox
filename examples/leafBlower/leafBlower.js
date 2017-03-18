@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["alien"]
+    plugins: ["alien", "crate"]
 };
 
 function alienAstronautUpdate(){
@@ -61,6 +61,23 @@ function preload() {
 
 function create() {
   toybox.create();
+  createAstronaut();
+  createCrate();
+}
+
+function createCrate() {
+  var xIsZero = toybox.diceRoll(2) == 1;
+  var crateOptions = {
+    startingX: (xIsZero ? 0 : Phaser.Math.between(0, game.world.width)),
+    startingY: (!xIsZero ? 0 : Phaser.Math.between(0, game.world.height)),
+    allowGravity: false
+  };
+  var crate = toybox.add.crate(crateOptions);
+  crate.body.velocity.x = xIsZero ? 200 : 0;
+  crate.body.velocity.y = !xIsZero ? 200 : 0;
+}
+
+function createAstronaut(){
   var alienAstronautOptions = {
     allowGravity : false,
     update : alienAstronautUpdate,
@@ -77,7 +94,6 @@ function create() {
   var player = toybox.add.alien(alienAstronautOptions);
   player.body.allowGravity = false;
   player.graphics = game.add.graphics(0,0);
-  // player.body.drag = new Phaser.Point(200,200);
 }
 
 function update() {
