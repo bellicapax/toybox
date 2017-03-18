@@ -20,13 +20,14 @@ function create() {
   playersArray = [];
 
   player1 =  addPlayer({ color: "orange"});
-  player2 =  addPlayer({ color: "blue", controls: { left:65, right:68}});
+  player2 =  addPlayer({ color: "blue", controls: { left:65, right:83}}); // controls: left "A", right "S"
+  //player3 =  addPlayer({ color: "green", controls: { left:88, right:67}}); // controls: left "X", right "C"
+  //player4 =  addPlayer({ color: "pink", controls: { left:65, right:68}});	// controls: left "M", right "<"
 
   lava = toybox.add.lava( {startingX: 320, startingY: 480 - 8, width: game.width, height: 16, color: "green"});
 
   startPlatform = toybox.add.platform ({ startingX: 320, startingY: 364, type: 3, width: 128, height: 16});
-  toybox.game.time.events.add( 5000, function(){startPlatform.kill()} , this );
-  toybox.game.time.events.loop( 2000, increasePlayerScores , this );
+  toybox.game.time.events.add( 5000, startScoring , this );
 
   globalSpikesColor = "blue";
   isGameOver = false;
@@ -41,8 +42,16 @@ function update() {
     	scoreObj.score.setText(scoreObj.player.color.toUpperCase() + ": "+ scoreObj.player.score)
     }
 
-    if(toybox.oneOutOf(100)){ 
-        addNewSpikeLine(Phaser.Math.between(0,6),Phaser.Math.between(0,460),Phaser.Math.between(-10,10)*3,Phaser.Math.between(250,1500));
+    if(toybox.oneOutOf(300)){ 
+        addNewSpikeLine(Phaser.Math.between(3,6),Phaser.Math.between(60,400),Phaser.Math.between(-10,10)*3,Phaser.Math.between(250,1500));
+    };
+
+    if(toybox.oneOutOf(150)){ 
+        addNewSpikeLine(Phaser.Math.between(1,2),Phaser.Math.between(30,430),Phaser.Math.between(-10,10)*3,Phaser.Math.between(250,1500));
+    };
+
+    if(toybox.oneOutOf(75)){ 
+        addNewSpike(Phaser.Math.between(0,460));
     };
 
     if(toybox.oneOutOf(500)){ 
@@ -99,7 +108,7 @@ function addPlayer(options){
 	newBird.color = options.color;
 	playersArray.push(newBird);
 
-	var playerX = 320 - (playersArray.length * 20) + (60 * playersArray.indexOf(newBird) );
+	var playerX = 260 - ((playersArray.length - 1) * 20) + (60 * playersArray.indexOf(newBird) );
 	newBird.x = playerX;
 
 	return newBird;
@@ -110,7 +119,7 @@ function initScores(){
 
 	for (var i = playersArray.length - 1; i >= 0; i--) {
 
-		var scoreX = 20 + (550 / playersArray.length * i);
+		var scoreX = 20 + (540 / (playersArray.length - 1) * i);
 
 		var playerScoreObj = {
 			player: playersArray[i],
@@ -132,4 +141,9 @@ function increasePlayerScores(){
 			playersArray[i].score++;
 		}
 	}
+}
+
+function startScoring(){
+	startPlatform.kill();
+	toybox.game.time.events.loop( 2000, increasePlayerScores , this );
 }
