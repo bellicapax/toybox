@@ -11,7 +11,10 @@ var settings = {
 var crate;
 var triangle = { a: new Phaser.Point(), b: new Phaser.Point(), c: new Phaser.Point()};
 var leaves = [];
-var blowStrength = 25;
+var blowStrength = 5;
+var blowerReach = 120;
+var hypotenuse;
+const halfAngle = Phaser.Math.degToRad(15);
 
 function alienAstronautUpdate() {
 	if (this.isHit) {
@@ -44,22 +47,20 @@ function alienAstronautUpdate() {
 		this.body.velocity.y -= angularspeed.y;
 		if (this.animations.name !== "jump") {
 			this.animations.play("jump");
-			this.toybox.sfx.alienJump.play();
 		}
 	}
 
 	var pointer = this.toybox.game.input.activePointer;
 	calculateTriangle(this, pointer);
-  drawTriangle(this.graphics);
-  var leavesToBlow = getLeavesToBlow(this);
-  blowLeaves(leavesToBlow, this, pointer);
+  drawTriangle(this.graphics, pointer.isDown);
+  if(pointer.isDown)
+  {
+    var leavesToBlow = getLeavesToBlow(this);
+    blowLeaves(leavesToBlow, this, pointer);
+  }
 }
 
 function calculateTriangle(sprite, pointer) {
-  var halfAngle = Phaser.Math.degToRad(15);
-  var hypOverAdj = (1 / Math.cos(halfAngle));
-  var adjacent = Phaser.Math.distance(sprite.x, sprite.y, pointer.x, pointer.y);
-  var hypotenuse = hypOverAdj * adjacent;
   var angleBetweenPlayerAndPointer = Phaser.Math.angleBetween(sprite.x, sprite.y, pointer.x, pointer.y);
   var angleToLeft = angleBetweenPlayerAndPointer + halfAngle;
   var angleToRight = angleBetweenPlayerAndPointer - halfAngle;
@@ -72,9 +73,14 @@ function calculateTriangle(sprite, pointer) {
   triangle.c = rightPoint;
 }
 
-function drawTriangle(graphics) {
+function drawTriangle(graphics, shouldFill) {
 	graphics.clear();
 	graphics.lineStyle(1, 0xffffff, 1);
+  if(shouldFill)
+  {
+    graphics.fillAlpha = 0.5;
+    graphics.beginFill(0xffffff);
+  }
 	graphics.moveTo(triangle.a.x, triangle.a.y);
 	graphics.lineTo(triangle.b.x, triangle.b.y);
 	graphics.lineTo(triangle.c.x, triangle.c.y);
@@ -94,8 +100,10 @@ function getLeavesToBlow(){
 function blowLeaves(leavesToBlow, sprite, pointer) {
   var normalizedDir = new Phaser.Point(pointer.x - sprite.x, pointer.y - sprite.y).normalize();
   for (var i = 0; i < leavesToBlow.length; i++) {
-    leavesToBlow[i].body.velocity.x += normalizedDir.x * blowStrength;
-    leavesToBlow[i].body.velocity.y += normalizedDir.y * blowStrength;
+    var dist = Phaser.Math.distance(sprite.x, sprite.y, leavesToBlow[i].x, leavesToBlow[i].y);
+    var distanceModifier = Phaser.Math.linear(1, 0.1, dist / hypotenuse);
+    leavesToBlow[i].body.velocity.x += normalizedDir.x * blowStrength * distanceModifier;
+    leavesToBlow[i].body.velocity.y += normalizedDir.y * blowStrength * distanceModifier;
   }
 }
 
@@ -128,6 +136,9 @@ function pointIsInTriangle(px, py, triangle) {
 function preload() {
 	toybox = new Toybox(game, settings);
 	toybox.preload();
+  var hypOverAdj = (1 / Math.cos(halfAngle));
+  var adjacent = blowerReach;
+  hypotenuse = hypOverAdj * adjacent;
 }
 
 function create() {
@@ -169,7 +180,8 @@ function createAstronaut() {
 	var alienAstronautOptions = {
 		allowGravity: false,
 		update: alienAstronautUpdate,
-		startingY: game.world.height,
+    startingX: game.world.centerX,
+    startingY: game.world.centerY,
 		jumpForce: 1,
 		controls: {
 			left: 37,
@@ -178,7 +190,6 @@ function createAstronaut() {
 			down: 40
 		}
 	};
-	console.log(typeof (alienAstronautOptions.update) == "undefined");
 	var player = toybox.add.alien(alienAstronautOptions);
 	player.body.allowGravity = false;
 	player.graphics = game.add.graphics(0, 0);
