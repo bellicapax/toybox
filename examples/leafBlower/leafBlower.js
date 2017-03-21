@@ -1,3 +1,32 @@
+// Below mapping applies to XBOX 360 Wired and Wireless controller on Google Chrome (tested on Windows 7).
+// - Firefox uses different map! Separate amount of buttons and axes. DPAD = axis and not a button.
+// In other words - discrepancies when using gamepads.
+// Phaser.Gamepad.XBOX360_A = 0;
+// Phaser.Gamepad.XBOX360_B = 1;
+// Phaser.Gamepad.XBOX360_X = 2;
+// Phaser.Gamepad.XBOX360_Y = 3;
+// Phaser.Gamepad.XBOX360_LEFT_BUMPER = 4;
+// Phaser.Gamepad.XBOX360_RIGHT_BUMPER = 5;
+// Phaser.Gamepad.XBOX360_LEFT_TRIGGER = 6;
+// Phaser.Gamepad.XBOX360_RIGHT_TRIGGER = 7;
+// Phaser.Gamepad.XBOX360_BACK = 8;
+// Phaser.Gamepad.XBOX360_START = 9;
+// Phaser.Gamepad.XBOX360_STICK_LEFT_BUTTON = 10;
+// Phaser.Gamepad.XBOX360_STICK_RIGHT_BUTTON = 11;
+//
+// Phaser.Gamepad.XBOX360_DPAD_LEFT = 14;
+// Phaser.Gamepad.XBOX360_DPAD_RIGHT = 15;
+// Phaser.Gamepad.XBOX360_DPAD_UP = 12;
+// Phaser.Gamepad.XBOX360_DPAD_DOWN = 13;
+//
+// //  On FF 0 = Y, 1 = X, 2 = Y, 3 = X, 4 = left bumper, 5 = dpad left, 6 = dpad right
+// Phaser.Gamepad.XBOX360_STICK_LEFT_X = 0;
+// Phaser.Gamepad.XBOX360_STICK_LEFT_Y = 1;
+// Phaser.Gamepad.XBOX360_STICK_RIGHT_X = 2;
+// Phaser.Gamepad.XBOX360_STICK_RIGHT_Y = 3;
+
+const halfAngle = Phaser.Math.degToRad(15);
+const JOYSTICK_THRESHOLD = 0.15;
 var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
     preload: preload,
     create: create,
@@ -18,7 +47,6 @@ var floaties = [];
 var blowStrength = 5;
 var blowerReach = 120;
 var hypotenuse;
-const halfAngle = Phaser.Math.degToRad(15);
 var containerGraphics;
 var containers = [];
 var levelSettings = {
@@ -28,6 +56,14 @@ var levelSettings = {
     floatieSpeedMin : 10,
     floatieSpeedMax : 50
 };
+var pad1;
+var pad2;
+var leftStickX = Phaser.Gamepad.XBOX360_STICK_LEFT_X;
+var leftStickY = Phaser.Gamepad.XBOX360_STICK_LEFT_Y;
+var rightStickX = Phaser.Gamepad.XBOX360_STICK_RIGHT_X;
+var rightStickY = Phaser.Gamepad.XBOX360_STICK_RIGHT_Y;
+var accelAxis = Phaser.Gamepad.XBOX360_RIGHT_TRIGGER;
+var decelAxis = Phaser.Gamepad.XBOX360_LEFT_TRIGGER;
 
 function alienAstronautUpdate() {
     if (this.isHit) {
@@ -40,32 +76,38 @@ function alienAstronautUpdate() {
     }
 
     this.body.angularVelocity = 0;
-    if (this.controls.right.isDown) {
-        this.body.angularVelocity = this.speed;
+    var xAxisValue = this.controls.pad.axis(leftStickX);
+    if (this.controls.right.isDown || xAxisValue > JOYSTICK_THRESHOLD) {
+        var modifier = this.controls.right.isDown ? 1 : xAxisValue;
+        this.body.angularVelocity = this.speed * modifier;
         if (this.animations.name !== "run") {
             this.animations.play("run");
         }
-    } else if (this.controls.left.isDown) {
-        this.body.angularVelocity = -this.speed;
+    } else if (this.controls.left.isDown || xAxisValue < -JOYSTICK_THRESHOLD) {
+        var modifier = this.controls.left.isDown ? 1 : Math.abs(xAxisValue);
+        this.body.angularVelocity = -this.speed * modifier;
         if (this.animations.name !== "run") {
             this.animations.play("run");
         }
     }
 
-    // checkForJump
-    if (this.controls.up.isDown) {
-        var angularspeed = new Phaser.Point();
+    // checkForBoost
+    var accelValue = this.controls.pad.buttonValue(accelAxis);
+    var decelValue = this.controls.pad.buttonValue(decelAxis);
+    var angularspeed = new Phaser.Point();
+    if (this.controls.up.isDown || accelValue > JOYSTICK_THRESHOLD) {
         this.toybox.game.physics.arcade.velocityFromAngle(this.angle + 90, this.jumpForce, angularspeed);
-        this.body.velocity.x -= angularspeed.x;
-        this.body.velocity.y -= angularspeed.y;
+        var modifier = this.controls.up.isDown ? 1 : accelValue;
+        this.body.velocity.x -= angularspeed.x * modifier;
+        this.body.velocity.y -= angularspeed.y * modifier;
         if (this.animations.name !== "jump") {
             this.animations.play("jump");
         }
-    }else if(this.controls.down.isDown){
-      var angularspeed = new Phaser.Point();
+    }else if(this.controls.down.isDown || decelValue > JOYSTICK_THRESHOLD){
       this.toybox.game.physics.arcade.velocityFromAngle(this.angle + 90, this.jumpForce, angularspeed);
-      this.body.velocity.x += angularspeed.x;
-      this.body.velocity.y += angularspeed.y;
+      var modifier = this.controls.down.isDown ? 1 : decelValue;
+      this.body.velocity.x += angularspeed.x * modifier;
+      this.body.velocity.y += angularspeed.y * modifier;
       if (this.animations.name !== "jump") {
           this.animations.play("jump");
       }
@@ -155,6 +197,7 @@ function pointIsInTriangle(px, py, triangle) {
 function preload() {
     toybox = new Toybox(game, settings);
     toybox.preload();
+    game.input.gamepad.start();
     var hypOverAdj = (1 / Math.cos(halfAngle));
     var adjacent = blowerReach;
     hypotenuse = hypOverAdj * adjacent;
@@ -213,6 +256,7 @@ function createAstronaut() {
         }
     };
     var player = toybox.add.alien(alienAstronautOptions);
+    player.controls.pad = game.input.gamepad.pad1;
     player.body.allowGravity = false;
     player.graphics = game.add.graphics(0, 0);
 }
