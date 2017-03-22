@@ -5,7 +5,7 @@
 //     facing: string ("left" or "right") determines the direction the sprite starts out facing.
 //     speed: number, represents the speed the player will move when activated
 //     jumpForce: number, represents how hard a player will jump
-//     controls: object, contains key-value pairs of keycodes and named controls   
+//     controls: object, contains key-value pairs of keycodes and named controls
 //
 // unique alienOptions attributes:
 //      color: string, valid options: "green" "blue" "pink"
@@ -90,8 +90,7 @@ var alienToyboxPlugin = {
         	    }
         	}
         };
-
-        alienOptions.update = alienPlatformerUpdate;
+        alienOptions.update = typeof(alienOptions.update) != "function" ? alienPlatformerUpdate : alienOptions.update;
 
         var alienCollide = function(alien, collidedSprite){
             var alienIsOnTop = (alien.y + (alien.height / 2)) <= (collidedSprite.y - collidedSprite.height / 2) ;
