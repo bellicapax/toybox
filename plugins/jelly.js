@@ -57,25 +57,14 @@ var jellyToyboxPlugin = {
                 if (this.animations.name == "idle") {
                     this.animations.play("mad");
                 }
+            }
 
-                var targetPlayer = this.toybox.players.children[0];
+            var targetPoint = this.findTarget();
 
-                for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
-                    var newPlayer = this.toybox.players.children[i];
-                    var targetDist = Math.sqrt((Math.abs(this.y - targetPlayer.y))^2 + (Math.abs(this.x - targetPlayer.x))^2);
-                    var newDist = Math.sqrt((Math.abs(this.y - newPlayer.y))^2 + (Math.abs(this.x - newPlayer.x))^2);
-                    if( newDist < targetDist ){
-                        targetPlayer = newPlayer;
-                    }
-                }
-
-                if (typeof(targetPlayer) == "undefined"){
-                    return;
-                }
-
-                if( (targetPlayer.x < this.x && this.xDir == 1) || (targetPlayer.x > this.x && this.xDir == -1) ){
-                    this.turnAround();
-                }
+            if( typeof(targetPoint) == undefined ){
+                return
+            } else if( (targetPoint.x < this.x && this.xDir == 1) || (targetPoint.x > this.x && this.xDir == -1) ){
+                this.turnAround();
             }
 
         };
@@ -121,6 +110,38 @@ var jellyToyboxPlugin = {
             this.toybox.game.time.events.add(1500, function(){ thisJelly.canTurnAround = true; }, this);
         }
 
+        jellyGO.findTarget = function(){
+
+            var target = new Phaser.Point(0,0);
+
+            if (this.state == "calm"){
+
+                target = (this.xDir < 0) ? new Phaser.Point(0,0) : new Phaser.Point(this.toybox.game.width,0);
+
+            } else if (this.state == "mad"){
+
+                var targetPlayer = this.toybox.players.children[0];
+
+                for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
+                    var newPlayer = this.toybox.players.children[i];
+                    var targetDist = Math.sqrt((Math.abs(this.y - targetPlayer.y))^2 + (Math.abs(this.x - targetPlayer.x))^2);
+                    var newDist = Math.sqrt((Math.abs(this.y - newPlayer.y))^2 + (Math.abs(this.x - newPlayer.x))^2);
+                    if( newDist < targetDist ){
+                        targetPlayer = newPlayer;
+                    }
+                }
+
+                if (typeof(targetPlayer) == "undefined"){
+                    return;
+                }
+
+                target = new Phaser.Point(targetPlayer.x, targetPlayer.y);
+            }
+
+            return target;
+
+        }
+
         jellyGO.hit = function(){
             if (this.isHit){
                 return;
@@ -137,7 +158,9 @@ var jellyToyboxPlugin = {
                 thisJelly.animations.play("hit");
                 this.toybox.game.time.events.add(1500, function(){
                     thisJelly.isHit = false;
-                    thisJelly.state = "mad";
+                    if( this.isMob() ){
+                        thisJelly.state = "mad";
+                    }
                 }, this);
 
             }

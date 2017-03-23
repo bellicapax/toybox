@@ -89,7 +89,7 @@ function create() {
 
     //gem = toybox.add.gem({color: "red"});
 
-    slime = toybox.add.slime({ startingX: 200, scale: 3});
+    //slime = toybox.add.slime({ startingX: 200, scale: 3});
     // slime = toybox.add.slime({ startingX: 200, facing: "right"});
 
     //fly = toybox.add.fly({ startingX: 400, color: "black"});
@@ -98,7 +98,9 @@ function create() {
     //fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
-    //jelly = toybox.add.jelly({ startingX: 600});
+    jelly = toybox.add.jelly({ startingX: 600});
+    jelly.isPlayer = function(){ return true;}
+    jelly.isMob = function(){ return false;}
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 
