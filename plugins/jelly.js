@@ -1,3 +1,6 @@
+// Jelly is an enemy/mob that ignores the player at first, but will chase after the nearest player after being hit.
+// A jelly has 3 health, and after dying, creates three slimes in it's place if possible.
+
 // mobOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

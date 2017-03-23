@@ -1,3 +1,6 @@
+// A spikes is an immovable block that hits/damages any player/mob that touches it.
+// (yeah, the plugin is called 'spikes' not spike)
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

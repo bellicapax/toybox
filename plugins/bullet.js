@@ -1,3 +1,6 @@
+// Bullet is a gravity-less mob/enemy that can be given a x/y velocity, and ignores the walls of the game.
+// It will fly until it leaves the screen or collides with another object.
+
 // mobOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

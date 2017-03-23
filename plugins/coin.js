@@ -1,3 +1,9 @@
+// Coin is a collectible that can only be collected by players, and increase the player's score.
+// Coins will eventually dissappear by default, but that can be changed.
+// Gold coins are worth 100
+// Silver coins are worth 10
+// Bronze coins are worth 1
+
 // collectibleOptions attributes:
 //     spriteName: string, name of spritesheet loaded in preload
 //     spriteIndex: number, starting sprite in spritesheet
@@ -8,6 +14,7 @@
 //  unique coinOption attributes:
 //      color: string, determines sprite color, bounce, and score value
 //          valid values: "bronze", "silver", "gold"
+//      killAge: how many update cycles before the coin disappears. 'false' will make the coin last forever.
 
 var coinToyboxPlugin = {
     name: "coin",

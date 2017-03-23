@@ -1,3 +1,5 @@
+// a spring is an object launches objects that land on it from above upwards
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

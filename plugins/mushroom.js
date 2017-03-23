@@ -1,3 +1,9 @@
+// mushroom is collectible that modifies the player/mob that collects it.
+// yellow mushrooms speed you up
+// red mushrooms slow you down
+// blue mushrooms make you smaller
+// purple mushrooms make you bigger
+
 // collectibleOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

@@ -1,3 +1,7 @@
+// Gem is a collectible that is immune to gravity, and has a default score value of 250
+// Note that gems are NOT immovable, so collisions can have amusing/strange results.
+// To change the score value, change the gem's currencyValue attribute after creation.
+
 // collectibleOptions attributes:
 //     spriteName: string, name of spritesheet loaded in preload
 //     spriteIndex: number, starting sprite in spritesheet

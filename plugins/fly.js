@@ -1,3 +1,7 @@
+// Fly is a mob/enemy that ignores gravity, and is attracted to the nearest player.
+// Different colored flys have different speeds: yellow is the slowest, red is the fastest.
+// Watch out for red flies!
+
 // mobOptions attributes:
 //     spriteName: string, name of spritesheet loaded in preload
 //     spriteIndex: number, starting sprite in spritesheet

@@ -1,3 +1,6 @@
+// Platform is a block meant to provide large areas for players/mob to stand on.
+// Because of Arcade physic, it is possible for objects to get pushed through platforms by other objects, however.
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

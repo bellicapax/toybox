@@ -1,3 +1,6 @@
+// Slime is an enemy/mob that move forward until it bumps something else, then it turns around and goes the other way.
+// green slimes are the slowest, purple are the fastest.
+
 // mobOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

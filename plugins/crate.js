@@ -1,3 +1,6 @@
+// Crate is a basic block that looks like a wooden crate.
+// It intentionally doesn't do a lot.
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

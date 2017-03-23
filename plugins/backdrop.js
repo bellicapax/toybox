@@ -1,6 +1,10 @@
+// backdrop is a decoration object that covers the entire game and remains in the background.
+// there are several presets, and you can also pass it a spriteName you have preloaded.
+
 // decorationOptions attributes:
 //     update: function, this is run every update cycle
 //     kill: function, this is added to the sprite's onKilled signal
+//		spriteName: optionally decide what sprite to use
 //
 //	unique backdropOtions attributes:
 //		preset: string, selects one of several preset backdrops

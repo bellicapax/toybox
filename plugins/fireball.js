@@ -1,3 +1,7 @@
+// Fireball is a mob/enemy that ignores gravity and flies at 45deg angles until it hits a player or mob.
+// It bounces of the sides of the game. It currently gets stuck sometimes with rows of blocks.
+// tan fireballs are slowest, blue fireballs are fastest.
+
 // mobOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

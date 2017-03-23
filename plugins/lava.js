@@ -1,3 +1,6 @@
+// Lava is a big block-ish object that kills any player/enemy that touches it.
+// It doesn't always look like lava, but it always is lethal.
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

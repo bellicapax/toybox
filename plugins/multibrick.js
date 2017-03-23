@@ -1,3 +1,10 @@
+// multibrick is a multi-purpose block!
+// If a player/mob hits a multibrick from the underside, it hits any player/mob on top!
+// "normal" or "striped" multibricks serve no other function, but "coin," "mushroom," and "pow" bricks do other stuff too
+// "coin" bricks create a random coin above when hit
+// "mushroom" bricks create a random mushroom above when hit
+// "pow" bricks hit all players/mobs except the player that hit the pow brick.
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center
@@ -7,7 +14,7 @@
 //      color: string, determines sprite color
 //          valid values: orange, yellow, green, blue, grey, random
 //		type: string, determines block behavior
-//          valid values: normal, coin, mushroom, pow, random
+//          valid values: normal, coin, mushroom, pow, striped, random
 //      resetTimer: number, determines how many milliseconds before a non-normal block resets.
 
 

@@ -1,3 +1,5 @@
+// Button is a block that will run a function passed to it when it is activated from above by a player/mob
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center

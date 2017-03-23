@@ -1,3 +1,6 @@
+// a lever is a block that can be switched between a left and right state.
+// 'whileLeft' and 'whileRight' are functions that can be passed to the lever, and determine it's behavior.
+
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center
