@@ -132,11 +132,11 @@ var jellyToyboxPlugin = {
         var jellyKill = function(jelly){
             var maybePet = ( jelly.isMob() ) ? "slime" : "pet";
             if (typeof(this.toybox.loadedPlugins.slime) !== "undefined"){
-                var slime1 = jelly.toybox.add[maybePet]({type: "slime", startingX: jelly.x - 4, startingY: jelly.y, color: jelly.color});
+                var slime1 = jelly.toybox.add[maybePet]({type: "slime", owner: jelly.owner, startingX: jelly.x - 4, startingY: jelly.y, color: jelly.color});
                 slime1.body.velocity = new Phaser.Point(-100,100);
-                var slime2 = jelly.toybox.add[maybePet]({type: "slime", startingX: jelly.x + 4, startingY: jelly.y, color: jelly.color});
+                var slime2 = jelly.toybox.add[maybePet]({type: "slime", owner: jelly.owner, startingX: jelly.x + 4, startingY: jelly.y, color: jelly.color});
                 slime2.body.velocity = new Phaser.Point(100,100);
-                var slime3 = jelly.toybox.add[maybePet]({type: "slime", startingX: jelly.x, startingY: jelly.y - 4, color: jelly.color});
+                var slime3 = jelly.toybox.add[maybePet]({type: "slime", owner: jelly.owner, startingX: jelly.x, startingY: jelly.y - 4, color: jelly.color});
                 slime3.body.velocity = new Phaser.Point(0,100);
             }
         }
