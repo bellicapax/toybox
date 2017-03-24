@@ -1,4 +1,22 @@
+// Pet is an unsual plugin because it requires other plugins to work.
+// A pet is a mob/enemy that has been modified to follow the player without hurting it.
+// When you create a pet, you pass it a 'type' that tells it what type of mob the pet is.
+// currently, supported mob types are slime, jelly, and fly.
 
+// mobOptions attributes:
+//     spriteName: string, name of spritesheet loaded in preload
+//     spriteIndex: number, starting sprite in spritesheet
+//     startingX: number, initial X location for sprite's center
+//     startingY: number, initial Y location for sprite's center
+//     scale: number, the size of the sprite as a multiple
+//     facing: string ("left" or "right") determines the direction the sprite starts out facing.
+//
+//  unique petOptions attributes:
+//      color: string, determines mob type
+//          valid values: "fly" "slime" "jelly"
+//      color: string, determines speed and sprite color
+//          valid values: determined by type
+//      owner: the player object the pet should follow, will default to the first player added.
 
 var petToyboxPlugin = {
  	name: "pet",
@@ -14,7 +32,7 @@ var petToyboxPlugin = {
         if (typeof(this.toybox.loadedPlugins[petOptions.type]) !== "undefined"){
             petGO = this.toybox.add[petOptions.type](petOptions);
         } else {
-            console.log(petOptions.type + ' plugin was not found');
+            console.log(petOptions.type + ' plugin was not found, cannot make pet');
             return;
         };
 
