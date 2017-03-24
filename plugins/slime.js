@@ -49,6 +49,7 @@ var slimeToyboxPlugin = {
         slimeOptions.speed = slimeOptions.speed || 100;
 
         var slimeUpdate = function(){
+
             if (this.body !== null){
                 this.body.velocity.x *= 0.95;
             }
@@ -58,6 +59,8 @@ var slimeToyboxPlugin = {
             }
 
             var targetPoint = this.findTarget();
+
+            this.xDir = (this.scale.x < 0) ? 1 : -1
 
             if( typeof(targetPoint) == undefined ){
                 return
