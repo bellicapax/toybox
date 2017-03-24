@@ -98,8 +98,8 @@ function create() {
     //fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
-    //jelly = toybox.add.jelly({ startingX: 600});
-    pet = toybox.add.pet({type: "jelly", startingX: 500});
+    jelly = toybox.add.jelly({ startingX: 600});
+    pet = toybox.add.pet({type: "jelly", startingX: 500, owner: player2});
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 
