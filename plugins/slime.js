@@ -57,6 +57,14 @@ var slimeToyboxPlugin = {
                 this.turnAround();
             }
 
+            var targetPoint = this.findTarget();
+
+            if( typeof(targetPoint) == undefined ){
+                return
+            } else if( (targetPoint.x < this.x && this.xDir == 1) || (targetPoint.x > this.x && this.xDir == -1) ){
+                this.turnAround();
+            }
+
             if(this.timeToMove && !this.isHit && (this.body.onFloor() || this.body.touching.down)){
                 this.animations.play("idle");
                 this.timeToMove = false;
@@ -113,6 +121,11 @@ var slimeToyboxPlugin = {
                     thisSlime.isHit = false;
                 }
             }, this);
+        }
+
+        slimeGO.findTarget = function(){
+            target = (this.xDir < 0) ? new Phaser.Point(0,0) : new Phaser.Point(this.toybox.game.width,0);
+            return target;
         }
 
         var fps = this.toybox.animationFPS;

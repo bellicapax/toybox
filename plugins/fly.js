@@ -72,28 +72,15 @@ var flyToyboxPlugin = {
                this.animations.play("idle");
             }
 
-            var targetPlayer = this.toybox.players.children[0];
+            var target = this.findTarget()
 
-            for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
-                var newPlayer = this.toybox.players.children[i];
-                var targetDist = Math.sqrt((Math.abs(this.y - targetPlayer.y))^2 + (Math.abs(this.x - targetPlayer.x))^2);
-                var newDist = Math.sqrt((Math.abs(this.y - newPlayer.y))^2 + (Math.abs(this.x - newPlayer.x))^2);
-                if( newDist < targetDist ){
-                    targetPlayer = newPlayer;
-                }
-            }
-
-            if (typeof(targetPlayer) == "undefined"){
-                return;
-            }
-
-            if( (targetPlayer.x < this.x && this.scale.x < 0) || (targetPlayer.x > this.x && this.scale.x > 0) ){
+            if( (target.x < this.x && this.scale.x < 0) || (target.x > this.x && this.scale.x > 0) ){
                 this.turnAround();
             }
 
-            if (targetPlayer.y < this.y ){
+            if (target.y < this.y ){
                this.body.velocity.y = this.speed * -1;
-            } else if (targetPlayer.y > this.y ) {
+            } else if (target.y > this.y ) {
                this.body.velocity.y = this.speed;
             }
 
@@ -117,6 +104,27 @@ var flyToyboxPlugin = {
             this.canTurnAround = false;
             var thisFly = this;
             this.toybox.game.time.events.add(500, function(){ thisFly.canTurnAround = true; }, this);
+        }
+
+        flyGO.findTarget = function(){
+
+            var target = this.toybox.players.children[0];
+
+            for (var i = this.toybox.players.children.length - 1; i >= 0; i--) {
+                var newPlayer = this.toybox.players.children[i];
+                var targetDist = Math.sqrt((Math.abs(this.y - target.y))^2 + (Math.abs(this.x - target.x))^2);
+                var newDist = Math.sqrt((Math.abs(this.y - newPlayer.y))^2 + (Math.abs(this.x - newPlayer.x))^2);
+                if( newDist < targetDist ){
+                    target = new Phaser.Point( newPlayer.x, newPlayer.y);
+                }
+            }
+
+            if (typeof(target) == "undefined"){
+                target = new Phaser.Point(this.toybox.game.width / 2 , this.toybox.game.height / 2);
+            }
+
+            return target;
+
         }
 
         flyGO.hit = function(){
