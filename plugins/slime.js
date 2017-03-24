@@ -49,11 +49,22 @@ var slimeToyboxPlugin = {
         slimeOptions.speed = slimeOptions.speed || 100;
 
         var slimeUpdate = function(){
+
             if (this.body !== null){
                 this.body.velocity.x *= 0.95;
             }
 
             if( this.x >= (this.toybox.game.width - (Math.abs(this.width) / 2) ) || (this.x <= (Math.abs(this.width) / 2) ) ){
+                this.turnAround();
+            }
+
+            var targetPoint = this.findTarget();
+
+            this.xDir = (this.scale.x < 0) ? 1 : -1
+
+            if( typeof(targetPoint) == undefined ){
+                return
+            } else if( (targetPoint.x < this.x && this.xDir == 1) || (targetPoint.x > this.x && this.xDir == -1) ){
                 this.turnAround();
             }
 
@@ -113,6 +124,11 @@ var slimeToyboxPlugin = {
                     thisSlime.isHit = false;
                 }
             }, this);
+        }
+
+        slimeGO.findTarget = function(){
+            target = (this.xDir < 0) ? new Phaser.Point(0,0) : new Phaser.Point(this.toybox.game.width,0);
+            return target;
         }
 
         var fps = this.toybox.animationFPS;
