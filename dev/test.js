@@ -99,8 +99,8 @@ function create() {
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
     jelly = toybox.add.jelly({ startingX: 600});
-    jelly.isPlayer = function(){ return true;}
-    jelly.isMob = function(){ return false;}
+    // jelly.isPlayer = function(){ return true;}
+    // jelly.isMob = function(){ return false;}
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 

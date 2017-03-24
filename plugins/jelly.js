@@ -1,5 +1,6 @@
 // Jelly is an enemy/mob that ignores the player at first, but will chase after the nearest player after being hit.
 // A jelly has 3 health, and after dying, creates three slimes in it's place if possible.
+// green Jellys are the slowest, purple are the fastest.
 
 // mobOptions attributes:
 //     startingX: number, initial X location for sprite's center
@@ -10,12 +11,21 @@
 //     bounce: number, how elastic collisions with this object are
 //     facing: string ("left" or "right") determines the direction the sprite starts out facing.
 
+// unique jellyOptions attributes
+//      color: string, determines sprite color and speed
+//          valid values: "yellow","red","blue","green","purple","black"
+
 var jellyToyboxPlugin = {
  	name: "jelly",
     toyboxType: "mob",
 
  	preload: function(toyboxObject){
- 		toyboxObject._game.load.spritesheet("jelly", "../../assets/sprites/jellySheet.png", 16, 16);
+ 		toyboxObject._game.load.spritesheet("greenJelly", "../../assets/sprites/greenJellySheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("redJelly", "../../assets/sprites/redJellySheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("blueJelly", "../../assets/sprites/blueJellySheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("yellowJelly", "../../assets/sprites/yellowJellySheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("purpleJelly", "../../assets/sprites/purpleJellySheet.png", 16, 16);
+        toyboxObject._game.load.spritesheet("blackJelly", "../../assets/sprites/blackJellySheet.png", 16, 16);
         toyboxObject._game.load.audio("jellyBump", "../../assets/sfx/goo-2.wav");
         toyboxObject._game.load.audio("jellyDie", "../../assets/sfx/goo-1.wav");
  	},
@@ -25,11 +35,42 @@ var jellyToyboxPlugin = {
  	create: function(jellyOptions){
     jellyOptions = typeof (jellyOptions) == "undefined" ? {} : jellyOptions;
 
-        jellyOptions.name = "jelly";
-        jellyOptions.spriteName = "jelly";
+        var validColors = ["yellow","red","blue","green","purple","black"];
+
+        var randomizeJelly = function() {
+            return validColors[Phaser.Math.between(0,(validColors.length - 1))];
+        }
+    
+        if (typeof(jellyOptions.color) == "undefined" || validColors.indexOf(jellyOptions.color) == -1){
+            jellyOptions.color = randomizeJelly();
+        }
+
+        switch (jellyOptions.color){
+            case "yellow":
+                jellyOptions.speed = 333;
+            break;
+            case "purple":
+                jellyOptions.speed = 300;
+            break;
+            case "black":
+                jellyOptions.speed = 266;
+            break;
+            case "red":
+                jellyOptions.speed = 233;
+            break;
+            case "blue":
+                jellyOptions.speed = 200;
+            break;
+            case "green":
+            default:
+                jellyOptions.speed = 166;
+            break;
+        }
+
+        jellyOptions.name = jellyOptions.color + "Jelly";
+        jellyOptions.spriteName = jellyOptions.color + "Jelly";
 
  		jellyOptions.allowGravity = true;
-        jellyOptions.speed = jellyOptions.speed || 200;
 
         var jellyUpdate = function(){
             if (this.body == null){
@@ -90,11 +131,11 @@ var jellyToyboxPlugin = {
 
         var jellyKill = function(jelly){
             if (typeof(this.toybox.loadedPlugins.slime) !== "undefined"){
-                var slime1 = this.toybox.add.slime({startingX: jelly.x - 4, startingY: jelly.y, color: "green"});
+                var slime1 = jelly.toybox.add.slime({startingX: jelly.x - 4, startingY: jelly.y, color: jelly.color});
                 slime1.body.velocity = new Phaser.Point(-100,100);
-                var slime2 = this.toybox.add.slime({startingX: jelly.x + 4, startingY: jelly.y, color: "green"});
+                var slime2 = jelly.toybox.add.slime({startingX: jelly.x + 4, startingY: jelly.y, color: jelly.color});
                 slime2.body.velocity = new Phaser.Point(100,100);
-                var slime3 = this.toybox.add.slime({startingX: jelly.x, startingY: jelly.y - 4, color: "green"});
+                var slime3 = jelly.toybox.add.slime({startingX: jelly.x, startingY: jelly.y - 4, color: jelly.color});
                 slime3.body.velocity = new Phaser.Point(0,100);
             }
         }
@@ -180,6 +221,7 @@ var jellyToyboxPlugin = {
         jellyGO.isHit = false;
         jellyGO.health = 3;
         jellyGO.state = "calm";
+        jellyGO.color = jellyOptions.color;
         jellyGO.xDir = (jellyOptions.facing == "right") ? -1 : 1 ;
 
         return jellyGO;
