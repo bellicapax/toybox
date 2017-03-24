@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet","multibrick","pet"]
+    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet","multibrick","pet","chest"]
 };
 
 function preload() {
@@ -19,7 +19,7 @@ function create() {
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
 
-    //spring = toybox.add.spring({ startingX: 200});
+    spring = toybox.add.spring({ startingX: 200});
 
     // button = toybox.add.button({ 
     //     startingX: 200,
@@ -98,14 +98,17 @@ function create() {
     //fireball = toybox.add.fireball({ startingX: 500, startingY: 100});
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
-    jelly = toybox.add.jelly({ startingX: 600});
-    pet = toybox.add.pet({ startingX: 500, owner: player2});
+    //jelly = toybox.add.jelly({ startingX: 600});
+
+    //pet = toybox.add.pet({ type: "jelly", startingX: 500, owner: player2});
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 
     //spikes = toybox.add.spikes({startingX: 200, startingY: 440 });
 
-    multibrick = toybox.add.multibrick({startingX: 320, startingY: 410, type: "pow", resetTimer: 3000, scale: 1.5})
+    multibrick = toybox.add.multibrick({startingX: 320, startingY: 410, type: "pow", resetTimer: 3000, scale: 1.5});
+
+    chest = toybox.add.chest({startingX: 380});
 
     // timer = game.time.create(false);
     // timer.loop(2000, player1Fire, this);

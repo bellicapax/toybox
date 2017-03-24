@@ -39,18 +39,6 @@ var springToyboxPlugin = {
 
         springOptions.collide = springCollide;
 
-        var springUpdate = function(){
-            if (this.body == null){
-                return;
-            }
-            if (this.body.touching.down){
-                this.body.velocity.x *= 0.95;
-            }
-        }
-
-        springOptions.update = springUpdate;
-
-
      	var springGO = this.toybox.add.block(springOptions);
      	springGO.hasBounced = false;
         springGO.animations.add("bounce", [2, 1, 0, 1, 2], this.toybox.animationFPS, false);

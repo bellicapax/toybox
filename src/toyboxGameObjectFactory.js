@@ -72,6 +72,7 @@ class ToyboxGameObjectFactory {
             objectGO.body.bounce.set(objectOptions.bounce);
             objectGO.body.allowGravity = objectOptions.allowGravity;
             objectGO.body.immovable = objectOptions.immovable;
+            objectGO.body.drag.x = (typeof(objectOptions.drag) != "undefined") ? objectOptions.drag : objectGO.body.drag.x;
 
             objectGO.body.onCollide = new Phaser.Signal();
             if (typeof (objectOptions.collide) == "function") {
@@ -192,6 +193,7 @@ class ToyboxGameObjectFactory {
         blockOptions.spriteIndex = blockOptions.spriteIndex || 0;
         blockOptions.bounce = blockOptions.bounce || 0;
         blockOptions.scale = blockOptions.scale || 1;
+        blockOptions.drag = blockOptions.drag || 200;
 
         var blockGO = this.toybox.add.toyboxObject(blockOptions);
         blockGO.toyboxType = "block";
