@@ -127,7 +127,7 @@ function alienAstronautUpdate() {
 				this.normalizedDir = new Phaser.Point(padInput.rightX, padInput.rightY).normalize()
 			}
 		} else {
-			this.normalizedDir = new Phaser.Point(pointer.x - sprite.x, pointer.y - sprite.y).normalize();
+			this.normalizedDir = new Phaser.Point(pointer.x - this.x, pointer.y - this.y).normalize();
 		}
 		blowFloaties(floatiesToBlow, this, this.normalizedDir);
 	}
