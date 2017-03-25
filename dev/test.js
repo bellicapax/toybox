@@ -6,7 +6,29 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","lever","fireball","jelly","lava","spikes","bullet","multibrick","pet","chest"]
+    plugins: [
+        "crate",
+        "coin",
+        "mushroom",
+        "alien",
+        "backdrop",
+        "gem",
+        "slime",
+        "platform",
+        "spring",
+        "button",
+        "fly",
+        "lever",
+        "fireball",
+        "jelly",
+        "lava",
+        "spikes",
+        "bullet",
+        "multibrick",
+        "pet",
+        "chest",
+        "key"
+    ]
 };
 
 function preload() {
@@ -108,7 +130,22 @@ function create() {
 
     multibrick = toybox.add.multibrick({startingX: 320, startingY: 410, type: "pow", resetTimer: 3000, scale: 1.5});
 
-    chest = toybox.add.chest({startingX: 380});
+    goldkey = toybox.add.key({startingX: 320, color: "gold"});
+
+    chest = toybox.add.chest({
+        startingX: 380,
+        locked: true,
+        key: goldkey,
+        onOpen: function(){
+            for (var i = 20 - 1; i >= 0; i--) {
+                game.time.events.add(Phaser.Math.between(10,50)*i, fireCoin , this);
+            }
+        }
+    });
+
+    function fireCoin(){
+        toybox.add.coin({startingX: this.x, startingY: this.y - 20, dY: -350, dX: Phaser.Math.between(-75,75)})
+    }
 
     // timer = game.time.create(false);
     // timer.loop(2000, player1Fire, this);

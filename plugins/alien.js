@@ -144,6 +144,9 @@ var alienToyboxPlugin = {
             this.health -= 1;
             this.body.velocity.x = -75 * this.scale.x;
             this.body.velocity.y = -200;
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                this.children[i].drop();
+            }
             this.animations.play("hit");
             this.toybox.sfx.alienHit.play();
             this.events.onHit.dispatch(this);
