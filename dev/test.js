@@ -42,7 +42,7 @@ function create() {
 
     backdrop = toybox.add.backdrop({ preset: "summer" });
 
-    spring = toybox.add.spring({ startingX: 200});
+    // spring = toybox.add.spring({ startingX: 200});
 
     //button = toybox.add.button({ 
     //    startingX: 200,
