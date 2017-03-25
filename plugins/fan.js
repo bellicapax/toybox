@@ -33,8 +33,10 @@ var fanToyboxPlugin = {
                     var normalizedDir = new Phaser.Point(0, -1);
                     var dist = Phaser.Math.distance(this.x, this.y, gos[i].x, gos[i].y);
                     var distanceModifier = Phaser.Math.linear(1, 0.25, dist / blowRect.height);
-                    gos[i].body.velocity.x += normalizedDir.x * this.blowStrength * distanceModifier;
-                    gos[i].body.velocity.y += normalizedDir.y * this.blowStrength * distanceModifier;
+                    if (!(gos[i].body.immovable)){
+                        gos[i].body.velocity.x += normalizedDir.x * this.blowStrength * distanceModifier;
+                        gos[i].body.velocity.y += normalizedDir.y * this.blowStrength * distanceModifier;
+                    }
                 }
             }
             if(fanOptions.draw){
