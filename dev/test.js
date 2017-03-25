@@ -27,7 +27,8 @@ var settings = {
         "multibrick",
         "pet",
         "chest",
-        "key"
+        "key",
+        "fan"
     ]
 };
 
@@ -43,14 +44,14 @@ function create() {
 
     spring = toybox.add.spring({ startingX: 200});
 
-    button = toybox.add.button({ 
-        startingX: 200,
-        onPress: function(){
-            for (var i = 0; i < 8; i++) {
-                toybox.add.pet({type: "slime", startingX: toybox.diceRoll(641)-1})
-            }
-        }
-    });
+    //button = toybox.add.button({ 
+    //    startingX: 200,
+    //    onPress: function(){
+    //        for (var i = 0; i < 8; i++) {
+    //            toybox.add.pet({type: "slime", startingX: toybox.diceRoll(641)-1})
+    //        }
+    //    }
+    //});
 
     // lever = toybox.add.lever({ 
     //     startingX: 320,
@@ -131,6 +132,8 @@ function create() {
     multibrick = toybox.add.multibrick({startingX: 320, startingY: 410, type: "pow", resetTimer: 3000, scale: 1.5});
 
     goldkey = toybox.add.key({startingX: 320, color: "gold"});
+
+    fan = toybox.add.fan({startingX: 50});
 
     chest = toybox.add.chest({
         startingX: 380,

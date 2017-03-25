@@ -28,7 +28,7 @@ var fanToyboxPlugin = {
             }
         }
         fanOptions.update = blowObjects;
-        var fanGO = this.toybox.add.toyboxObject(fanOptions);
+        var fanGO = this.toybox.add.block(fanOptions);
         fanGO.blowHeight = fanOptions.height;
         fanGO.blowStrength = fanOptions.blowStrength;
         fanGO.animations.add("blow", [0,1,2,3], 24, true);

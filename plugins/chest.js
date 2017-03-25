@@ -17,7 +17,7 @@
 //          valid values: "gold", "silver"
 //      onOpen: the function that is called when opened.
 //      key: Phaser Sprite, optional, the object required to touch the chest in order to open
-//      
+//      killTimer: number, in milliseconds the timer after being opened when a chest will dissapear. 0 means chest will remain.
 
 
 var chestToyboxPlugin = {
