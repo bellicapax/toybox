@@ -16,7 +16,11 @@ function preload() {
 }
 
 function create() {
-	toybox.create();	
+	toybox.create();
+
+    playersArray = [];
+    scoreboardArray = [];
+
 	buildLevel1();
 
 	function oopsFloor(floor, collidedSprite){
@@ -116,6 +120,10 @@ function brickPlatform (array, startingPoint, scale, direction){
 			resetTimer: 10000
 		});
 	}
+}
+
+function createBlockBrosPlayer(playerOptions){
+    var 
 }
 
 function coinSplosion (){
