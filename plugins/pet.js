@@ -81,7 +81,7 @@ var petToyboxPlugin = {
             };
             newHeart = this.toybox.add.decoration(heartOptions);
             newHeart.timer = Phaser.Math.between(0,20);
-            this.toybox.game.time.events.add(750, this.kill , newHeart);
+            this.toybox.game.time.events.add(750, this.destroy , newHeart);
         };
 
         return petGO;

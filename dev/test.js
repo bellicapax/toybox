@@ -43,14 +43,14 @@ function create() {
 
     spring = toybox.add.spring({ startingX: 200});
 
-    // button = toybox.add.button({ 
-    //     startingX: 200,
-    //     onPress: function(){
-    //         for (var i = 0; i < 8; i++) {
-    //             toybox.add.slime({startingX: toybox.diceRoll(641)-1})
-    //         }
-    //     }
-    // });
+    button = toybox.add.button({ 
+        startingX: 200,
+        onPress: function(){
+            for (var i = 0; i < 8; i++) {
+                toybox.add.pet({type: "slime", startingX: toybox.diceRoll(641)-1})
+            }
+        }
+    });
 
     // lever = toybox.add.lever({ 
     //     startingX: 320,
