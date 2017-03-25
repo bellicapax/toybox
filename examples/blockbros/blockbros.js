@@ -56,6 +56,7 @@ function buildLevel1(){
     	color: 'lightblue'
     });
     globalBrickColor = "yellow";
+
     var topArray = ["normal","normal","normal","normal","coin","normal","mushroom","normal"];
     var bottomArray = ["normal","normal","normal","normal","normal","coin","normal","mushroom","normal"];
     var midArray = ["normal","normal","mushroom","normal","coin","normal","normal","normal","coin","normal","mushroom","normal"];
@@ -65,20 +66,25 @@ function buildLevel1(){
     brickPlatform(midArray,new Phaser.Point(190,250), 1.5, 1);
     brickPlatform(bottomArray,new Phaser.Point(12,370), 1.5, 1);
     brickPlatform(bottomArray,new Phaser.Point(game.width - 12,370), 1.5, -1);
-    powBrick = toybox.add.multibrick({startingX: 320, startingY: 50, color: globalBrickColor, scale: 1.5, type: "pow", resetTimer: 45000})
+
+    powBrick = toybox.add.multibrick({startingX: 320, startingY: 50, color: globalBrickColor, scale: 1.5, type: "pow", resetTimer: 45000});
+
+    leftPipe = toybox.add.decoration({spriteName: "pipe", startingX: 30, startingY: 70, scale: 0.45, sendTo: "top"});
+    rightPipe = toybox.add.decoration({spriteName: "pipe", startingX: 610, startingY: 70, scale: 0.45, sendTo: "top"});
+    rightPipe.scale.x = -.45;
 
     lever = toybox.add.lever({ 
         startingX: 320,
         startingY: 480 - 24,
         whileLeft: function(){
             if(toybox.oneOutOf(400)){ 
-                generateEnemy(new Phaser.Point(100,100), "right");
+                generateEnemy(new Phaser.Point(40,70), "right");
             };
          
         },
         whileRight: function(){
         	if(toybox.oneOutOf(400)){ 
-                generateEnemy(new Phaser.Point(540,100), "left");
+                generateEnemy(new Phaser.Point(620,70), "left");
             };
         }
     });
