@@ -28,7 +28,8 @@ var settings = {
         "pet",
         "chest",
         "key",
-        "fan"
+        "fan",
+        "bubble"
     ]
 };
 
@@ -122,8 +123,7 @@ function create() {
     //fireball2 = toybox.add.fireball({ startingX: 550, startingY: 100, facing: "right"});
 
     //jelly = toybox.add.jelly({ startingX: 600});
-
-    //pet = toybox.add.pet({ type: "jelly", startingX: 500, owner: player2});
+    //pet = toybox.add.pet({ startingX: 500, owner: player2, type: "fly"});
 
     //lava = toybox.add.lava({startingX: 64, startingY: 480 - 24 });
 
@@ -135,16 +135,22 @@ function create() {
 
     fan = toybox.add.fan({startingX: 50});
 
-    chest = toybox.add.chest({
-        startingX: 380,
-        locked: true,
-        key: goldkey,
-        onOpen: function(){
-            for (var i = 20 - 1; i >= 0; i--) {
-                game.time.events.add(Phaser.Math.between(10,50)*i, fireCoin , this);
-            }
-        }
-    });
+    game.time.events.loop(3000, function(){ newBubble = toybox.add.bubble({
+        startingX: 550,
+        startingY: 460,
+        killTimer: 0
+    })}, this);
+
+    // chest = toybox.add.chest({
+    //     startingX: 380,
+    //     locked: true,
+    //     key: goldkey,
+    //     onOpen: function(){
+    //         for (var i = 20 - 1; i >= 0; i--) {
+    //             game.time.events.add(Phaser.Math.between(10,50)*i, fireCoin , this);
+    //         }
+    //     }
+    // });
 
     function fireCoin(){
         toybox.add.coin({startingX: this.x, startingY: this.y - 20, dY: -350, dX: Phaser.Math.between(-75,75)})
