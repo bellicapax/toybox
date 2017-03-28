@@ -29,6 +29,7 @@ var petToyboxPlugin = {
     sfx: [],
 
  	create: function(petOptions){
+
         if (typeof(this.toybox.loadedPlugins[petOptions.type]) !== "undefined"){
             petGO = this.toybox.add[petOptions.type](petOptions);
         } else {
@@ -75,6 +76,7 @@ var petToyboxPlugin = {
                     this.y -= 0.5;
                     var dX = Math.sin( this.timer * 7.28 / 60 )
                     this.x += dX;
+                    this.alpha -= 0.01;
                     this.scale.x *= 1.01;
                     this.scale.y *= 1.01;
                 }
