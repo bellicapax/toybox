@@ -54,7 +54,7 @@ var keyToyboxPlugin = {
 
         var tryGrab = function(key, collidedSprite){
             if (collidedSprite.isPlayer() && collidedSprite.children.indexOf(key) == -1 && key.canBeGrabbed){
-                chest.toybox.sfx.keyCollected.play();
+                this.toybox.sfx.keyCollected.play();
                 key.canBeGrabbed = false;
                 collidedSprite.addChild(key);
                 key.parent = collidedSprite;
