@@ -105,11 +105,7 @@ var jellyToyboxPlugin = {
 
             var targetPoint = this.findTarget();
 
-<<<<<<< HEAD
             if( typeof(targetPoint) == "undefined"){
-=======
-            if( typeof(targetPoint) == "undefined" ){
->>>>>>> jelly-target-undefined
                 return
             } else if( (targetPoint.x < this.x && this.xDir == 1) || (targetPoint.x > this.x && this.xDir == -1) ){
                 this.turnAround();
