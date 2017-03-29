@@ -128,6 +128,11 @@ var bubbleToyboxPlugin = {
         };
 
         bubbleGO.grab = function(collidedSprite){
+
+            if(collidedSprite.body.immovable){
+                this.pop();
+            }
+
             this.toybox.sfx.bubbleGrab.play();
             this.addChild(collidedSprite);
             collidedSprite.x = 0;
