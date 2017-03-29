@@ -78,16 +78,16 @@ var flyToyboxPlugin = {
                 this.turnAround();
             }
 
-            if (target.y < this.y ){
-               this.body.velocity.y = this.speed * -1;
-            } else if (target.y > this.y ) {
-               this.body.velocity.y = this.speed;
+            if (target.y < this.y && this.body.velocity.y > this.speed * -1){
+               this.body.velocity.y--;
+            } else if (target.y > this.y && this.body.velocity.y < this.speed) {
+               this.body.velocity.y++;
             }
 
-            if (this.scale.x > 0 ){
-               this.body.velocity.x = this.speed * -1;
-            } else if (this.scale.x < 0 ) {
-               this.body.velocity.x = this.speed;
+            if (this.scale.x > 0 && this.body.velocity.x > this.speed * -1){
+               this.body.velocity.x--;
+            } else if (this.scale.x < 0 && this.body.velocity.x < this.speed) {
+               this.body.velocity.x++;
             }
         };
 
