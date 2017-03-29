@@ -45,6 +45,9 @@ var bubbleToyboxPlugin = {
                 bubble.grab(collidedSprite);
             } else {
                 bubble.pop();
+                if(typeof(collidedSprite.pop) != "undefined"){
+                    collidedSprite.pop();
+                }
             }
      	}
 
