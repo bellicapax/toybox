@@ -27,12 +27,21 @@ var fanToyboxPlugin = {
 
         var blowObjects = function() {
             gos = this.toybox.currentGameObjects;
-            var blowRect = new Phaser.Rectangle(this.x - this.width * 0.5, this.y - this.blowHeight - this.height * 0.5, this.width, this.blowHeight);
+            var pointsArray = [];
+            pointsArray.push( new Phaser.Point(this.x - this.width * 0.5, this.y - this.blowHeight - this.height * 0.5) ); // top left
+            pointsArray.push( new Phaser.Point( this.x + this.width * 0.5, this.y - this.blowHeight - this.height * 0.5 ) ); // top right
+            pointsArray.push( new Phaser.Point( this.x + this.width * 0.5, this.y - this.height * 0.5 ) ); // bottom right
+            pointsArray.push( new Phaser.Point( this.x - this.width * 0.5, this.y - this.height * 0.5 ) ); // bottom left
+            for (var i = pointsArray.length - 1; i >= 0; i--) {
+                pointsArray[i].rotate(this.x,this.y,this.rotation);
+            }
+            var blowRect = new Phaser.Polygon(pointsArray);
             for (var i = 0; i < gos.length; i++) {
                 if (blowRect.contains(gos[i].x, gos[i].y)) {
-                    var normalizedDir = new Phaser.Point(0, -1);
+                    var blowDir = this.rotation - Math.PI * 0.5;
+                    var normalizedDir = new Phaser.Point( Math.cos(blowDir), Math.sin(blowDir));
                     var dist = Phaser.Math.distance(this.x, this.y, gos[i].x, gos[i].y);
-                    var distanceModifier = Phaser.Math.linear(1, 0.25, dist / blowRect.height);
+                    var distanceModifier = Phaser.Math.linear(1, 0.25, dist / this.blowHeight);
                     if (typeof(gos[i].body) !== "undefined" && gos[i].body !== null){
                         if (!(gos[i].body.immovable)){
                             gos[i].body.velocity.x += normalizedDir.x * this.blowStrength * distanceModifier;
