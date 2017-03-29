@@ -131,6 +131,7 @@ var bubbleToyboxPlugin = {
 
             if(collidedSprite.body.immovable){
                 this.pop();
+                return;
             }
 
             this.toybox.sfx.bubbleGrab.play();
