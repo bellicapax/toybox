@@ -29,7 +29,8 @@ var settings = {
         "chest",
         "key",
         "fan",
-        "bubble"
+        "bubble",
+        "bird"
     ]
 };
 
@@ -109,7 +110,7 @@ function create() {
 
     crates = new Phaser.Group(game, null, 'crates', true);
 
-    player2 = toybox.add.alien(playerOptions);
+    player2 = toybox.add.bird(playerOptions);
 
     //gem = toybox.add.gem({color: "red"});
 
