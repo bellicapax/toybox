@@ -142,6 +142,9 @@ var birdToyboxPlugin = {
             var xDir = (this.scale.x > 0) ? 1 : -1;
             this.body.velocity.x = 75 * xDir;
             this.body.velocity.y = -200;
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                this.children[i].drop();
+            }
             this.toybox.sfx.birdChirp.play();
             this.events.onHit.dispatch(this);
             var thisBird = this;

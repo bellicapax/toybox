@@ -134,6 +134,9 @@ var flyToyboxPlugin = {
             this.isHit = true;
             this.health -= 1;
             var thisFly = this;
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                this.children[i].drop();
+            }
             if (thisFly.health <= 0){
                 this.animations.play("dead");
                 this.isDead = true;

@@ -114,6 +114,9 @@ var slimeToyboxPlugin = {
             this.health -= 1;
             this.animations.play("dead");
             this.height = 3;
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                this.children[i].drop();
+            }
             this.toybox.sfx.slimeDie.play();
             var thisSlime = this;
             this.toybox.game.time.events.add(500, function(){

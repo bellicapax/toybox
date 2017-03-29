@@ -193,7 +193,9 @@ var jellyToyboxPlugin = {
             }
             this.isHit = true;
             this.health -= 1;
-
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                this.children[i].drop();
+            }
             this.toybox.sfx.jellyDie.play();
             var thisJelly = this;
             if (thisJelly.health <= 0){

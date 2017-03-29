@@ -29,7 +29,7 @@ var bubbleToyboxPlugin = {
         bubbleOptions.maxScale = bubbleOptions.maxScale || 2;
      	bubbleOptions.name = "bubble";
         bubbleOptions.killTimer = (typeof(bubbleOptions.killTimer) != "undefined") ? bubbleOptions.killTimer : 7000;
-        bubbleOptions.enableGravity = false;
+        bubbleOptions.allowGravity = false;
         bubbleOptions.immovable = false;
         bubbleOptions.dY = bubbleOptions.dY || -100;
 
@@ -55,7 +55,7 @@ var bubbleToyboxPlugin = {
             if (typeof(this.body) == "undefined" || this.body == null) {
                 return;
             }
-            this.body.velocity.y = this.permanentDY;
+            //this.body.velocity.y = this.permanentDY;
             this.scale.x = Phaser.Math.clamp(this.scale.x + this.growRate, 0 , this.maxScale);
             this.scale.y = Phaser.Math.clamp(this.scale.y + this.growRate, 0 , this.maxScale);
 
@@ -133,6 +133,9 @@ var bubbleToyboxPlugin = {
                 var averageX = Phaser.Math.average(this.body.velocity.x, collidedSprite.body.velocity.x)
                 var averageY = Phaser.Math.average(this.body.velocity.x, collidedSprite.body.velocity.y)
                 this.body.velocity = new Phaser.Point( averageX, averageY );
+            }
+            if ( typeof(collidedSprite.isHeld) != "undefined"){
+                collidedSprite.isHeld = false;
             }
         };
 
