@@ -71,13 +71,20 @@ function create() {
     //     }
     // });
 
-    floor = toybox.add.platform({
+    var floorOptions = {
         width: game.width,
         height: 16,
         startingX: game.width / 2,
         startingY: game.height - 8,
         type: 4
-    });
+    }
+
+    floor = toybox.add.platform(floorOptions);
+
+    floorOptions.width = 160;
+    floorOptions.startingY = 200;
+
+    testplatform2 = toybox.add.platform(floorOptions);
 
     function oopsFloor(floor, collidedSprite){
         if( collidedSprite.y > floor.y - (floor.height / 2) ){

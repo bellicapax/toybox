@@ -27,10 +27,12 @@ var platformToyboxPlugin = {
     
         if (typeof(platformOptions.spriteName) == "undefined"){
             platformOptions.spriteName = "platforms";
-            platformOptions.spriteIndex = platformOptions.type || Phaser.Math.between(0,7);
+            if (typeof(platformOptions.type) != "number" || platformOptions.type > 7 || platformOptions.type < 0){
+                platformOptions.type = Phaser.Math.between(0,7);
+            }
+            platformOptions.spriteIndex = platformOptions.type
             platformOptions.name = "type" + platformOptions.type + "Platform";
         } else {
-            platformOptions.spriteIndex = 0;
             platformOptions.name = "customPlatform";
         }
 
