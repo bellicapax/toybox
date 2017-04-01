@@ -53,7 +53,7 @@ var alienToyboxPlugin = {
         alienOptions.spriteName = alienOptions.color + "Alien";
 
         var alienPlatformerUpdate = function(){
-            if (this.isHit){
+            if (this.isHit || this.body == null){
                 return;
             }
 

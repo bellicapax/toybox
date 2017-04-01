@@ -21,6 +21,7 @@ class Toybox {
         this.animationFPS = 12;
         this._currencyDisplay = null;
         this._add = new ToyboxGameObjectFactory(this);
+        this.toybox = this;
     }
 
     get add() {

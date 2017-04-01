@@ -23,9 +23,9 @@ var platformToyboxPlugin = {
  	},
 
  	create: function(platformOptions){
-    platformOptions = typeof (platformOptions) == "undefined" ? {} : platformOptions;
+        platformOptions = typeof (platformOptions) == "undefined" ? {} : platformOptions;
     
-        if (typeof(platformOptions.spriteName) == "undefined"){
+        if (typeof(platformOptions.spriteName) == "undefined" || platformOptions.spriteName == "platforms"){
             platformOptions.spriteName = "platforms";
             if (typeof(platformOptions.type) != "number" || platformOptions.type > 7 || platformOptions.type < 0){
                 platformOptions.type = Phaser.Math.between(0,7);
