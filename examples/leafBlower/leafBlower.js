@@ -35,7 +35,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
 	gravity: 980,
-	plugins: ["alien", "crate"]
+	plugins: ["alien", "alienAstronaut", "crate"]
 };
 var crate;
 var triangle = {
@@ -275,11 +275,11 @@ function destroyOutsideBounds() {
 
 function createAstronaut() {
 	var alienAstronautOptions = {
-		allowGravity: false,
-		update: alienAstronautUpdate,
+		// allowGravity: false,
+		// update: alienAstronautUpdate,
 		startingX: game.world.centerX,
 		startingY: game.world.centerY,
-		jumpForce: 1,
+		flyForce: 1,
 		speed: 250,
 		controls: {
 			left: 65,
@@ -288,7 +288,7 @@ function createAstronaut() {
 			down: 83
 		}
 	};
-	var player = toybox.add.alien(alienAstronautOptions);
+	var player = toybox.add.alienAstronaut(alienAstronautOptions);
 	player.controls.pad = game.input.gamepad.pad1;
 	player.body.allowGravity = false;
 	player.graphics = game.add.graphics(0, 0);
