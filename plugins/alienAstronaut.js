@@ -93,7 +93,11 @@ var alienAstronautToyboxPlugin = {
             };
         };
 
+
+
         var updateAlienMovement = function(player, padInput) {
+            var maxSecondsToBrake = player.maxSecondsToBrake || 1.5;
+            var maxSpeed = maxSecondsToBrake * 60 * Math.abs(player.flyForce);
             player.body.angularVelocity = 0;
             if (player.controls.right.isDown || padInput.leftX > JOYSTICK_THRESHOLD) {
                 var modifier = player.controls.right.isDown ? 1 : padInput.leftX;
@@ -115,8 +119,10 @@ var alienAstronautToyboxPlugin = {
             if (player.controls.up.isDown || padInput.accel > JOYSTICK_THRESHOLD) {
                 player.toybox.game.physics.arcade.velocityFromAngle(player.angle + 90, player.flyForce, angularspeed);
                 var modifier = player.controls.up.isDown ? 1 : padInput.accel;
-                player.body.velocity.x -= angularspeed.x * modifier;
-                player.body.velocity.y -= angularspeed.y * modifier;
+                var unclampedVeloX = player.body.velocity.x - angularspeed.x * modifier;
+                var unclampedVeloY = player.body.velocity.y - angularspeed.y * modifier;
+                player.body.velocity.x = Math.abs(unclampedVeloX) < maxSpeed ? unclampedVeloX : Math.sign(unclampedVeloX) * maxSpeed;
+                player.body.velocity.y = Math.abs(unclampedVeloY) < maxSpeed ? unclampedVeloY : Math.sign(unclampedVeloY) * maxSpeed;
                 if (player.animations.name !== "jump") {
                     player.animations.play("jump");
                 }
@@ -124,8 +130,10 @@ var alienAstronautToyboxPlugin = {
             else if (player.controls.down.isDown || padInput.decel > JOYSTICK_THRESHOLD) {
                 player.toybox.game.physics.arcade.velocityFromAngle(player.angle + 90, player.flyForce, angularspeed);
                 var modifier = player.controls.down.isDown ? 1 : padInput.decel;
-                player.body.velocity.x += angularspeed.x * modifier;
-                player.body.velocity.y += angularspeed.y * modifier;
+                var unclampedVeloX = player.body.velocity.x + angularspeed.x * modifier;
+                var unclampedVeloY = player.body.velocity.y + angularspeed.y * modifier;
+                player.body.velocity.x = Math.abs(unclampedVeloX) < maxSpeed ? unclampedVeloX : Math.sign(unclampedVeloX) * maxSpeed;
+                player.body.velocity.y = Math.abs(unclampedVeloY) < maxSpeed ? unclampedVeloY : Math.sign(unclampedVeloY) * maxSpeed;
                 if (player.animations.name !== "jump") {
                     player.animations.play("jump");
                 }
@@ -201,9 +209,9 @@ var alienAstronautToyboxPlugin = {
 
         var getSpritesToBlow = function(triangle, player) {
             var spritesToBlow = [];
-            for (var i = 0; i < floaties.length; i++) {
-                if (pointIsInTriangle(floaties[i].x, floaties[i].y, triangle)) {
-                    spritesToBlow.push(floaties[i]);
+            for (var i = 0; i < blowables.length; i++) {
+                if (pointIsInTriangle(blowables[i].x, blowables[i].y, triangle)) {
+                    spritesToBlow.push(blowables[i]);
                 }
             }
             return spritesToBlow;

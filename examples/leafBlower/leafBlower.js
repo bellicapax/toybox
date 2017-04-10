@@ -27,7 +27,7 @@
 
 const halfAngle = Phaser.Math.degToRad(15);
 const JOYSTICK_THRESHOLD = 0.15;
-var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
+var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {
 	preload: preload,
 	create: create,
 	update: update
@@ -43,17 +43,19 @@ var triangle = {
 	b: new Phaser.Point(),
 	c: new Phaser.Point()
 };
-var floaties = [];
+var blowables = [];
 var blowStrength = 5;
+var players = [];
 
 var containerGraphics;
 var containers = [];
 var levelSettings = {
 	numContainers: 2,
-	containerSize: 100,
-	nextFloatieDelay: 3000,
-	floatieSpeedMin: 10,
-	floatieSpeedMax: 50
+	containerSize: 200,
+	nextblowableDelay: 3000,
+	blowableSpeedMin: 10,
+	blowableSpeedMax: 50,
+	goalsToPop : 4
 };
 var pad1;
 var pad2;
@@ -120,7 +122,7 @@ function alienAstronautUpdate() {
 
 	drawTriangle(this.graphics, shouldBlow);
 	if (shouldBlow) {
-		var floatiesToBlow = getFloatiesToBlow(this);
+		var blowablesToBlow = getblowablesToBlow(this);
 		if (usingGamepad) {
 			if (Math.abs(padInput.rightX) > JOYSTICK_THRESHOLD || Math.abs(padInput.rightY)) {
 				this.normalizedDir = new Phaser.Point(padInput.rightX, padInput.rightY).normalize()
@@ -128,7 +130,7 @@ function alienAstronautUpdate() {
 		} else {
 			this.normalizedDir = new Phaser.Point(pointer.x - this.x, pointer.y - this.y).normalize();
 		}
-		blowFloaties(floatiesToBlow, this, this.normalizedDir);
+		blowblowables(blowablesToBlow, this, this.normalizedDir);
 	}
 }
 
@@ -181,22 +183,22 @@ function drawTriangle(graphics, shouldFill) {
 	graphics.lineTo(triangle.a.x, triangle.a.y);
 }
 
-function getFloatiesToBlow() {
-	var floatiesToBlow = [];
-	for (var i = 0; i < floaties.length; i++) {
-		if (pointIsInTriangle(floaties[i].x, floaties[i].y, triangle)) {
-			floatiesToBlow.push(floaties[i]);
+function getblowablesToBlow() {
+	var blowablesToBlow = [];
+	for (var i = 0; i < blowables.length; i++) {
+		if (pointIsInTriangle(blowables[i].x, blowables[i].y, triangle)) {
+			blowablesToBlow.push(blowables[i]);
 		}
 	}
-	return floatiesToBlow;
+	return blowablesToBlow;
 }
 
-function blowFloaties(floatiesToBlow, sprite, normalizedDir) {
-	for (var i = 0; i < floatiesToBlow.length; i++) {
-		var dist = Phaser.Math.distance(sprite.x, sprite.y, floatiesToBlow[i].x, floatiesToBlow[i].y);
+function blowblowables(blowablesToBlow, sprite, normalizedDir) {
+	for (var i = 0; i < blowablesToBlow.length; i++) {
+		var dist = Phaser.Math.distance(sprite.x, sprite.y, blowablesToBlow[i].x, blowablesToBlow[i].y);
 		var distanceModifier = Phaser.Math.linear(1, 0.1, dist / hypotenuse);
-		floatiesToBlow[i].body.velocity.x += normalizedDir.x * blowStrength * distanceModifier;
-		floatiesToBlow[i].body.velocity.y += normalizedDir.y * blowStrength * distanceModifier;
+		blowablesToBlow[i].body.velocity.x += normalizedDir.x * blowStrength * distanceModifier;
+		blowablesToBlow[i].body.velocity.y += normalizedDir.y * blowStrength * distanceModifier;
 	}
 }
 
@@ -238,70 +240,76 @@ function create() {
 	createContainers();
 	containerGraphics = game.add.graphics(0, 0);
 	drawContainers(containerGraphics);
-	createAstronaut();
-	createFloatie();
+	createAstronaut(0);
+	// createAstronaut(1);
+	createBlowable();
 }
 
-function createFloatie() {
-	var speed = Phaser.Math.between(levelSettings.floatieSpeedMin, levelSettings.floatieSpeedMax);
+function createBlowable() {
+	var speed = Phaser.Math.between(levelSettings.blowableSpeedMin, levelSettings.blowableSpeedMax);
 	var xIsZero = toybox.diceRoll(2) == 1;
 	var crateOptions = {
 		scale: 1,
-		startingX: (xIsZero ? 0 : Phaser.Math.between(0, game.world.width)),
-		startingY: (!xIsZero ? 0 : Phaser.Math.between(0, game.world.height)),
-		allowGravity: false,
-		dX: xIsZero ? speed : 0,
-		dY: !xIsZero ? speed : 0,
-		update: destroyOutsideBounds
+		startingX: game.world.centerX,
+		startingY: game.world.centerY,
+		allowGravity: false
+		// dX: xIsZero ? speed : 0,
+		// dY: !xIsZero ? speed : 0,
+		// update: destroyOutsideBounds
 	};
 	crate = toybox.add.crate(crateOptions);
+	crate.events.onKilled.addOnce(createBlowable);
+	crate.update = function () {};
 	crate.body.collideWorldBounds = false;
-	floaties.push(crate);
-	game.time.events.add(levelSettings.nextFloatieDelay, createFloatie);
+	crate.body.drag = new Phaser.Point(0);
+	blowables.push(crate);
+	// game.time.events.add(levelSettings.nextblowableDelay, createBlowable);
 }
 
-function destroyOutsideBounds() {
-	if (this.x < 0 || this.x > this.toybox.game.world.width || this.y < 0 || this.y > this.toybox.game.world.height) {
-		var index = floaties.indexOf(this);
-		if (index > -1) {
-			floaties.splice(index, 1);
-		}
-		this.kill();
-	}
-}
+// function destroyOutsideBounds() {
+// 	if (this.x < 0 || this.x > this.toybox.game.world.width || this.y < 0 || this.y > this.toybox.game.world.height) {
+// 		var index = blowables.indexOf(this);
+// 		if (index > -1) {
+// 			blowables.splice(index, 1);
+// 		}
+// 		this.kill();
+// 	}
+// }
 
-function createAstronaut() {
+function createAstronaut(playerNo) {
 	var alienAstronautOptions = {
 		// allowGravity: false,
 		// update: alienAstronautUpdate,
-		startingX: game.world.centerX,
-		startingY: game.world.centerY,
-		flyForce: 1,
+		startingX: containers[playerNo].x,
+		startingY: containers[playerNo].y,
+		flyForce: 2.25,
 		speed: 250,
-		controls: {
-			left: 65,
-			right: 68,
-			up: 87,
-			down: 83
-		}
+		collideWorld : false,
+		pad : game.input.gamepad["pad" + (playerNo + 1).toString()]
 	};
 	var player = toybox.add.alienAstronaut(alienAstronautOptions);
 	player.controls.pad = game.input.gamepad.pad1;
 	player.body.allowGravity = false;
 	player.graphics = game.add.graphics(0, 0);
+	players.push(player);
 }
 
 function createContainers() {
-	var point = getRandomContainerPosition();
+	createContainer(0);
+	createContainer(1);
+}
+
+function createContainer(playerNumber) {
+	var point = getContainerPositionForPlayer(playerNumber);
 	var container = new Phaser.Circle(point.x, point.y, levelSettings.containerSize);
 	container.type = "";
 	containers.push(container);
 }
 
-function getRandomContainerPosition() {
+function getContainerPositionForPlayer(player) {
 	var point = new Phaser.Point();
-	point.x = Phaser.Math.between(levelSettings.containerSize, game.world.width - levelSettings.containerSize);
-	point.y = Phaser.Math.between(levelSettings.containerSize, game.world.height - levelSettings.containerSize);
+	point.x = player == 0 ? levelSettings.containerSize * 0.5 : game.world.width - levelSettings.containerSize;
+	point.y = game.world.centerY;
 	return point;
 }
 
@@ -316,30 +324,52 @@ function drawContainers(graphics) {
 function update() {
 	toybox.update();
 	updateContainers();
+	wrapStuff();
 }
 
 function updateContainers() {
-	for (var i = 0; i < floaties.length; i++) {
+	for (var i = 0; i < blowables.length; i++) {
 		for (var j = 0; j < containers.length; j++) {
-			if (containers[j].contains(floaties[i].x, floaties[i].y)) {
-				var dist = Phaser.Math.distance(containers[j].x, containers[j].y, floaties[i].x, floaties[i].y);
+			if (containers[j].contains(blowables[i].x, blowables[i].y)) {
+				var dist = Phaser.Math.distance(containers[j].x, containers[j].y, blowables[i].x, blowables[i].y);
 				if (dist < containers[j].diameter / 3) {
-					scorePoint(floaties[i]);
+					scorePoint(blowables[i], containers[j]);
 				} else {
-					var normalizedDir = new Phaser.Point(floaties[i].x - containers[j].x, floaties[i].y - containers[j].y).normalize();
+					var normalizedDir = new Phaser.Point(blowables[i].x - containers[j].x, blowables[i].y - containers[j].y).normalize();
 					var distanceModifier = Phaser.Math.linear(1, 0.1, dist / containers[j].diameter);
-					floaties[i].body.velocity.x -= normalizedDir.x * blowStrength * distanceModifier;
-					floaties[i].body.velocity.y -= normalizedDir.y * blowStrength * distanceModifier;
+					blowables[i].body.velocity.x -= normalizedDir.x * blowStrength * distanceModifier;
+					blowables[i].body.velocity.y -= normalizedDir.y * blowStrength * distanceModifier;
 				}
 			}
 		}
 	}
 }
 
-function scorePoint(floatie) {
-	var index = floaties.indexOf(floatie);
-	if (index > -1) {
-		floaties.splice(index, 1);
+function wrapStuff() {
+	for (var i = 0; i < players.length; i++) {
+		game.world.wrap(players[i], 0, true);
 	}
-	floatie.kill();
+	for (var i = 0; i < blowables.length; i++) {
+		game.world.wrap(blowables[i], 0, true);
+	}
+}
+
+function scorePoint(blowable, container) {
+	var index = blowables.indexOf(blowable);
+	if (index > -1) {
+		blowables.splice(index, 1);
+	}
+	blowable.kill();
+	updateContainerSize(container);
+}
+
+function updateContainerSize(container) {
+	var toSubtract = levelSettings.containerSize / levelSettings.goalsToPop;
+	if(container.diameter - toSubtract > 0){
+		container.diameter -= toSubtract;
+		drawContainers(containerGraphics);
+	}
+	else {
+		console.log("You won!");
+	}
 }
