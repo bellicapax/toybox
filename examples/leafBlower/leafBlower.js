@@ -45,8 +45,7 @@ var triangle = {
 };
 var floaties = [];
 var blowStrength = 5;
-var blowerReach = 120;
-var hypotenuse;
+
 var containerGraphics;
 var containers = [];
 var levelSettings = {
@@ -231,9 +230,7 @@ function preload() {
 	toybox = new Toybox(game, settings);
 	toybox.preload();
 	game.input.gamepad.start();
-	var hypOverAdj = (1 / Math.cos(halfAngle));
-	var adjacent = blowerReach;
-	hypotenuse = hypOverAdj * adjacent;
+
 }
 
 function create() {
