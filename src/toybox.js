@@ -158,6 +158,13 @@ class Toybox {
         }
     }
 
+    clear(){
+        for (var i = this.currentGameObjects.length - 1; i >= 0; i--) {
+            this.currentGameObjects[i].destroy();
+        }
+        this.currentGameObjects = [];
+    }
+
     update() {
         var myToybox = this;
         this._game.physics.arcade.collide(this.currentGameObjects, this.currentGameObjects);
