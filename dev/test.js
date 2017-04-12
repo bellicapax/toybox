@@ -30,7 +30,8 @@ var settings = {
         "key",
         "fan",
         "bubble",
-        "bird"
+        "bird",
+        "frog"
     ]
 };
 
@@ -115,9 +116,9 @@ function create() {
     }
     playerOptions.facing = "right";
 
-    crates = new Phaser.Group(game, null, 'crates', true);
+    player2 = toybox.add.frog(playerOptions);
 
-    player2 = toybox.add.bird(playerOptions);
+    crates = new Phaser.Group(game, null, 'crates', true);
 
     //gem = toybox.add.gem({color: "red"});
 

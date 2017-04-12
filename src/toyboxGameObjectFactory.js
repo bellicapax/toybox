@@ -89,6 +89,9 @@ class ToyboxGameObjectFactory {
         objectGO.events.onKilled.addOnce(function(){
             objectGO.toybox.game.time.events.add(2000, function(){
                 this.destroy();
+                var cGO = this.toybox.currentGameObjects;
+                var index = cGO.indexOf(this);
+                cGO.splice(index,1);
             }, objectGO);
         });
 
