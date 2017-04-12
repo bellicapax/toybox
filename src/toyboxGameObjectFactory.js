@@ -19,7 +19,7 @@ class ToyboxGameObjectFactory {
     //     collideWorld: boolean, true: object will collide with the edges of the game
     //     bounce: number, how elastic collisions with this object are
     //     name: string, name of the object type, meant mostly for debugging
-    //     
+    //
 
     toyboxObject(objectOptions) {
         objectOptions.spriteIndex = objectOptions.spriteIndex || 0;
@@ -80,7 +80,10 @@ class ToyboxGameObjectFactory {
             }
         }
 
-        objectGO.update = (typeof (objectOptions.update) == "function") ? objectOptions.update : function () {};
+        objectGO.events.onUpdate = new Phaser.Signal();
+        if(typeof (objectOptions.update) == "function"){
+          objectGO.events.onUpdate.add(objectOptions.update, objectGO);
+        }
 
         if (typeof (objectOptions.kill) == "function") {
             objectGO.events.onKilled.addOnce(objectOptions.kill);
@@ -117,7 +120,7 @@ class ToyboxGameObjectFactory {
     //     facing: string ("left" or "right") determines the direction the sprite starts out facing.
     //     speed: number, represents the speed the player will move when activated
     //     jumpForce: number, represents how hard a player will jump
-    //     controls: object, contains key-value pairs of keycodes and named controls    
+    //     controls: object, contains key-value pairs of keycodes and named controls
 
     player(playerOptions) {
         if(typeof(playerOptions) == "undefined"){

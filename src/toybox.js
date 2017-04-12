@@ -169,7 +169,7 @@ class Toybox {
         var myToybox = this;
         this._game.physics.arcade.collide(this.currentGameObjects, this.currentGameObjects);
         this.currentGameObjects.forEach(function (gameObject) {
-            gameObject.update();
+            gameObject.events.onUpdate.dispatch();
         });
     }
 
