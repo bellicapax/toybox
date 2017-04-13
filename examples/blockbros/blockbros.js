@@ -27,7 +27,13 @@ function create() {
         scale: 1,
         health: 1
     }
+    player2Controls = {
+        left: 65,
+        right: 68,
+        jump: 87
+    }
     globalplayer1ScorePosition = new Phaser.Point(10,10);
+    globalplayer2ScorePosition = new Phaser.Point(560,10);
     globalTextStyleObject = {
         fill: "#ffffff",
         align: "right",
@@ -108,8 +114,11 @@ function buildLevel1(){
         }
     });
 
-    var player1Options = Object.assign({startingX: 320, startingY: 20, color: "pink"}, globalAlienOptions);
+    var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
+
+    var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
 }
 
 function brickPlatform (array, startingPoint, scale, direction){
@@ -147,8 +156,8 @@ function createBlockBrosPlayer( playerOptions, scorePositionPoint){
             }
             this.score = 0;
         }, this.attachedAlien);
-        this.attachedAlien.events.onKilled.add(function(){
-            this.controllingPlayer.score -= 50;
+        this.attachedAlien.events.onKilled.addOnce(function(){
+            this.controllingPlayer.score -= 75;
             this.controllingPlayer.score = Phaser.Math.clampBottom(this.controllingPlayer.score, 0);
             game.time.events.add(3000, this.controllingPlayer.spawnNewAlien, this.controllingPlayer);
         }, this.attachedAlien);
