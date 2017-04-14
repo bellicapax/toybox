@@ -151,7 +151,18 @@ class Toybox {
 
     }
 
+    toggleFullScreen() {
+        if (this.game.scale.isFullScreen){
+            this.game.scale.stopFullScreen();
+        } else {
+            this.game.scale.startFullScreen(false);
+        }
+    }
+
     create() {
+        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+        game.input.onDown.add(this.toggleFullScreen, this);
+
         var sfxKeys = Object.keys(this.sfx);
         for (var i = sfxKeys.length - 1; i >= 0; i--) {
             this.sfx[sfxKeys[i]] = game.sound.add(sfxKeys[i]);
@@ -166,6 +177,7 @@ class Toybox {
     }
 
     update() {
+
         var myToybox = this;
         this._game.physics.arcade.collide(this.currentGameObjects, this.currentGameObjects);
         this.currentGameObjects.forEach(function (gameObject) {
