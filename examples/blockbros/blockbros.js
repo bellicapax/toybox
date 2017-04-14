@@ -13,10 +13,14 @@ function preload() {
     toybox = new Toybox(game, settings);
     toybox.preload();
     toybox._game.load.spritesheet("pipe", "../../assets/sprites/single-images/pipe.png", 160, 175);
+    toybox._game.load.audio("gameWarning", "../../assets/sfx/chirp-2.wav");
+    toybox._game.load.audio("gameWhistle", "../../assets/sfx/chirp-1.wav");
 }
 
 function create() {
 	toybox.create();
+    toybox.sfx["gameWarning"] = game.sound.add("gameWarning");
+    toybox.sfx["gameWhistle"] = game.sound.add("gameWhistle");
 
     playersArray = [];
     levelsArray = [];
@@ -32,22 +36,78 @@ function create() {
         right: 68,
         jump: 87
     }
-    globalplayer1ScorePosition = new Phaser.Point(10,10);
-    globalplayer2ScorePosition = new Phaser.Point(560,10);
+    globalplayer1ScorePosition = new Phaser.Point(5,5);
+    globalplayer2ScorePosition = new Phaser.Point(550,5);
+    globalGameLength = 120;
+    globalDeathPenalty = 0;
     globalTextStyleObject = {
-        fill: "#ffffff",
-        align: "right",
-        font: "bold 10pt Arial"
+        fill: "#fff",
+        font: "bold 12pt Arial",
+        boundsAlignH: "left",
+        boundsAlignV: "top",
+        stroke: "#000",
+        strokeThickness: 5
     }
     globalBrickColor = "yellow";
 
-	buildLevel1();
-
-	floor.body.onCollide.add(oopsFloor);
+    beginGame();
 }
 
 function update() {
     toybox.update();
+
+    gameTimerDisplay.setText(getTimerString(gameTimer));
+
+    if (gameTimer <= 0 && !isGameOver){
+        endGame();
+    }
+}
+
+function beginGame(){
+    gameTimer = globalGameLength;
+    isGameOver = false;
+    toybox.sfx.gameWhistle.play();
+
+    game.time.events.loop(1000, function(){
+        if (gameTimer <= 5 && gameTimer != 0){
+            toybox.sfx.gameWarning.play();
+        }
+        gameTimer = Phaser.Math.clampBottom(gameTimer - 1, 0);
+    }, this);
+
+    buildLevel1();
+
+    var timerStyles = Object.assign({},globalTextStyleObject);
+    timerStyles.boundsAlignH = "center";
+    gameTimerDisplay = toybox.add.text(0,0, getTimerString(gameTimer) ,timerStyles);
+    boundText(gameTimerDisplay);
+}
+
+function endGame(){
+    isGameOver = true;
+    toybox.sfx.gameWhistle.play();
+
+    player1.attachedAlien.destroy();
+    player2.attachedAlien.destroy();
+
+    if (player1.score != player2.score){
+        var winnerName = (player1.score > player2.score) ? player1.color : player2.color;
+        var winMessage = winnerName + " WINS!"
+    } else {
+        var winMessage = "IT'S A DRAW!"
+    }
+
+    var messageStyles = Object.assign({},globalTextStyleObject);
+    messageStyles.boundsAlignH = "center";
+    messageStyles.boundsAlignV = "middle";
+    messageStyles.font = "bold 32pt Arial";
+    messageObject = toybox.add.text(0,0, winMessage ,messageStyles);
+    boundText(messageObject);
+
+}
+
+function boundText(textObject){
+    textObject.setTextBounds(5, 5, game.width - 5, game.height - 5);
 }
 
 function oopsFloor(floor, collidedSprite){
@@ -55,6 +115,20 @@ function oopsFloor(floor, collidedSprite){
         collidedSprite.y = floor.y - (floor.height / 2) - (collidedSprite.height / 2)
     }
 };
+
+function getTimerString(totalSeconds){
+    var minutes = Math.floor( totalSeconds / 60 );
+    var seconds = totalSeconds % 60;
+    return FormatNumberLength(minutes, 2) + ":" + FormatNumberLength(seconds, 2);
+}
+
+function FormatNumberLength(num, length) {
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
+}
 
 function buildLevel1(){
     globalBrickColor = "yellow";
@@ -67,6 +141,9 @@ function buildLevel1(){
         startingY: game.height - 8,
         type: 4
     });
+
+    floor.body.onCollide.add(oopsFloor);
+
     leftLava = toybox.add.lava({
     	width: 160,
     	height: 16,
@@ -102,13 +179,13 @@ function buildLevel1(){
         startingX: 320,
         startingY: 480 - 24,
         whileLeft: function(){
-            if(toybox.oneOutOf(400)){ 
+            if(toybox.oneOutOf(200)){ 
                 generateEnemy(new Phaser.Point(40,70), "right");
             };
          
         },
         whileRight: function(){
-        	if(toybox.oneOutOf(400)){ 
+        	if(toybox.oneOutOf(200)){ 
                 generateEnemy(new Phaser.Point(620,70), "left");
             };
         }
@@ -144,7 +221,11 @@ function createBlockBrosPlayer( playerOptions, scorePositionPoint){
         newPlayer.scoreBoard = toybox.add.text(scorePositionPoint.x,scorePositionPoint.y,newPlayer.score,globalTextStyleObject);
     }
     newPlayer.playerOptions = playerOptions;
+    newPlayer.color = playerOptions.color.toUpperCase();
     newPlayer.spawnNewAlien = function(){
+        if( isGameOver ){
+            return;
+        }
         this.attachedAlien = toybox.add.alien(this.playerOptions);
         this.attachedAlien.controllingPlayer = this;
         this.attachedAlien.color = this.playerOptions.color.toUpperCase();
@@ -157,7 +238,7 @@ function createBlockBrosPlayer( playerOptions, scorePositionPoint){
             this.score = 0;
         }, this.attachedAlien);
         this.attachedAlien.events.onKilled.addOnce(function(){
-            this.controllingPlayer.score -= 75;
+            this.controllingPlayer.score -= globalDeathPenalty;
             this.controllingPlayer.score = Phaser.Math.clampBottom(this.controllingPlayer.score, 0);
             game.time.events.add(3000, this.controllingPlayer.spawnNewAlien, this.controllingPlayer);
         }, this.attachedAlien);
