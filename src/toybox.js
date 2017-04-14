@@ -6,6 +6,7 @@ class Toybox {
 
         console.log("Toybox constructed");
         this.pluginsArray = gameOptions.plugins;
+        this.demoMode = typeof(gameOptions.demoMode) != "undefined" ? gameOptions.demoMode : false;
         this._game = game;
         this._game.stage.smoothed = false;
         this._game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -161,7 +162,10 @@ class Toybox {
 
     create() {
         this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-        game.input.onDown.add(this.toggleFullScreen, this);
+
+        if (this.demoMode){
+            game.input.onDown.add(this.toggleFullScreen, this);
+        }
 
         var sfxKeys = Object.keys(this.sfx);
         for (var i = sfxKeys.length - 1; i >= 0; i--) {
