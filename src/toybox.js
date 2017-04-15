@@ -178,6 +178,7 @@ class Toybox {
         for (var i = this.currentGameObjects.length - 1; i >= 0; i--) {
             this.currentGameObjects[i].destroy();
         }
+        this.game.time.events.removeAll();
         this.currentGameObjects = [];
     }
 
@@ -186,7 +187,9 @@ class Toybox {
         var myToybox = this;
         this._game.physics.arcade.collide(this.currentGameObjects, this.currentGameObjects);
         this.currentGameObjects.forEach(function (gameObject) {
-            gameObject.events.onUpdate.dispatch();
+            if( gameObject != null){
+                gameObject.events.onUpdate.dispatch();
+            }
         });
     }
 
