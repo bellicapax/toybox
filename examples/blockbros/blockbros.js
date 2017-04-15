@@ -76,7 +76,7 @@ function beginGame(){
         gameTimer = Phaser.Math.clampBottom(gameTimer - 1, 0);
     }, this);
 
-    buildLevel1();
+    buildLevel2();
 
     var timerStyles = Object.assign({},globalTextStyleObject);
     timerStyles.boundsAlignH = "center";
@@ -191,6 +191,44 @@ function buildLevel1(){
             };
         }
     });
+
+    var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
+    player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
+
+    var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+}
+
+function buildLevel2(){
+    globalBrickColor = "yellow";
+
+    backdrop = toybox.add.backdrop({ preset: "green" });
+    floor = toybox.add.platform({
+        width: 320,
+        height: 16,
+        startingX: game.width / 2,
+        startingY: game.height - 8,
+        type: 1
+    });
+
+    floor.body.onCollide.add(oopsFloor);
+
+    leftLava = toybox.add.lava({
+        width: 160,
+        height: 16,
+        startingX: 80,
+        startingY: game.height - 8,
+        color: 'green'
+    });
+    rightLava = toybox.add.lava({
+        width: 160,
+        height: 16,
+        startingX: 560,
+        startingY: game.height - 8,
+        color: 'green'
+    });
+
+    spring = toybox.add.spring({ startingX: 320, startingY: game.height - 24});
 
     var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);

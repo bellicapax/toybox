@@ -10,6 +10,9 @@
 //     collideWorld: boolean, true: object will collide with the edges of the game
 //     bounce: number, how elastic collisions with this object are
 
+// unique springOptions attributes
+//      springForce: the amount the spring will push objects upwards
+
 var springToyboxPlugin = {
  	name: "spring",
     toyboxType: "block",
@@ -33,13 +36,16 @@ var springToyboxPlugin = {
      		if( onTop && !spring.hasBounced){
    				spring.bounce();
                 var time = (1000 / this.toybox.animationFPS) * 2;
-                this.toybox.game.time.events.add(time, function(){ collidedSprite.body.velocity.y = -700; }, this);
+                this.toybox.game.time.events.add(time, function(){ 
+                    collidedSprite.body.velocity.y = -1 * Math.abs(this.springForce); 
+                }, spring);
      		}
      	}
 
         springOptions.collide = springCollide;
 
      	var springGO = this.toybox.add.block(springOptions);
+        springGO.springForce = springOptions.springForce || 700;
      	springGO.hasBounced = false;
         springGO.animations.add("bounce", [2, 1, 0, 1, 2], this.toybox.animationFPS, false);
 
