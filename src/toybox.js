@@ -81,6 +81,7 @@ class Toybox {
     }
 
     addText(go){
+        this.addGameObject(go);
         this.texts.add(go);
     }
 

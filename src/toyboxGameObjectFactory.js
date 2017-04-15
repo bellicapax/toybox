@@ -264,6 +264,9 @@ class ToyboxGameObjectFactory {
 
     text(x,y,text,styleObject) {
         var textGO = this.toybox.game.add.text(x,y,text,styleObject);
+
+        textGO.events.onUpdate = new Phaser.Signal();
+
         this.toybox.addText(textGO);
         return textGO;
     }
