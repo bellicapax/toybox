@@ -51,7 +51,13 @@ function create() {
     }
     globalBrickColor = "yellow";
 
-    beginGame();
+    isGameOver = false;
+
+    levelNames = ["Level1","Level2"];
+
+    currentLevel = levelNames[Phaser.Math.between(0,levelNames.length - 1)];
+
+    switchLevel("MainMenu");
 }
 
 function update() {
@@ -66,7 +72,6 @@ function update() {
 
 function beginGame(){
     gameTimer = globalGameLength;
-    isGameOver = false;
     toybox.sfx.gameWhistle.play();
 
     game.time.events.loop(1000, function(){
@@ -75,8 +80,6 @@ function beginGame(){
         }
         gameTimer = Phaser.Math.clampBottom(gameTimer - 1, 0);
     }, this);
-
-    buildLevel2();
 
     var timerStyles = Object.assign({},globalTextStyleObject);
     timerStyles.boundsAlignH = "center";
@@ -131,6 +134,46 @@ function FormatNumberLength(num, length) {
     return r;
 }
 
+function switchLevel(levelName){
+    toybox.clear();
+    window["build"+levelName]();
+    beginGame();
+}
+
+function buildMainMenu(){
+
+    floor = toybox.add.platform({
+        width: game.width,
+        height: 16,
+        startingX: game.width / 2,
+        startingY: game.height - 8,
+        type: 0
+    });
+
+    floor.body.onCollide.add(oopsFloor);
+
+    var messageStyles = Object.assign({},globalTextStyleObject);
+    messageStyles.boundsAlignH = "center";
+    messageStyles.boundsAlignV = "middle";
+    messageStyles.font = "bold 32pt Arial";
+    messageObject = toybox.add.text(0,0, "SUPER BLOCK SIBLINGS" ,messageStyles);
+    boundText(messageObject);
+
+    level1Button = toybox.add.button({ 
+       startingX: 200,
+       color: "yellow",
+       onPress: function(){
+           switchLevel("Level1")
+       }
+    });
+
+    var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
+    player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
+
+    var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+}
+
 function buildLevel1(){
     globalBrickColor = "yellow";
 
@@ -165,12 +208,10 @@ function buildLevel1(){
     var midArray = ["normal","normal","mushroom","normal","coin","normal","normal","normal","coin","normal","mushroom","normal"];
     brickPlatform(topArray,new Phaser.Point(12,140), 1.5, 1);
     brickPlatform(topArray,new Phaser.Point(game.width - 12,140), 1.5, -1);
-    brickPlatform(["normal","normal","normal"], new Phaser.Point(320 - 24,140), 1.5, 1)
+    brickPlatform(["normal","pow","normal"], new Phaser.Point(320 - 24,140), 1.5, 1)
     brickPlatform(midArray,new Phaser.Point(190,250), 1.5, 1);
     brickPlatform(bottomArray,new Phaser.Point(12,370), 1.5, 1);
     brickPlatform(bottomArray,new Phaser.Point(game.width - 12,370), 1.5, -1);
-
-    powBrick = toybox.add.multibrick({startingX: 320, startingY: 50, color: globalBrickColor, scale: 1.5, type: "pow", resetTimer: 45000});
 
     leftPipe = toybox.add.decoration({spriteName: "pipe", startingX: 30, startingY: 70, scale: 0.45, sendTo: "top"});
     rightPipe = toybox.add.decoration({spriteName: "pipe", startingX: 610, startingY: 70, scale: 0.45, sendTo: "top"});
@@ -200,7 +241,7 @@ function buildLevel1(){
 }
 
 function buildLevel2(){
-    globalBrickColor = "yellow";
+    globalBrickColor = "gray";
 
     backdrop = toybox.add.backdrop({ preset: "green" });
     floor = toybox.add.platform({
@@ -218,23 +259,58 @@ function buildLevel2(){
         height: 16,
         startingX: 80,
         startingY: game.height - 8,
-        color: 'green'
+        color: 'red'
     });
     rightLava = toybox.add.lava({
         width: 160,
         height: 16,
         startingX: 560,
         startingY: game.height - 8,
-        color: 'green'
+        color: 'red'
     });
 
-    spring = toybox.add.spring({ startingX: 320, startingY: game.height - 24});
+    spring = toybox.add.spring({ 
+        startingX: 320,
+        startingY: game.height - 24,
+        immovable: true,
+        allowGravity: false,
+        springForce: 900
+    });
 
-    var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
+    var topArray = ["normal","mushroom","normal","coin","normal","coin","normal"];
+    var smallArray = ["coin","striped","coin"];
+    var bottomArray = ["normal","striped","normal","striped","normal","striped","mushroom","striped","coin","striped"];
+
+    brickPlatform(bottomArray,new Phaser.Point(12,340), 1.5, 1);
+    brickPlatform(bottomArray,new Phaser.Point(game.width - 12,340), 1.5, -1);
+    brickPlatform(topArray,new Phaser.Point(125,140), 1.5, 1);
+    brickPlatform(topArray,new Phaser.Point(game.width - 125,140), 1.5, -1);
+    brickPlatform(smallArray,new Phaser.Point(12,240), 1.5, 1);
+    brickPlatform(smallArray,new Phaser.Point(game.width - 12,240), 1.5, -1);
+    brickPlatform(smallArray,new Phaser.Point(150,240), 1.5, 1);
+    brickPlatform(smallArray,new Phaser.Point(game.width - 150,240), 1.5, -1);
+    brickPlatform(smallArray,new Phaser.Point(208,405), 1.5, 1);
+    brickPlatform(smallArray,new Phaser.Point(game.width - 208,405), 1.5, -1);
+
+    leftPowBrick = toybox.add.multibrick({startingX: 85, startingY: 50, color: globalBrickColor, scale: 1.5, type: "pow", resetTimer: 45000});
+    rightPowBrick = toybox.add.multibrick({startingX: game.width - 85, startingY: 50, color: globalBrickColor, scale: 1.5, type: "pow", resetTimer: 45000});
+
+    leftPipe = toybox.add.decoration({spriteName: "pipe", startingX: 200, startingY: 30, scale: 0.45, sendTo: "top"});
+    leftPipe.rotation = Math.PI/2;
+    rightPipe = toybox.add.decoration({spriteName: "pipe", startingX: game.width - 200, startingY: 30, scale: 0.45, sendTo: "top"});
+    rightPipe.rotation = Math.PI/2;
+
+    var player1Options = Object.assign({startingX: 220, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
 
-    var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+    var player2Options = Object.assign({startingX: 420, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
     player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+
+    toybox.game.time.events.loop( 3000, function(){
+        var enemyXPos = Math.random() > 0.5 ? 200 : game.width - 200;
+        var enemyFacing = Math.random() > 0.5 ? "left" : "right";
+        generateEnemy(new Phaser.Point(enemyXPos,70), enemyFacing);
+    } , this );
 }
 
 function brickPlatform (array, startingPoint, scale, direction){
