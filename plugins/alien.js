@@ -13,6 +13,7 @@
 // unique alienOptions attributes:
 //      color: string, valid options: "green" "blue" "pink"
 //      controls: object, needs to contains keycodes for left,right,jump
+//      invulnerability: number, the amount of update cycles that this alien cannot be hit
 
 
 var alienToyboxPlugin = {
@@ -55,6 +56,13 @@ var alienToyboxPlugin = {
         var alienPlatformerUpdate = function(){
             if (this.isHit || this.body == null){
                 return;
+            }
+
+            if (this.invulnerability > 0){
+                this.alpha = this.invulnerability % 100 * .04
+                this.invulnerability--;
+            } else {
+                this.alpha = 1;
             }
 
             if (this.health <= 0){
@@ -103,7 +111,7 @@ var alienToyboxPlugin = {
                     alien.body.velocity.y = -200;
                     collidedSprite.hit();
                 } else {
-                    if (collidedSprite.health > 0){
+                    if (collidedSprite.health > 0 && alien.invulnerability <= 0){
                         alien.hit();
                     }
                 }
@@ -131,6 +139,7 @@ var alienToyboxPlugin = {
         var alienGO = this.toybox.add.player(alienOptions);
 
         alienGO.health = alienOptions.health;
+        alienGO.invulnerability = alienOptions.invulnerability || 0;
         alienGO.events.onHit = new Phaser.Signal();
         if(typeof(alienOptions.onHit) == "function"){
           alienGO.events.onHit.add(alienOptions.onHit);
