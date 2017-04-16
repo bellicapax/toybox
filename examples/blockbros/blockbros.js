@@ -204,7 +204,7 @@ function buildMainMenu(){
     var testArray = ["normal","coin","normal","mushroom","normal","pow","normal","mushroom","normal","coin","normal"];
     var upperArray = ["striped","normal","striped","normal","striped","normal","striped","skip","skip","skip","striped","normal","striped","normal","striped","normal","striped"];
 
-    brickPlatform(testArray,new Phaser.Point(200,350), 1.5, 1);
+    brickPlatform(testArray,new Phaser.Point(200,375), 1.5, 1);
     brickPlatform(upperArray,new Phaser.Point(128,150), 1.5, 1);
 
     var messageStyles = Object.assign({},globalTextStyleObject);
@@ -222,7 +222,7 @@ function buildMainMenu(){
 
     spring = toybox.add.spring({ 
         startingX: 320,
-        startingY: game.height - 150,
+        startingY: game.height - 125,
         immovable: true,
         allowGravity: false,
         springForce: 900
@@ -298,19 +298,25 @@ function buildLevel1(){
     	color: 'lightblue'
     });
 
-    var topArray = ["normal","normal","normal","normal","coin","normal","mushroom","normal"];
-    var bottomArray = ["normal","normal","normal","normal","normal","coin","normal","mushroom","normal"];
-    var midArray = ["normal","normal","mushroom","normal","coin","normal","normal","normal","coin","normal","mushroom","normal"];
+    var topArray = ["normal","normal","normal","normal","normal","normal","mushroom","normal"];
+    var bottomArray = ["normal","normal","normal","normal","normal","normal","normal","mushroom","normal"];
+    var midArray = ["normal","mushroom","normal","coin","normal","normal","coin","normal","normal","coin","normal","mushroom","normal"];
+    var smallArray = ["normal","coin","normal","normal","coin","normal"]
     brickPlatform(topArray,new Phaser.Point(12,140), 1.5, 1);
     brickPlatform(topArray,new Phaser.Point(game.width - 12,140), 1.5, -1);
-    brickPlatform(["normal","pow","normal"], new Phaser.Point(320 - 24,140), 1.5, 1)
-    brickPlatform(midArray,new Phaser.Point(190,250), 1.5, 1);
-    brickPlatform(bottomArray,new Phaser.Point(12,370), 1.5, 1);
-    brickPlatform(bottomArray,new Phaser.Point(game.width - 12,370), 1.5, -1);
+    brickPlatform(["pow"], new Phaser.Point(320,60), 1.5, 1);
+    brickPlatform(midArray,new Phaser.Point(178,225), 1.5, 1);
+    brickPlatform(smallArray,new Phaser.Point(108,310), 1.5, 1);
+    brickPlatform(["mushroom"], new Phaser.Point(320,310), 1.5, 1);
+    brickPlatform(smallArray,new Phaser.Point(640 - 108,310), 1.5, -1);
+    brickPlatform(bottomArray,new Phaser.Point(12,395), 1.5, 1);
+    brickPlatform(bottomArray,new Phaser.Point(game.width - 12,395), 1.5, -1);
 
     leftPipe = toybox.add.decoration({spriteName: "pipe", startingX: 30, startingY: 70, scale: 0.45, sendTo: "top"});
     rightPipe = toybox.add.decoration({spriteName: "pipe", startingX: 610, startingY: 70, scale: 0.45, sendTo: "top"});
     rightPipe.scale.x = -.45;
+
+    var startEnemy = generateEnemy(new Phaser.Point(40,70), "right");
 
     lever = toybox.add.lever({ 
         startingX: 320,
@@ -585,16 +591,39 @@ function coinSplosion (){
     this.toybox.add.coin({startingX: this.x, startingY: this.y - 4, dX: 50, dY: -100});
 }
 
-function generateEnemy(point, enemyFacing){
-	var enemies = ["slime","fly","jelly"];
-	var thingToMake = randomizer(enemies);
+function generateEnemy(point, enemyFacing, thingToMake, optionalColor){
+	var enemies = ["slime","fly","jelly","badball"];
+    if (typeof(thingToMake) == "undefined"){
+        var thingToMake = randomizer(enemies);
+    }
 	if (enemyFacing == "left"){
 		var enemyDir = -1;
 	} else {
 		var enemyDir = 1
 	}
-    var newEnemy = toybox.add[thingToMake]({startingX: point.x, startingY: point.y, dX: (Phaser.Math.between(50,200)), dY: 200 * enemyDir, facing: enemyFacing});
-    newEnemy.events.onKilled.add(coinSplosion, newEnemy);
+    var newEnemy = toybox.add[thingToMake]({startingX: point.x, startingY: point.y, dX: (Phaser.Math.between(50,200)), dY: 200 * enemyDir, facing: enemyFacing, color: optionalColor});
+    if (thingToMake == "badball"){
+        newEnemy.speed = 50;
+        newEnemy.events.onUpdate.add(function(){
+            this.speed += 1;
+            Phaser.Math.clamp(this.speed,300);
+        }, newEnemy);
+    }
+    if (thingToMake == "jelly"){
+        newEnemy.health = 2;
+        newEnemy.events.onKilled.removeAll();
+        newEnemy.events.onOutOfBounds.add(newEnemy.destroy, newEnemy);
+        newEnemy.events.onKilled.add(function(jelly){
+            var slime1 = generateEnemy( new Phaser.Point(jelly.x - 8, jelly.y), "left", 'slime', jelly.color);
+            slime1.body.velocity = new Phaser.Point(-100,100);
+            var slime2 = generateEnemy( new Phaser.Point(jelly.x + 8, jelly.y), "right", 'slime', jelly.color);
+            slime2.body.velocity = new Phaser.Point(100,100);
+            var slime3 = slime3 = generateEnemy( new Phaser.Point(jelly.x, jelly.y - 8), "left", 'slime', jelly.color);
+            slime3.body.velocity = new Phaser.Point(0,100);
+        }, newEnemy);
+    } else {
+        newEnemy.events.onKilled.add(coinSplosion, newEnemy);
+    }
     return newEnemy;
 }
 
