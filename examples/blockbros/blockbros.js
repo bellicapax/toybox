@@ -614,6 +614,12 @@ function generateEnemy(point, enemyFacing, thingToMake, optionalColor){
         newEnemy.events.onKilled.removeAll();
         newEnemy.events.onOutOfBounds.add(newEnemy.destroy, newEnemy);
         newEnemy.events.onKilled.add(function(jelly){
+            newEnemy.toybox.game.time.events.add(2000, function(){
+                this.destroy();
+                var cGO = this.toybox.currentGameObjects;
+                var index = cGO.indexOf(this);
+                cGO.splice(index,1);
+            }, newEnemy);
             var slime1 = generateEnemy( new Phaser.Point(jelly.x - 8, jelly.y), "left", 'slime', jelly.color);
             slime1.body.velocity = new Phaser.Point(-100,100);
             var slime2 = generateEnemy( new Phaser.Point(jelly.x + 8, jelly.y), "right", 'slime', jelly.color);
