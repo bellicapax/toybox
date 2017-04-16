@@ -25,9 +25,10 @@ var multibrickToyboxPlugin = {
  	preload: function(toyboxObject){
  		toyboxObject._game.load.spritesheet("multibrick", "../../assets/sprites/multibrickSheet.png", 16, 16);
  		toyboxObject._game.load.audio("multibrickBump", "../../assets/sfx/impact-1.wav");
+        toyboxObject._game.load.audio("multibrickPow", "../../assets/sfx/explosion-1.wav");
  	},
 
- 	sfx: ["multibrickBump"],
+ 	sfx: ["multibrickBump","multibrickPow"],
 
  	create: function(multibrickOptions){
     multibrickOptions = typeof (multibrickOptions) == "undefined" ? {} : multibrickOptions;
@@ -81,6 +82,7 @@ var multibrickToyboxPlugin = {
         }
 
         var powAction = function(collidedSprite){
+            this.toybox.sfx.multibrickPow.play();
             if (this.active == false) {
                 return;
             }
