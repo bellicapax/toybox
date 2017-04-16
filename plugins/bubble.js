@@ -1,10 +1,15 @@
-
+// Bubble is a block that will grow and carry other objects with it until it pops. Be sure to give it a negative dY to make it rise!
+//
 // blockOptions attributes:
 //     startingX: number, initial X location for sprite's center
 //     startingY: number, initial Y location for sprite's center
 //     collideWorld: boolean, true: object will collide with the edges of the game
 //     name: string, name of the object type, meant mostly for debugging
 //
+// unique bubbleOptions attributes
+//      growRate: number, how much the bubble's scale increases each update cycle (keep very small)
+//      maxScale: number, the scale the bubble maxes out at
+//      killTimer: number, the time in milliseconds before the bubble pops on it's own (0 means lasts indefinitely)
 
 
 var bubbleToyboxPlugin = {
