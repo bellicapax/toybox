@@ -13,8 +13,8 @@ var badballToyboxPlugin = {
 
   preload: function (toyboxObject) {
     toyboxObject._game.load.spritesheet("badball", "../../assets/sprites/ballSheet.png", 16, 16);
-    toyboxObject._game.load.audio("badballBump", "../../assets/sfx/goo-2.wav");
-    toyboxObject._game.load.audio("badballDie", "../../assets/sfx/goo-1.wav");
+    toyboxObject._game.load.audio("badballBump", "../../assets/sfx/footsteps-1.wav");
+    toyboxObject._game.load.audio("badballDie", "../../assets/sfx/explosion-3.wav");
   },
 
   sfx: ["badballBump", "badballDie"],
@@ -97,16 +97,21 @@ var badballToyboxPlugin = {
       this.isHit = true;
       this.health -= 1;
       this.animations.play("dead");
-      this.height = 3;
+      this.events.onUpdate.add(function(){
+        if (thisBall.health <= 0) {
+          this.rotation += 0.5;
+        }
+      }, this);
       for (var i = this.children.length - 1; i >= 0; i--) {
         this.children[i].drop();
       }
       this.toybox.sfx.badballDie.play();
       var thisBall = this;
-      this.toybox.game.time.events.add(500, function () {
+      this.toybox.game.time.events.add(1000, function () {
         if (thisBall.health <= 0) {
           thisBall.kill();
         } else {
+          this.rotation = 0;
           thisBall.animations.play("idle");
           thisBall.isHit = false;
         }
