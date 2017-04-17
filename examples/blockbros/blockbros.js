@@ -6,7 +6,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, '', {
 var toybox;
 var settings = {
     gravity: 980,
-    demoMode: false,
+    demoMode: true,
     plugins: ["crate","coin","mushroom","alien","backdrop","gem","slime","platform","spring","button","fly","badball","lever","fireball","jelly","lava","spikes","multibrick","fan","bubble"]
 };
 
@@ -88,7 +88,7 @@ function beginGame(){
     }
 
     game.time.events.loop(1000, function(){
-        if (gameTimer <= 5 && gameTimer != 0){
+        if (gameTimer <= 5 && gameTimer != 0 && currentLevel != "MainMenu"){
             toybox.sfx.gameWarning.play();
         }
         gameTimer = Phaser.Math.clampBottom(gameTimer - 1, 0);
@@ -216,6 +216,8 @@ function buildMainMenu(){
     messageStyles.font = "bold 12pt Arial";
     var tutorialHeadline = toybox.add.text(0,40, "CONTROLS: WASD / ARROWS" ,messageStyles);
     boundText(tutorialHeadline);
+    var tutorialHeadline = toybox.add.text(0,65, "CLICK FOR FULLSCREEN" ,messageStyles);
+    boundText(tutorialHeadline);
     var levelHeadline = toybox.add.text(0,-160, "HIT BUTTON TO SELECT LEVEL" ,messageStyles);
     boundText(levelHeadline);
 
@@ -249,6 +251,14 @@ function buildMainMenu(){
         color: "blue",
         onPress: function(){
             game.time.events.add(500, switchLevel, this, "Level3")
+        }
+    });
+
+    level3Button = toybox.add.button({ 
+        startingX: 152,
+        color: "red",
+        onPress: function(){
+            game.time.events.add(500, switchLevel, this, "Level4")
         }
     });
 
@@ -393,14 +403,13 @@ function buildLevel2(){
         springForce: 900
     });
 
-    var topArray = ["striped","mushroom","normal","coin","normal","coin","striped"];
     var smallArray = ["coin","striped","coin"];
-    var bottomArray = ["striped","coin","normal","mushroom","normal","coin","striped"];
+    var largeArray = ["striped","coin","normal","mushroom","normal","coin","striped"];
 
-    brickPlatform(bottomArray,new Phaser.Point(84,322), 1.5, 1);
-    brickPlatform(bottomArray,new Phaser.Point(game.width - 84,322), 1.5, -1);
-    brickPlatform(topArray,new Phaser.Point(125,140), 1.5, 1);
-    brickPlatform(topArray,new Phaser.Point(game.width - 125,140), 1.5, -1);
+    brickPlatform(largeArray,new Phaser.Point(84,322), 1.5, 1);
+    brickPlatform(largeArray,new Phaser.Point(game.width - 84,322), 1.5, -1);
+    brickPlatform(largeArray,new Phaser.Point(125,140), 1.5, 1);
+    brickPlatform(largeArray,new Phaser.Point(game.width - 125,140), 1.5, -1);
     brickPlatform(smallArray,new Phaser.Point(12,240), 1.5, 1);
     brickPlatform(smallArray,new Phaser.Point(game.width - 12,240), 1.5, -1);
     brickPlatform(smallArray,new Phaser.Point(225,240), 1.5, 1);
@@ -522,6 +531,135 @@ function buildLevel3(){
                 dY: -75})
         }
     } , this );
+}
+
+function buildLevel4(){
+    globalBrickColor = "random";
+
+    backdrop = toybox.add.backdrop({ preset: "blue" });
+
+    leftLava = toybox.add.lava({
+        width: game.width,
+        height: 16,
+        startingX: game.width / 2,
+        startingY: game.height - 8,
+        color: 'orange'
+    });
+
+    brickGrid(new Phaser.Point(68,96),new Phaser.Point(22,15),1.5,3);
+
+    leftPipe = toybox.add.decoration({spriteName: "pipe", startingX: 250, startingY: 10, scale: 0.45, sendTo: "top"});
+    leftPipe.rotation = Math.PI/2;
+    rightPipe = toybox.add.decoration({spriteName: "pipe", startingX: game.width - 250, startingY: 10, scale: 0.45, sendTo: "top"});
+    rightPipe.rotation = Math.PI/2;
+
+    var player1Options = Object.assign({startingX: 90, startingY: 54, color: "pink", facing: "right"}, globalAlienOptions);
+    player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
+
+    var player2Options = Object.assign({startingX: game.width - 90, startingY: 54, color: "blue", facing: "left", controls: player2Controls}, globalAlienOptions);
+    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+
+    toybox.game.time.events.loop( 2500, function(){
+        var enemyXPos = Math.random() > 0.5 ? 250 : game.width - 250;
+        var enemyFacing = Math.random() > 0.5 ? "left" : "right";
+        generateEnemy(new Phaser.Point(enemyXPos,20), enemyFacing);
+    } , this );
+}
+
+function brickGrid(startingPoint,gridDimensions,scale,frequency){
+    gridArray = [];
+
+    for (var i = gridDimensions.y - 1; i >= 0; i--) {
+        var currentRow = [];
+        gridArray.push(currentRow);
+        for (var j = gridDimensions.x - 1; j >= 0; j--) {
+            currentRow.push(0);
+        }
+    };
+
+    makeBlockInGrid(0,0,3);
+    makeBlockInGrid(gridArray[0].length - 3,0,3);
+
+    for (var fillerY = 0; fillerY <= (gridDimensions.y / 2) - 1; fillerY++) {
+        for (var fillerX = (gridDimensions.x / 2) - 2; fillerX <= (gridDimensions.x / 2); fillerX++) {
+           gridArray[fillerY][fillerX] = 1;
+        }
+    };
+
+    for (var iy = gridDimensions.y; iy >= 0; iy--) {
+        for (var ix = gridDimensions.x; ix >= 0; ix--) {
+            var shouldBuildBrick = Phaser.Math.between(0,frequency - 1) == 0;
+            if (shouldBuildBrick){
+                var scaleMultiplier = Phaser.Math.between(1,3);
+                tryMakeBLock(ix,iy,scaleMultiplier);
+            }
+        }
+    };
+
+    function checkForSpace(xPos,yPos,size){
+        var spaceBlockWouldOccupy = [];
+        for (var tempy = yPos + scaleMultiplier - 1; tempy >= yPos; tempy--) {
+            for (var tempx = xPos + scaleMultiplier - 1; tempx >= xPos; tempx--) {
+                if( typeof(gridArray[tempy]) == "undefined" || typeof(gridArray[tempy][tempx]) == "undefined" ){
+                    spaceBlockWouldOccupy.push(1);
+                } else {
+                    spaceBlockWouldOccupy.push(gridArray[tempy][tempx]);
+                }
+            }
+        }
+        var isThereSpace = ( spaceBlockWouldOccupy.reduce((a, b) => a + b, 0) == 0 );
+        return isThereSpace;
+    }
+
+    function randomizeBlockType(){
+        var blockArray = ["normal","normal","normal","normal","coin","coin","coin","coin","mushroom","mushroom","mushroom","pow"];
+        return blockArray[Phaser.Math.between(0,blockArray.length - 1)]
+    }
+
+    function makeBlockInGrid(xPos,yPos,size){
+        var blockScale = size * scale;
+        var basePixelsize = scale * 16
+
+        for (var iy = yPos; iy <= yPos + size - 1; iy++) {
+            for (var ix = xPos; ix <= xPos + size - 1; ix++) {
+                gridArray[iy][ix] = 1;
+            }
+        }
+
+        var blockType = randomizeBlockType()
+
+        toybox.add.multibrick({
+            startingX: startingPoint.x + (xPos * basePixelsize) + ((size - 1) * basePixelsize / 2),
+            startingY: startingPoint.y + (yPos * basePixelsize) + ((size - 1) * basePixelsize / 2),
+            type: blockType,
+            scale: blockScale,
+            color: globalBrickColor,
+            resetTimer: 10000
+        });
+    }
+
+    function tryMakeBLock(xPos,yPos,size){
+        if (size == 3){
+            if (checkForSpace(xPos,yPos,size)){
+                makeBlockInGrid(xPos,yPos,size)
+            } else {
+                size = 2;
+            }
+        }
+        if (size == 2){
+            if (checkForSpace(xPos,yPos,size)){
+                makeBlockInGrid(xPos,yPos,size)
+            } else {
+                size = 1;
+            }
+        }
+        if (size == 1){
+            if (checkForSpace(xPos,yPos,size)){
+                makeBlockInGrid(xPos,yPos,size)
+            }
+        }
+    }
+
 }
 
 function brickPlatform (array, startingPoint, scale, direction){
