@@ -23,8 +23,9 @@ function create() {
     toybox.sfx["gameWarning"] = game.sound.add("gameWarning");
     toybox.sfx["gameWhistle"] = game.sound.add("gameWhistle");
 
-    levelsArray = ["Level1","Level2"];
     gameIsBeingCleared = false;
+
+    twoPlayerMode = false;
 
     globalAlienOptions = {
         jumpForce: 500,
@@ -38,7 +39,7 @@ function create() {
         jump: 87
     }
     globalplayer1ScorePosition = new Phaser.Point(5,5);
-    globalplayer2ScorePosition = new Phaser.Point(550,5);
+    globalplayer2ScorePosition = new Phaser.Point(538,5);
     globalGameLength = 105;
     globalDeathPenalty = 0;
     globalTextStyleObject = {
@@ -50,6 +51,13 @@ function create() {
         strokeThickness: 5
     }
     globalBrickColor = "yellow";
+
+    highScores = {
+        Level1: 0,
+        Level2: 0,
+        Level3: 0,
+        Level4: 0
+    }
 
     spacebarToReset = toybox.game.input.keyboard.addKey(32);
 
@@ -93,12 +101,14 @@ function beginGame(){
         }
         gameTimer = Phaser.Math.clampBottom(gameTimer - 1, 0);
 
-        var winningPlayer = player1.score > player2.score ? player1 : player2;
-        var losingPlayer = player1.score > player2.score ? player2 : player1;
-        var scoreModifier = Math.floor( (winningPlayer.score - losingPlayer.score) / 100 ) * 2;
+        if( twoPlayerMode ){
+            var winningPlayer = player1.score > player2.score ? player1 : player2;
+            var losingPlayer = player1.score > player2.score ? player2 : player1;
+            var scoreModifier = Math.floor( (winningPlayer.score - losingPlayer.score) / 100 ) * 2;
 
-        if( !isGameOver ){
-            winningPlayer.score -= scoreModifier;
+            if( !isGameOver ){
+                winningPlayer.score -= scoreModifier;
+            }
         }
 
     }, this);
@@ -117,13 +127,21 @@ function endGame(){
     toybox.sfx.gameWhistle.play();
 
     player1.attachedAlien.destroy();
-    player2.attachedAlien.destroy();
+    if (twoPlayerMode){
+        player2.attachedAlien.destroy();
+    }
 
-    if (player1.score != player2.score){
-        var winnerName = (player1.score > player2.score) ? player1.color : player2.color;
-        var winMessage = winnerName + " WINS!"
+    var winningPlayer = player1;
+
+    if (twoPlayerMode) {
+            if (player1.score != player2.score){
+            var winningPlayer = (player1.score > player2.score) ? player1 : player2;
+            var winMessage = winningPlayer.color + " WINS!"
+        } else {
+            var winMessage = "IT'S A DRAW!"
+        }
     } else {
-        var winMessage = "IT'S A DRAW!"
+        var winMessage = "SCORE: " + player1.score;
     }
 
     var messageStyles = Object.assign({},globalTextStyleObject);
@@ -134,8 +152,18 @@ function endGame(){
     boundText(messageObject);
 
     messageStyles.font = "bold 12pt Arial";
-    var tutorialHeadline = toybox.add.text(0,40, "HIT SPACEBAR TO RETURN TO MENU" ,messageStyles);
+    var tutorialHeadline = toybox.add.text(0,60, "HIT SPACEBAR TO RETURN TO MENU" ,messageStyles);
     boundText(tutorialHeadline);
+
+    if (highScores[currentLevel] < winningPlayer.score){
+        highScores[currentLevel] = winningPlayer.score;
+
+        var newHighScoreHeadline = toybox.add.text(0,40, "NEW HIGH SCORE!" ,messageStyles);
+        boundText(newHighScoreHeadline);
+    }
+
+    var oldHighScoreHeadline = toybox.add.text(0,-40, "HIGH SCORE: " + highScores[currentLevel] ,messageStyles);
+    boundText(oldHighScoreHeadline);
 
 }
 
@@ -213,11 +241,13 @@ function buildMainMenu(){
     messageStyles.font = "bold 32pt Arial";
     var messageObject = toybox.add.text(0,0, "SUPER BLOCK SIBLINGS" ,messageStyles);
     boundText(messageObject);
-    messageStyles.font = "bold 12pt Arial";
-    var tutorialHeadline = toybox.add.text(0,40, "CONTROLS: WASD / ARROWS" ,messageStyles);
+    messageStyles.font = "bold 9pt Arial";
+    var tutorialHeadline = toybox.add.text(0,35, "CONTROLS: WASD / ARROWS" ,messageStyles);
     boundText(tutorialHeadline);
-    var tutorialHeadline = toybox.add.text(0,65, "CLICK FOR FULLSCREEN" ,messageStyles);
+    var tutorialHeadline = toybox.add.text(0,55, "CLICK FOR FULLSCREEN" ,messageStyles);
     boundText(tutorialHeadline);
+    var playerModeHeadline = toybox.add.text(0,160, "SWITCH FOR TWO PLAYER" ,messageStyles);
+    boundText(playerModeHeadline);
     var levelHeadline = toybox.add.text(0,-160, "HIT BUTTON TO SELECT LEVEL" ,messageStyles);
     boundText(levelHeadline);
 
@@ -262,11 +292,39 @@ function buildMainMenu(){
         }
     });
 
-    var player1Options = Object.assign({startingX: 300, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
+    lever = toybox.add.lever({ 
+        startingX: 320,
+        startingY: 480 - 24,
+        facing: "left",
+        whileRight: function(){
+            if (twoPlayerMode){
+                playerModeHeadline.setText("SWITCH FOR TWO PLAYER");
+                twoPlayerMode = false;
+                player2.attachedAlien.destroy();
+                player2 = null;
+            }
+        },
+        whileLeft: function(){
+            if (!twoPlayerMode){
+                playerModeHeadline.setText("SWITCH FOR ONE PLAYER");
+                twoPlayerMode = true;
+                var player2Options = Object.assign({startingX: 360, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+                player2 = createBlockBrosPlayer(player2Options);
+            }
+        }
+    });
+
+    if (twoPlayerMode){
+        lever.switch();
+    }
+
+    var player1Options = Object.assign({startingX: 280, startingY: 450, color: "pink", facing: "left"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options);
 
-    var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
-    player2 = createBlockBrosPlayer(player2Options);
+    // if( twoPlayerMode ){
+    //     var player2Options = Object.assign({startingX: 340, startingY: 450, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+    //     player2 = createBlockBrosPlayer(player2Options);
+    // }
 
     var firstEnemy = generateEnemy(new Phaser.Point(260,240), "left");
 
@@ -430,8 +488,10 @@ function buildLevel2(){
     var player1Options = Object.assign({startingX: 224, startingY: 380, color: "pink", facing: "left"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
 
-    var player2Options = Object.assign({startingX: game.width - 224, startingY: 380, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
-    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    if( twoPlayerMode ){
+        var player2Options = Object.assign({startingX: game.width - 224, startingY: 380, color: "blue", facing: "right", controls: player2Controls}, globalAlienOptions);
+        player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    }
 
     toybox.game.time.events.loop( 2500, function(){
         var enemyXPos = Math.random() > 0.5 ? 200 : game.width - 200;
@@ -498,8 +558,10 @@ function buildLevel3(){
     var player1Options = Object.assign({startingX: 133, startingY: 230, color: "pink", facing: "right"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
 
-    var player2Options = Object.assign({startingX: game.width - 133, startingY: 230, color: "blue", facing: "left", controls: player2Controls}, globalAlienOptions);
-    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    if (twoPlayerMode){
+        var player2Options = Object.assign({startingX: game.width - 133, startingY: 230, color: "blue", facing: "left", controls: player2Controls}, globalAlienOptions);
+        player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    }
 
     toybox.game.time.events.loop( 2000, function(){
         if (toybox.oneOutOf(2)){
@@ -556,8 +618,10 @@ function buildLevel4(){
     var player1Options = Object.assign({startingX: 90, startingY: 54, color: "pink", facing: "right"}, globalAlienOptions);
     player1 = createBlockBrosPlayer(player1Options, globalplayer1ScorePosition);
 
-    var player2Options = Object.assign({startingX: game.width - 90, startingY: 54, color: "blue", facing: "left", controls: player2Controls}, globalAlienOptions);
-    player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    if (twoPlayerMode){
+        var player2Options = Object.assign({startingX: game.width - 90, startingY: 54, color: "blue", facing: "left", controls: player2Controls}, globalAlienOptions);
+        player2 = createBlockBrosPlayer(player2Options, globalplayer2ScorePosition);
+    } 
 
     toybox.game.time.events.loop( 2500, function(){
         var enemyXPos = Math.random() > 0.5 ? 250 : game.width - 250;

@@ -36,8 +36,10 @@ var springToyboxPlugin = {
      		if( onTop && !spring.hasBounced){
    				spring.bounce();
                 var time = (1000 / this.toybox.animationFPS) * 2;
-                this.toybox.game.time.events.add(time, function(){ 
-                    collidedSprite.body.velocity.y = -1 * Math.abs(this.springForce); 
+                this.toybox.game.time.events.add(time, function(){
+                    if ( collidedSprite.body != null){
+                        collidedSprite.body.velocity.y = -1 * Math.abs(this.springForce);
+                    } 
                 }, spring);
      		}
      	}

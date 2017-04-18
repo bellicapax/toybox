@@ -57,12 +57,18 @@ var leverToyboxPlugin = {
 
      	var leverGO = this.toybox.add.block(leverOptions);
      	leverGO.wasSwitched = false;
-        leverGO.direction = (leverOptions.facing == "right") ? "right" : "left";
         leverGO.whileLeft = (typeof(leverOptions.whileLeft) == "function") ? leverOptions.whileLeft : function(){};
         leverGO.whileRight = (typeof(leverOptions.whileRight) == "function") ? leverOptions.whileRight : function(){};
         var fps = this.toybox.animationFPS;
         leverGO.animations.add("left", [2,1,0], fps, false);
         leverGO.animations.add("right", [0,1,2], fps, false);
+
+        if (leverOptions.facing == "right"){
+            leverGO.direction = "right";
+            leverGO.animations.play("right");
+        } else {
+            leverGO.direction = "left";
+        }
 
      	leverGO.switch = function(){
      		this.wasSwitched = true;
