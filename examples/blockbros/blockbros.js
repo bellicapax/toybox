@@ -295,7 +295,7 @@ function buildMainMenu(){
     lever = toybox.add.lever({ 
         startingX: 320,
         startingY: 480 - 24,
-        facing: "left",
+        facing: (twoPlayerMode) ? 'left' : 'right',
         whileRight: function(){
             if (twoPlayerMode){
                 playerModeHeadline.setText("SWITCH FOR TWO PLAYER");
